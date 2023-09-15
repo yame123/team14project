@@ -37,7 +37,7 @@ public class StoreService {
     }
 
     public List<StoreResponseDto> getStoreByKeyword(String keyword) {
-        return storeRepository.findAllByContentsContains(keyword).stream().map(StoreResponseDto::new).toList();
+        return storeRepository.findAllByStoreNameContains(keyword).stream().map(StoreResponseDto::new).toList();
     }
 
     @Transactional
