@@ -13,8 +13,6 @@ public class SignupRequestDto {
 
     @Email(message = "올바른 이메일 주소 형식이어야 합니다.")
     private String email;
-    // 인증 코드
-    private int certificationNumber;
 
     private boolean owner = false;
 }
