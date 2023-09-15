@@ -22,4 +22,5 @@ public class StoreResponseDto {
         this.avgStar = store.getAvgStar();
         this.storePoint = store.getStorePoint();
     }
+
 }
