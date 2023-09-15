@@ -64,7 +64,6 @@ public class WebSecurityConfig {
                         // 업장 정보 수정/삭제
                         .requestMatchers(HttpMethod.PUT, "/api/store/{storeId}").hasAuthority("ROLE_OWNER")
                         .requestMatchers(HttpMethod.DELETE, "/api/store/{storeId}").hasAuthority("ROLE_OWNER")
-                        .anyRequest().authenticated()
 
         );
 
