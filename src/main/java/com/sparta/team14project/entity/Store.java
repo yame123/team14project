@@ -25,7 +25,7 @@ public class Store {
     private String storeAddress;
     // avgStar (Long)
     @Column(name = "avgStar", nullable = false)
-    private float avgStar;
+    private Float avgStar;
     // storePoint (Long)
     @Column(name = "storePoint", nullable = false)
     private Long storePoint;
