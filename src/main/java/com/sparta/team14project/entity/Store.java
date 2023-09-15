@@ -1,6 +1,6 @@
 package com.sparta.team14project.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sparta.team14project.dto.StoreRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,23 @@ public class Store {
     private Long storePoint;
 
     // ownerId (Long)
-//    @OneToOne
-//    @JoinColumn(name = "owner_id")
-//    private Cart cart;
+    @OneToOne
+    @JoinColumn(name = "owner_id")
+    private User user;
+
+    public Store(StoreRequestDto requestDto){
+        this.storeName = requestDto.getStoreName();
+        this.storeDetails = requestDto.getStoreDetails();
+        this.storeAddress = requestDto.getStoreAddress();
+        this.avgStar = requestDto.getAvgStar();
+        this.storePoint = requestDto.getStorePoint();
+    }
+
+    public void update(StoreRequestDto requestDto){
+        this.storeName = requestDto.getStoreName();
+        this.storeDetails = requestDto.getStoreDetails();
+        this.storeAddress = requestDto.getStoreAddress();
+        this.avgStar = requestDto.getAvgStar();
+        this.storePoint = requestDto.getStorePoint();
+    }
 }
