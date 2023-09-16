@@ -9,6 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
@@ -43,15 +44,17 @@ public class EmailService {
     }
 
     public void checkCode(String email,String userCode) {
-        signupCodeRepository.findByEmailAndCode(email, userCode).orElseThrow(() ->
+        SignupCode signupCode = signupCodeRepository.findByEmailAndCode(email, userCode).orElseThrow(() ->
             new IllegalArgumentException("유효하지 않은 코드입니다.")
         );
-        // check와 동시에 삭제
-        deleteCode(email);
-    }
 
-    public void deleteCode(String email) {
-        SignupCode signupCode = signupCodeRepository.findByEmail(email);
+        // 코드 유효시간 지났는지 체크
+        LocalDateTime currentTime = LocalDateTime.now();
+        if (signupCode.getExpirationTime().isBefore(currentTime)) {
+            signupCodeRepository.delete(signupCode); // 만료되었으면 삭제
+            throw new IllegalArgumentException("유효 기간이 만료된 코드입니다.");
+        }
+        // check와 동시에 삭제
         signupCodeRepository.delete(signupCode);
     }
 
