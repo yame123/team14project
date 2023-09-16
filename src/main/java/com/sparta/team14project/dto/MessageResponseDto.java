@@ -3,12 +3,12 @@ package com.sparta.team14project.dto;
 import lombok.Getter;
 
 @Getter
-public class SignupResponseDto {
+public class MessageResponseDto {
 
     private String msg;
     private Integer statusCode;
 
-    public SignupResponseDto(String msg, Integer statusCode) {
+    public MessageResponseDto(String msg, Integer statusCode) {
         this.msg = msg;
         this.statusCode = statusCode;
     }

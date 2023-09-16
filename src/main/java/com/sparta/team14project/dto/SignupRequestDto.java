@@ -14,5 +14,8 @@ public class SignupRequestDto {
     @Email(message = "올바른 이메일 주소 형식이어야 합니다.")
     private String email;
 
+    @Pattern(regexp = "^[0-9]{6}$", message = "코드는 6자리 숫자로 구성되어 있습니다.")
+    private String code;
+
     private boolean owner = false;
 }
