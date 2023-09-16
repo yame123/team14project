@@ -35,19 +35,16 @@ public class Store {
     @JoinColumn(name = "owner_id")
     private User user;
 
-    public Store(StoreRequestDto requestDto){
+    public Store(StoreRequestDto requestDto, User user){
         this.storeName = requestDto.getStoreName();
         this.storeDetails = requestDto.getStoreDetails();
         this.storeAddress = requestDto.getStoreAddress();
-        this.avgStar = requestDto.getAvgStar();
-        this.storePoint = requestDto.getStorePoint();
+        this.user = user;
     }
 
     public void update(StoreRequestDto requestDto){
         this.storeName = requestDto.getStoreName();
         this.storeDetails = requestDto.getStoreDetails();
         this.storeAddress = requestDto.getStoreAddress();
-        this.avgStar = requestDto.getAvgStar();
-        this.storePoint = requestDto.getStorePoint();
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -62,8 +63,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/user/**").permitAll() // '/api/auth/'로 시작하는 요청 모두 접근 허가
 
                         // 업장 정보 수정/삭제
-                        .requestMatchers(HttpMethod.PUT, "/api/store/{storeId}").hasAuthority("ROLE_OWNER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/store/{storeId}").hasAuthority("ROLE_OWNER")
+//                        .requestMatchers(HttpMethod.PUT, "/api/store/{storeId}").hasAuthority("ROLE_OWNER")
+//                        .requestMatchers(HttpMethod.DELETE, "/api/store/{storeId}").hasAuthority("ROLE_OWNER")
 
         );
 

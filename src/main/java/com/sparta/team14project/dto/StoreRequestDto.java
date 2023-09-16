@@ -9,6 +9,4 @@ public class StoreRequestDto {
     private String storeName;
     private String storeDetails;
     private String storeAddress;
-    private float avgStar;
-    private Long storePoint;
 }

@@ -20,8 +20,7 @@ public class StoreController {
     }
 
     @PostMapping("/store/create")
-    public StoreResponseDto createStore(@RequestBody StoreRequestDto requestDto,
-                                       @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public StoreResponseDto createStore(@RequestBody StoreRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
             return storeService.createStore(requestDto, userDetails);
     }
 
@@ -31,21 +30,21 @@ public class StoreController {
     }
 
     @GetMapping("/store/{keyword}")
-    public List<StoreResponseDto> getStoresByKeyword(@PathVariable String keyword){
+    public List<StoreResponseDto> getStoresByKeyword(@RequestParam String keyword){
         return storeService.getStoreByKeyword(keyword);
     }
 
     @PutMapping("/store/{storeId}")
-    public StoreResponseDto updateStore(@PathVariable Long id,
+    public StoreResponseDto updateStore(@PathVariable("storeId") Long storeId,
                                         @RequestBody StoreRequestDto requestDto,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return storeService.updateStore(id, requestDto, userDetails);
+        return storeService.updateStore(storeId, requestDto, userDetails);
     }
 
     @DeleteMapping("/store/{storeId}")
-    public MessageResponseDto deleteStore(@PathVariable Long id,
+    public MessageResponseDto deleteStore(@PathVariable("storeId") Long storeId,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return storeService.deleteStore(id, userDetails);
+        return storeService.deleteStore(storeId, userDetails);
     }
 
 

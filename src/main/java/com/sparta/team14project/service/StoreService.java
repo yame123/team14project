@@ -3,7 +3,9 @@ package com.sparta.team14project.service;
 import com.sparta.team14project.dto.MessageResponseDto;
 import com.sparta.team14project.dto.StoreRequestDto;
 import com.sparta.team14project.dto.StoreResponseDto;
+import com.sparta.team14project.entity.User;
 import com.sparta.team14project.repository.StoreRepository;
+import com.sparta.team14project.repository.UserRepository;
 import com.sparta.team14project.security.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,15 +18,24 @@ import java.util.List;
 public class StoreService {
 
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
 
-    public StoreService(StoreRepository storeRepository) {
+    public StoreService(StoreRepository storeRepository, UserRepository userRepository) {
         this.storeRepository = storeRepository;
+        this.userRepository = userRepository;
     }
 
     public StoreResponseDto createStore(StoreRequestDto requestDto, UserDetailsImpl userDetails) {
-        if(userDetails.getUser().getUserRole().getAuthority().equals("ROLE_OWNER")){ // Owner인증을 AOP로
-            Store store = new Store(requestDto);
+        if(userDetails.getUser().getUserRole().getAuthority().equals("ROLE_OWNER")){
+            // user 정보 userDetails에서 추출
+            User user = userDetails.getUser();
+            // requestDto 정보를 저장
+            Store store = new Store(requestDto, user);
+
+            // store 정보를 repository에 저장
             Store saveStore = storeRepository.save(store);
+
+            // store 정보를 DTO에 넣어 반환
             StoreResponseDto storeResponseDto = new StoreResponseDto(saveStore);
             return storeResponseDto;
         } else{
@@ -42,7 +53,7 @@ public class StoreService {
 
     @Transactional
     public StoreResponseDto updateStore(Long id, StoreRequestDto requestDto, UserDetailsImpl userDetails) {
-        if(userDetails.getUser().getUserRole().getAuthority().equals("ROLE_OWNER")){
+        if(userDetails.getUser().getUserRole().getAuthority().equals("ROLE_OWNER") ){
             Store store = findStore(id);
             store.update(requestDto);
             return new StoreResponseDto(store);
