@@ -33,11 +33,14 @@ public class User {
 
 
 
-    @OneToOne(mappedBy = "user_id")
+    @OneToOne(mappedBy = "user")
     private Cart cart;
 
-    @OneToMany(mappedBy = "user_id")
+    @OneToMany(mappedBy = "user")
     private Order order;
+
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
+    private Store store;
 
     public User(String username, String password, String email, UserRoleEnum userRole, Long userPoint) {
         this.username = username;
