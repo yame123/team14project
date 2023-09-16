@@ -30,6 +30,9 @@ public class User {
     @Column(name = "userPoint")
     private Long userPoint;
 
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
+    private Store store;
+
     public User(String username, String password, String email, UserRoleEnum userRole, Long userPoint) {
         this.username = username;
         this.password = password;
