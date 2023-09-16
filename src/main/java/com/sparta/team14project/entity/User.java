@@ -36,10 +36,10 @@ public class User {
     private Cart cart;
 
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "user", cascade =  CascadeType.REMOVE,fetch = FetchType.EAGER)
     private List<Delivery> deliveryList;
 
-    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
     private Store store;
 
     public User(String username, String password, String email, UserRoleEnum userRole, Long userPoint) {
