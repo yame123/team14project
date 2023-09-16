@@ -4,9 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.mapping.ToOne;
 
-import java.awt.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,20 +16,20 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToMany(mappedBy = "cart_id",cascade = {CascadeType.PERSIST },orphanRemoval = true)
+    @OneToMany(mappedBy = "cart",cascade = {CascadeType.PERSIST},orphanRemoval = true)
     private List<AddedMenu> addedMenuList;
 
     public void resetCart(){
         this.store = null;
-        this.addedMenuList.removeAll();
+        this.addedMenuList.removeAll(this.addedMenuList);
     }
 
 

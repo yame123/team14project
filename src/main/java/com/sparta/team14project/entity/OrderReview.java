@@ -17,7 +17,7 @@ public class OrderReview {
 
     @OneToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private Delivery delivery;
 
     private String title;
     private int star;

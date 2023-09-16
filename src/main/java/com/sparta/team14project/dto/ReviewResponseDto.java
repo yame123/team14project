@@ -4,6 +4,7 @@ import com.sparta.team14project.entity.OrderReview;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class ReviewResponseDto {
@@ -20,8 +21,9 @@ public class ReviewResponseDto {
         this.star = review.getStar();
         this.detail = review.getDetails();
         this.image = review.getImage();
-        this.username = review.getOrder().getUser().getUsername();
-        this.storename = review.getOrder().getStore().getStoreName();
-        this.menunamelist = review.getOrder().getOrderedMenuList(); // 뒤에 매핑해서 list 정보를 메뉴 이름만 저장하도록
+        this.username = review.getDelivery().getUser().getUsername();
+        this.storename = review.getDelivery().getStore().getStoreName();
+        this.menunamelist = review.getDelivery().getOrderedMenuList().stream().map(i->i.getMenu().getName()).collect(Collectors.toList()); // 뒤에 매핑해서 list 정보를 메뉴 이름만 저장하도록
+
     }
 }

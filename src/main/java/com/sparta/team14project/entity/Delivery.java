@@ -5,28 +5,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.awt.*;
+import java.util.List;
 
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Order {
+public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="order_id")
+    @JoinColumn(name="user_id")
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToMany(mappedBy = "order_id",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
-    private  List<OrderedMenu> orderedMenuList;
+    @OneToMany(mappedBy = "delivery",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<OrderedMenu> orderedMenuList;
 
     @Column(name = "username", nullable = false)
     private boolean delivered;

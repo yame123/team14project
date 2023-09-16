@@ -1,17 +1,18 @@
 package com.sparta.team14project.dto;
 
-import com.sparta.team14project.entity.Cart;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToOne;
 
-import java.awt.*;
+import com.sparta.team14project.entity.AddedMenu;
+import com.sparta.team14project.entity.Menu;
 
 public class AddedMenuResponseDto {
 
 
-    private  Menu menu;
+    private Menu menu;
 
-    private Long count;
+    private int count;
 
+    public AddedMenuResponseDto(AddedMenu addedMenu) {
+        this.menu = addedMenu.getMenu();
+        this.count = addedMenu.getCount();
+    }
 }

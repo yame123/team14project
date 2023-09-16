@@ -2,10 +2,12 @@ package com.sparta.team14project.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.awt.*;
 
+@Entity
 @Getter
+@NoArgsConstructor
 public class OrderedMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,10 +15,11 @@ public class OrderedMenu {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private Delivery delivery;
+
     @ManyToOne
     @JoinColumn(name = "menu_id")
-    private  Menu menu;
+    private Menu menu;
 
     private int count;
 

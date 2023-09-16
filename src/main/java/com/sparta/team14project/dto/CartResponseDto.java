@@ -1,15 +1,13 @@
 package com.sparta.team14project.dto;
 
-import com.sparta.team14project.entity.AddedMenu;
 import com.sparta.team14project.entity.Cart;
-import com.sparta.team14project.entity.Order;
+import com.sparta.team14project.entity.Store;
 import com.sparta.team14project.entity.User;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
-import java.awt.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class CartResponseDto {
     private Long id;
@@ -22,6 +20,6 @@ public class CartResponseDto {
     public CartResponseDto(Cart cart) {
         this.user = cart.getUser();
         this.store = cart.getStore();
-        this.addedMenuList = cart.getAddedMenuList();
+        this.addedMenuList = cart.getAddedMenuList().stream().map(x->new AddedMenuResponseDto(x)).collect(Collectors.toList());
     }
 }

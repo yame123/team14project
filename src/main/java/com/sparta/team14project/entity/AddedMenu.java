@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.awt.*;
 
 
 @Entity
@@ -21,6 +20,7 @@ public class AddedMenu {
     @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;
+
     @ManyToOne
     @JoinColumn(name = "menu_id")
     private Menu menu;

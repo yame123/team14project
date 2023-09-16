@@ -1,12 +1,9 @@
 package com.sparta.team14project.dto;
 
 
-import com.sparta.team14project.entity.Order;
+import com.sparta.team14project.entity.Delivery;
 import com.sparta.team14project.entity.OrderedMenu;
-import com.sparta.team14project.entity.User;
-import jakarta.persistence.*;
 
-import java.awt.*;
 import java.util.Map;
 
 public class OrderResponseDto {
@@ -18,12 +15,12 @@ public class OrderResponseDto {
     private boolean delivered;
 
 
-    public OrderResponseDto(Order order) {
-        this.id = order.getId();
-        this.username = order.getUser().getUsername();
-        this.address = order.getAddress();
-        this.delivered = order.isDelivered();
-        for(OrderedMenu om: order.getOrderedMenuList()){
+    public OrderResponseDto(Delivery delivery) {
+        this.id = delivery.getId();
+        this.username = delivery.getUser().getUsername();
+        this.address = delivery.getAddress();
+        this.delivered = delivery.isDelivered();
+        for(OrderedMenu om: delivery.getOrderedMenuList()){
             this.orderList.put(om.getMenu().getName(),om.getCount());
         }
     }

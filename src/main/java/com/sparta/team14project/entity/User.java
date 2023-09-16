@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -30,16 +32,14 @@ public class User {
     @Column(name = "userPoint")
     private Long userPoint;
 
-
-
-
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
     private Cart cart;
 
-    @OneToMany(mappedBy = "user")
-    private Order order;
 
-    @OneToOne(mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
+    private List<Delivery> deliveryList;
+
+    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
     private Store store;
 
     public User(String username, String password, String email, UserRoleEnum userRole, Long userPoint) {
@@ -50,7 +50,7 @@ public class User {
         this.userPoint = userPoint;
     }
 
-    public void pay(Long money) {
+    public void pay(int money) {
         this.userPoint -=money;
     }
 }
