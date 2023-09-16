@@ -24,8 +24,12 @@ public class Cart {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToMany(mappedBy = "cart",cascade = {CascadeType.PERSIST},orphanRemoval = true)
+    @OneToMany(mappedBy = "cart",cascade = {CascadeType.PERSIST},orphanRemoval = true )
     private List<AddedMenu> addedMenuList;
+
+    public Cart(User user) {
+        this.user = user;
+    }
 
     public void resetCart(){
         this.store = null;

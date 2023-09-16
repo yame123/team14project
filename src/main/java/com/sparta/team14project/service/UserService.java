@@ -2,8 +2,10 @@ package com.sparta.team14project.service;
 
 import com.sparta.team14project.dto.SignupRequestDto;
 import com.sparta.team14project.dto.SignupResponseDto;
+import com.sparta.team14project.entity.Cart;
 import com.sparta.team14project.entity.User;
 import com.sparta.team14project.entity.UserRoleEnum;
+import com.sparta.team14project.repository.CartRepository;
 import com.sparta.team14project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CartRepository cartRepository;
 
     //회원가입 기능
     public SignupResponseDto signup(SignupRequestDto signupRequestDto) {
@@ -45,6 +48,8 @@ public class UserService {
         //사용자 등록 =>입력한 이름과 암호화된 비밀번호 저장
         User user = new User(username, password, email, role, userPoint);
         userRepository.save(user);
+        Cart cart = new Cart (user);
+        cartRepository.save(cart);
 
         SignupResponseDto signupResponseDto = new SignupResponseDto("회원가입 성공",200);
 

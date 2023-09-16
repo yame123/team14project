@@ -18,13 +18,19 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MenuRepository menuRepository;
     private final AddedMenuRepository addedMenuRepository;
+    private final CartRepository cartRepository;
+
     public CartResponseDto getCart(User user) {
-        return new CartResponseDto(user.getCart());
+        Cart cart = findCartById(user.getId());
+        return new CartResponseDto(cart);
     }
+
+
 
 
     @Transactional
     public CartResponseDto addMenu(Long menuId, User user) {
+
         List<AddedMenu> addedMenuList = user.getCart().getAddedMenuList();
         Menu menu = findMenuById(menuId);
         AddedMenu check = null;
@@ -80,5 +86,9 @@ public class OrderService {
         Menu menu = menuRepository.findById(id).orElseThrow(()->new NullPointerException("메뉴 정보를 찾을 수 없습니다."));
         return menu;
     }
+    private Cart findCartById(Long id) {
+        return cartRepository.findById(id).orElseThrow(()->new NullPointerException("카트 정보를 찾을 수 없습니다."));
+    }
+
 
 }

@@ -31,7 +31,7 @@ public class Store {
     private Long storePoint = 0l;
 
     // ownerId (Long)
-    @OneToOne(orphanRemoval = true,fetch = FetchType.LAZY) // cascade는 직접 지우면 사라지지 않지만 orphanRemoval은 사라진다.
+    @OneToOne(orphanRemoval = true) // cascade는 직접 지우면 사라지지 않지만 orphanRemoval은 사라진다.
     @JoinColumn(name = "owner_id")
     private User user;
 
