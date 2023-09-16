@@ -30,6 +30,15 @@ public class User {
     @Column(name = "userPoint")
     private Long userPoint;
 
+
+
+
+    @OneToOne(mappedBy = "user_id")
+    private Cart cart;
+
+    @OneToMany(mappedBy = "user_id")
+    private Order order;
+
     public User(String username, String password, String email, UserRoleEnum userRole, Long userPoint) {
         this.username = username;
         this.password = password;
@@ -38,4 +47,7 @@ public class User {
         this.userPoint = userPoint;
     }
 
+    public void pay(Long money) {
+        this.userPoint -=money;
+    }
 }
