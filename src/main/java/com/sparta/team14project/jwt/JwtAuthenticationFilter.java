@@ -2,7 +2,7 @@ package com.sparta.team14project.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.team14project.dto.LoginRequestDto;
-import com.sparta.team14project.dto.LoginResponseDto;
+import com.sparta.team14project.dto.MessageResponseDto;
 import com.sparta.team14project.entity.UserRoleEnum;
 import com.sparta.team14project.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j(topic = "로그인 및 JWT 생성")
+//authfilter,loggingfilter 대신 편리하게 사용
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtil jwtUtil;
 
@@ -47,8 +48,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     )
             );
         } catch (IOException e) {
-            log.error("예외 발생: ", e.getMessage());
-            throw new RuntimeException(e.getMessage());
+            log.error("예외 발생: ", e);
+            throw new RuntimeException("요청 처리 중 오류가 발생했습니다.");
         }
     }
 
@@ -62,7 +63,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = jwtUtil.createToken(username, role);
         jwtUtil.addJwtToCookie(token, response);
 
-        LoginResponseDto responseDto = new LoginResponseDto("로그인 성공", 200);
+        MessageResponseDto responseDto = new MessageResponseDto("로그인 성공", 200);
 
         // 응답 데이터 설정
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -78,7 +79,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("로그인 실패");
         response.setStatus(401);
 
-        LoginResponseDto responseDto = new LoginResponseDto("회원을 찾을 수 없습니다.", 400);
+        MessageResponseDto responseDto = new MessageResponseDto("회원을 찾을 수 없습니다.", 400);
 
         // 응답 데이터 설정
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -1,7 +1,7 @@
 package com.sparta.team14project.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.team14project.dto.LoginResponseDto;
+import com.sparta.team14project.dto.MessageResponseDto;
 import com.sparta.team14project.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -39,7 +39,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String tokenValue = jwtUtil.getTokenFromRequest(req);
 
         // 오류 메세지
-        LoginResponseDto responseDto = new LoginResponseDto("토큰이 유효하지 않습니다.", 400);
+        MessageResponseDto responseDto = new MessageResponseDto("토큰이 유효하지 않습니다.", 400);
         // 응답 데이터 설정
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
         res.setCharacterEncoding(StandardCharsets.UTF_8.toString());

@@ -4,6 +4,7 @@ package com.sparta.team14project.dto;
 import com.sparta.team14project.entity.Delivery;
 import com.sparta.team14project.entity.OrderedMenu;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class OrderResponseDto {
@@ -11,7 +12,7 @@ public class OrderResponseDto {
     private long id;
     private String username;
     private String address;
-    private Map<String,Integer> orderList;
+    private Map<String,Integer> orderList = new HashMap<>();
     private boolean delivered;
 
 

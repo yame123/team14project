@@ -3,14 +3,12 @@ package com.sparta.team14project.service;
 import com.sparta.team14project.dto.MessageResponseDto;
 import com.sparta.team14project.dto.StoreRequestDto;
 import com.sparta.team14project.dto.StoreResponseDto;
+import com.sparta.team14project.entity.Store;
 import com.sparta.team14project.entity.User;
 import com.sparta.team14project.repository.StoreRepository;
-import com.sparta.team14project.repository.UserRepository;
 import com.sparta.team14project.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import com.sparta.team14project.entity.Store;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -20,8 +18,6 @@ import java.util.List;
 public class StoreService {
 
     private final StoreRepository storeRepository;
-    private final UserRepository userRepository;
-
 
     public StoreResponseDto createStore(StoreRequestDto requestDto, UserDetailsImpl userDetails) {
         if(userDetails.getUser().getUserRole().getAuthority().equals("ROLE_OWNER")){
@@ -72,12 +68,12 @@ public class StoreService {
             Store store = findStore(id);
             storeRepository.delete(store);
             MessageResponseDto messageResponseDto = new MessageResponseDto(
-                    "업장 삭제가 완료되었습니다.", HttpStatus.OK
+                    "업장 삭제가 완료되었습니다.", 200
             );
             return messageResponseDto;
         } else{
             MessageResponseDto messageResponseDto = new MessageResponseDto(
-                    "삭제 권한이 없습니다.", HttpStatus.BAD_REQUEST
+                    "삭제 권한이 없습니다.", 400
             );
             return messageResponseDto;
         }

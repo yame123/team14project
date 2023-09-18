@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
 @Getter
 @Setter
+@Table(name = "delivery")
 @NoArgsConstructor
 public class Delivery {
     @Id
@@ -26,8 +28,8 @@ public class Delivery {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToMany(mappedBy = "delivery",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
-    private List<OrderedMenu> orderedMenuList;
+    @OneToMany(mappedBy = "delivery", orphanRemoval = true)
+    private List<OrderedMenu> orderedMenuList=new ArrayList<>();
 
     @Column(name = "username", nullable = false)
     private boolean delivered;
@@ -35,13 +37,13 @@ public class Delivery {
     @Column(name= "address",nullable = false)
     private String address;
 
-    public Delivery(OrderRequestDto requestDto, User user) {
-        this.user = user;
-        this.address = requestDto.getAddress();
-    }
-
 
     public void addMenu(OrderedMenu orderedMenu) {
         this.orderedMenuList.add(orderedMenu);
+    }
+
+    public Delivery(OrderRequestDto requestDto, User user) {
+        this.user = user;
+        this.address = requestDto.getAddress();
     }
 }

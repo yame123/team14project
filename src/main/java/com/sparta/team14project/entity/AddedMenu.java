@@ -3,13 +3,11 @@ package com.sparta.team14project.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 
 
 @Entity
 @Getter
-@Setter
+@Table(name = "added_menu")
 @NoArgsConstructor
 public class AddedMenu {
 
@@ -18,11 +16,11 @@ public class AddedMenu {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cartId")
     private Cart cart;
 
-    @ManyToOne
-    @JoinColumn(name = "menu_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menuId")
     private Menu menu;
 
     private int count;
@@ -36,5 +34,9 @@ public class AddedMenu {
 
     public void updateAddedMenu() {
         this.count++;
+    }
+
+    public void delupdateAddedMenu() {
+        this.count--;
     }
 }
