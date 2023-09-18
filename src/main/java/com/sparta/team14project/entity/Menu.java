@@ -23,7 +23,7 @@ public class Menu {
     private String details;
 
     @ManyToOne
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = "store")
     private Store store;
 
     public Menu(MenuRequestDto requestDto, Store store){

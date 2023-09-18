@@ -3,11 +3,9 @@ package com.sparta.team14project.service;
 import com.sparta.team14project.dto.MenuRequestDto;
 import com.sparta.team14project.dto.MenuResponseDto;
 import com.sparta.team14project.entity.Menu;
-import com.sparta.team14project.entity.Store;
 import com.sparta.team14project.entity.User;
 import com.sparta.team14project.entity.UserRoleEnum;
 import com.sparta.team14project.repository.MenuRepository;
-import com.sparta.team14project.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,14 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MenuService {
     private final MenuRepository menuRepository;
-    private final StoreRepository storeRepository;
 
     public MenuResponseDto createMenu(MenuRequestDto requestDto, User user){
         Menu menu = new Menu();
-        Store store = storeRepository.findStoreByUser(user);
 
         if(user.getUserRole().equals(UserRoleEnum.OWNER)){
-            menu = menuRepository.save(new Menu(requestDto, store));
+            menu = menuRepository.save(new Menu(requestDto, user.getStore()));
         }
         return new MenuResponseDto(menu);
     }

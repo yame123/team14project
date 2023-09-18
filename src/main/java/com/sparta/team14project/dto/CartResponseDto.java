@@ -4,23 +4,22 @@ import com.sparta.team14project.entity.AddedMenu;
 import com.sparta.team14project.entity.Cart;
 import com.sparta.team14project.entity.Store;
 import com.sparta.team14project.entity.User;
-import lombok.Getter;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+
 public class CartResponseDto {
     private Long id;
 
-    private String username;
+    private User user;
 
-    private List<AddedMenuResponseDto> addedMenuList = new ArrayList<>();
+    private Store store;
+    private List<AddedMenuResponseDto> addedMenuList;
 
     public CartResponseDto(Cart cart) {
-        this.id = cart.getId();
-        this.username = cart.getUser().getUsername();
+        this.user = cart.getUser();
+        this.store = cart.getStore();
         for (AddedMenu am:cart.getAddedMenuList()){
             this.addedMenuList.add(new AddedMenuResponseDto(am));
         }

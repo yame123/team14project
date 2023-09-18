@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,8 +32,15 @@ public class User {
     @Column(name = "userPoint")
     private Long userPoint;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Delivery> deliveryList = new ArrayList<>();
+    @OneToOne(mappedBy = "user",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Cart cart;
+
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Delivery> deliveryList;
+
+    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Store store;
 
     public User(String username, String password, String email, UserRoleEnum userRole, Long userPoint) {
         this.username = username;

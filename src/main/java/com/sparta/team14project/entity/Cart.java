@@ -5,39 +5,37 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "cart")
+@Setter
 @NoArgsConstructor
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToMany(mappedBy = "cart")
-    private List<AddedMenu> addedMenuList = new ArrayList<>();
+    @OneToMany(mappedBy = "cart",cascade = {CascadeType.PERSIST},orphanRemoval = true )
+    private List<AddedMenu> addedMenuList;
 
     public Cart(User user) {
         this.user = user;
     }
 
     public void resetCart(){
+        this.store = null;
         this.addedMenuList.removeAll(this.addedMenuList);
     }
 
-    public void updateCart(Store store) {
-        this.store = store;
-    }
+
 
 }
