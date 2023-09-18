@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j(topic = "로그인 및 JWT 생성")
-//authfilter,loggingfilter 대신 편리하게 사용
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtil jwtUtil;
 
@@ -48,8 +47,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     )
             );
         } catch (IOException e) {
-            log.error("예외 발생: ", e);
-            throw new RuntimeException("요청 처리 중 오류가 발생했습니다.");
+            log.error("예외 발생: ", e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 

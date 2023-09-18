@@ -1,5 +1,6 @@
 package com.sparta.team14project.entity;
 
+import com.sparta.team14project.dto.OrderRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,11 @@ public class Delivery {
 
     @Column(name= "address",nullable = false)
     private String address;
+
+    public Delivery(OrderRequestDto requestDto, User user) {
+        this.user = user;
+        this.address = requestDto.getAddress();
+    }
 
 
     public void addMenu(OrderedMenu orderedMenu) {

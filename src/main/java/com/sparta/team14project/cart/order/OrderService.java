@@ -6,6 +6,8 @@ import com.sparta.team14project.dto.CartResponseDto;
 import com.sparta.team14project.dto.OrderRequestDto;
 import com.sparta.team14project.entity.*;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +21,14 @@ public class OrderService {
     private final MenuRepository menuRepository;
     private final AddedMenuRepository addedMenuRepository;
     private final CartRepository cartRepository;
+    private final OrderedMenuRepository orderedMenuRepository;
+    private final StoreRepository storeRepository;
+
 
     public CartResponseDto getCart(User user) {
-        Cart cart = findCartById(user.getId());
-        return new CartResponseDto(cart);
+        Cart cart = findCartById(user.getCart().getId());
+        CartResponseDto responseDto = new CartResponseDto(cart);
+        return responseDto;
     }
 
 
@@ -30,19 +36,32 @@ public class OrderService {
 
     @Transactional
     public CartResponseDto addMenu(Long menuId, User user) {
-
-        List<AddedMenu> addedMenuList = user.getCart().getAddedMenuList();
+        Long cartId = user.getCart().getId();
+        AddedMenu addedMenu = addedMenuRepository.findByCartIdAndMenuId(cartId, menuId);
         Menu menu = findMenuById(menuId);
-        AddedMenu check = null;
-        for(AddedMenu am:addedMenuList){
-            if (am.getMenu().getId()==menu.getId()){
-                check = am;
-                break;
+        Cart cart = findCartById(cartId);
+        if(cart.getStore()==null){
+            cart.setStore(findStoreById(menu.getStore().getId()));
+            if (addedMenu == null) {
+                addedMenu = new AddedMenu(menu, cart);
+                addedMenuRepository.save(addedMenu);
+            }
+            else {
+                addedMenu.updateAddedMenu();
+            }
+            //cart에 store 저장
+        } else if(cart.getStore().getId()==menu.getStore().getId()){
+            if (addedMenu == null) {
+                addedMenu = new AddedMenu(menu, cart);
+                addedMenuRepository.save(addedMenu);
+            }
+            else {
+                addedMenu.updateAddedMenu();
             }
         }
-        if(check!=null) check.setCount(check.getCount()+1);
-        else addedMenuList.add(new AddedMenu(menu,1));
-        return new CartResponseDto(user.getCart());
+        else throw new IllegalArgumentException("다른 가게의 메뉴는 담을 수 없습니다.");
+        CartResponseDto responseDto = new CartResponseDto(cart);
+        return responseDto;
     }
 
     @Transactional
@@ -63,17 +82,24 @@ public class OrderService {
                 check.setCount(check.getCount() - 1);
             }
         } else throw new NullPointerException("장바구니에 없는 메뉴입니다.");
+        if (user.getCart().getAddedMenuList().isEmpty()){
+            user.getCart().setStore(null);
+        }
         return new CartResponseDto(user.getCart());
     }
 
     @Transactional
     public OrderResponseDto orderMenu(OrderRequestDto requestDto, User user) {
         Cart cart = user.getCart();
-        Delivery delivery = new Delivery();
+        Delivery delivery = new Delivery(requestDto,user);
+
         int money = 0;
         for(AddedMenu am: cart.getAddedMenuList()){
             money+= am.getMenu().getPrice();
-            delivery.addMenu(new OrderedMenu(am));
+            OrderedMenu orderedMenu = new OrderedMenu(am,delivery);
+            orderedMenuRepository.save(orderedMenu);
+            delivery.addMenu(orderedMenu);
+
         }
         if (user.getUserPoint()<money) throw new IllegalArgumentException("잔액이 부족합니다.");
         user.pay(money);
@@ -89,6 +115,13 @@ public class OrderService {
     private Cart findCartById(Long id) {
         return cartRepository.findById(id).orElseThrow(()->new NullPointerException("카트 정보를 찾을 수 없습니다."));
     }
+    private Store findStoreById(Long id) {
+        return storeRepository.findById(id).orElseThrow(()->new NullPointerException("가게 정보를 찾을 수 없습니다."));
+    }
 
 
+    public CartResponseDto getOneCart(Long cartId, User user) {
+        Cart cart = findCartById(cartId);
+        return new CartResponseDto(cart);
+    }
 }

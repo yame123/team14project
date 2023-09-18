@@ -2,26 +2,26 @@ package com.sparta.team14project.dto;
 
 import com.sparta.team14project.entity.AddedMenu;
 import com.sparta.team14project.entity.Cart;
-import com.sparta.team14project.entity.Store;
-import com.sparta.team14project.entity.User;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class CartResponseDto {
     private Long id;
 
-    private User user;
+    private String username;
 
-    private Store store;
-    private List<AddedMenuResponseDto> addedMenuList;
+    private String storename;
+    private List<AddedMenuResponseDto> addedMenuList = new ArrayList<>();
 
     public CartResponseDto(Cart cart) {
-        this.user = cart.getUser();
-        this.store = cart.getStore();
+        this.id = cart.getId();
+        this.username = cart.getUser().getUsername();
+        this.storename = cart.getStore()==null?null:cart.getStore().getStoreName();
         for (AddedMenu am:cart.getAddedMenuList()){
-            this.addedMenuList.add(new AddedMenuResponseDto(am));
+            AddedMenuResponseDto tmp = new AddedMenuResponseDto(am);
+            this.addedMenuList.add(tmp);
         }
     }
 }

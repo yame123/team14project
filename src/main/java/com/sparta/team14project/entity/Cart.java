@@ -1,5 +1,6 @@
 package com.sparta.team14project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,16 +17,16 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToMany(mappedBy = "cart",cascade = {CascadeType.PERSIST},orphanRemoval = true )
-    private List<AddedMenu> addedMenuList;
+    @OneToMany(mappedBy = "cart",cascade = {CascadeType.PERSIST, CascadeType.REMOVE},orphanRemoval = true,fetch=FetchType.EAGER)
+    private List<AddedMenu> addedMenuList ;
 
     public Cart(User user) {
         this.user = user;
@@ -35,7 +36,4 @@ public class Cart {
         this.store = null;
         this.addedMenuList.removeAll(this.addedMenuList);
     }
-
-
-
 }

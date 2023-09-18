@@ -7,12 +7,12 @@ import com.sparta.team14project.entity.Menu;
 public class AddedMenuResponseDto {
 
 
-    private Menu menu;
+    private String menuName;
 
     private int count;
 
     public AddedMenuResponseDto(AddedMenu addedMenu) {
-        this.menu = addedMenu.getMenu();
+        this.menuName = addedMenu.getMenu().getName();
         this.count = addedMenu.getCount();
     }
 }

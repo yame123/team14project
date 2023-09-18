@@ -3,10 +3,12 @@ package com.sparta.team14project.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class OrderedMenu {
     @Id
@@ -23,8 +25,9 @@ public class OrderedMenu {
 
     private int count;
 
-    public OrderedMenu(AddedMenu am) {
+    public OrderedMenu(AddedMenu am, Delivery delivery) {
         this.menu = am.getMenu();
         this.count = am.getCount();
+        this.delivery = delivery;
     }
 }

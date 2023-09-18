@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -34,6 +37,9 @@ public class Store {
     @OneToOne // cascade는 직접 지우면 사라지지 않지만 orphanRemoval은 사라진다.
     @JoinColumn(name = "owner_id")
     private User user;
+
+//    @OneToMany(mappedBy = "store", orphanRemoval = true)
+//    private List<Menu> menuList = new ArrayList<>();
 
     public Store(StoreRequestDto requestDto, User user){
         this.storeName = requestDto.getStoreName();
