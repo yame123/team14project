@@ -59,21 +59,30 @@ public class OrderService {
 
     @Transactional
     public OrderResponseDto orderMenu(OrderRequestDto requestDto, Long userId) {
+        int showCount = 1;
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         User user = findUserById(userId);
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         Cart cart = findCartByUser(user);
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         Store store = cart.getStore();
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         Delivery delivery = new Delivery(requestDto, user, store);
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         int money = 0;
         for(AddedMenu am: cart.getAddedMenuList()){
+            System.out.println("$$$$$$$$$$  " + "돈넣기" + "  &&&&&&&&&&&&&&&");
             money += am.getMenu().getPrice() * am.getCount();
+            System.out.println("$$$$$$$$$$  " + "orderMenu생성" + "  &&&&&&&&&&&&&&&");
             OrderedMenu orderedMenu = new OrderedMenu(am,delivery);
+            System.out.println("$$$$$$$$$$  " + "orderMenu dilivery에 추가" + "  &&&&&&&&&&&&&&&");
             delivery.addMenu(orderedMenu);
         }
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         if (user.getUserPoint() < money) throw new IllegalArgumentException("잔액이 부족합니다.");
         orderedMenuRepository.saveAll(delivery.getOrderedMenuList());//계산하고 집어넣기
         user.pay(money);
 //        addedMenuRepository.deleteAll(cart.getAddedMenuList());
-
         Delivery savedDelivery = orderRepository.save(delivery);
         return new OrderResponseDto(savedDelivery);
     }

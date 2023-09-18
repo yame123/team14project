@@ -3,10 +3,12 @@ package com.sparta.team14project.dto;
 
 import com.sparta.team14project.entity.Delivery;
 import com.sparta.team14project.entity.OrderedMenu;
+import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class OrderResponseDto {
 
     private long id;
