@@ -28,28 +28,19 @@ public class OrderService {
 
     @Transactional
     public CartResponseDto addMenu(Long menuId, Long userId) {
-        int showhiber = 1;
-        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
         User user = findUserById(userId);
-        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
         Cart cart = findCartByUser(user);
-        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
         Menu menu = findMenuById(menuId);
-        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
         AddedMenu addedMenu = findAddedMenuByCartAndMenu(cart, menu);
-        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
         Store store = menu.getStore();
         cart.updateCart(store);
-
         if (addedMenu == null) {
             addedMenu = new AddedMenu(menu, cart);
             addedMenuRepository.save(addedMenu);
         }
         else {
-            System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
             addedMenu.updateAddedMenu();
         }
-        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber);
         return new CartResponseDto(cart);
     }
 
@@ -67,24 +58,33 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponseDto orderMenu(OrderRequestDto requestDto, User user) {
+    public OrderResponseDto orderMenu(OrderRequestDto requestDto, Long userId) {
+        int showCount = 1;
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
+        User user = findUserById(userId);
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         Cart cart = findCartByUser(user);
-        Delivery delivery = new Delivery(requestDto,user);
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
+        Store store = cart.getStore();
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
+        Delivery delivery = new Delivery(requestDto, user, store);
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         int money = 0;
         for(AddedMenu am: cart.getAddedMenuList()){
-            money+= am.getMenu().getPrice();
+            System.out.println("$$$$$$$$$$  " + "돈넣기" + "  &&&&&&&&&&&&&&&");
+            money += am.getMenu().getPrice() * am.getCount();
+            System.out.println("$$$$$$$$$$  " + "orderMenu생성" + "  &&&&&&&&&&&&&&&");
             OrderedMenu orderedMenu = new OrderedMenu(am,delivery);
+            System.out.println("$$$$$$$$$$  " + "orderMenu dilivery에 추가" + "  &&&&&&&&&&&&&&&");
             delivery.addMenu(orderedMenu);
         }
-        if (user.getUserPoint()<money) throw new IllegalArgumentException("잔액이 부족합니다.");
+        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
+        if (user.getUserPoint() < money) throw new IllegalArgumentException("잔액이 부족합니다.");
         orderedMenuRepository.saveAll(delivery.getOrderedMenuList());//계산하고 집어넣기
         user.pay(money);
-        addedMenuRepository.deleteAll(cart.getAddedMenuList());
-
+//        addedMenuRepository.deleteAll(cart.getAddedMenuList());
         Delivery savedDelivery = orderRepository.save(delivery);
         return new OrderResponseDto(savedDelivery);
-
-
     }
 
     private Menu findMenuById(Long id){
@@ -98,7 +98,7 @@ public class OrderService {
 
     private User findUserById(Long id) {
         User user = userRepository.findById(id).orElse(null);
-//        user.getDeliveryList().forEach(delivery -> delivery.getId());
+        user.getDeliveryList().forEach(delivery -> delivery.getId());
         return user;
     }
 

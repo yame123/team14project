@@ -15,7 +15,7 @@ public class AddedMenu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cartId")
     private Cart cart;
 

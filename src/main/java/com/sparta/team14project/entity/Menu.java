@@ -18,7 +18,7 @@ public class Menu {
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "price", nullable = false)
-    private long price;
+    private int price;
     @Column(name = "details", nullable = false)
     private String details;
 

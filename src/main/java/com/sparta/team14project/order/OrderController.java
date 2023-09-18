@@ -33,6 +33,6 @@ public class OrderController {
 
     @PostMapping("/order")
     public OrderResponseDto orderMenu(@RequestBody OrderRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return orderService.orderMenu(requestDto,userDetails.getUser());
+        return orderService.orderMenu(requestDto,userDetails.getUser().getId());
     }
 }

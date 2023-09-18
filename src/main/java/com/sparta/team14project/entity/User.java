@@ -45,6 +45,6 @@ public class User {
     }
 
     public void pay(int money) {
-        this.userPoint -=money;
+        this.userPoint -= money;
     }
 }
