@@ -31,7 +31,7 @@ public class Delivery {
     @OneToMany(mappedBy = "delivery", orphanRemoval = true)
     private List<OrderedMenu> orderedMenuList=new ArrayList<>();
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "delivered", nullable = false)
     private boolean delivered;
 
     @Column(name= "address",nullable = false)
