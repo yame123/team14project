@@ -58,27 +58,23 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponseDto orderMenu(OrderRequestDto requestDto, Long userId) {
-        int showCount = 1;
-        User user = findUserById(userId);
+
+    public OrderResponseDto orderMenu(OrderRequestDto requestDto, Long id) {
+        User user = findUserById(id);
         Cart cart = findCartByUser(user);
         Store store = cart.getStore();
-        Delivery delivery = new Delivery(requestDto, user, store);
-        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
+        Delivery delivery = new Delivery(requestDto,user,store);
         int money = 0;
         for(AddedMenu am: cart.getAddedMenuList()){
-            System.out.println("$$$$$$$$$$  " + "돈넣기" + "  &&&&&&&&&&&&&&&");
-            money += am.getMenu().getPrice() * am.getCount();
-            System.out.println("$$$$$$$$$$  " + "orderMenu생성" + "  &&&&&&&&&&&&&&&");
+            money+= am.getMenu().getPrice() * am.getCount();
             OrderedMenu orderedMenu = new OrderedMenu(am,delivery);
-            System.out.println("$$$$$$$$$$  " + "orderMenu dilivery에 추가" + "  &&&&&&&&&&&&&&&");
             delivery.addMenu(orderedMenu);
         }
-        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
-        if (user.getUserPoint() < money) throw new IllegalArgumentException("잔액이 부족합니다.");
+        if (user.getUserPoint()<money) throw new IllegalArgumentException("잔액이 부족합니다.");
         orderedMenuRepository.saveAll(delivery.getOrderedMenuList());//계산하고 집어넣기
+        user = findUserById(user.getId());
         user.pay(money);
-
+      
         addedMenuRepository.deleteAll(cart.getAddedMenuList());
         Delivery savedDelivery = orderRepository.save(delivery);
         return new OrderResponseDto(savedDelivery);
