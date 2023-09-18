@@ -58,6 +58,7 @@ public class OrderService {
     }
 
     @Transactional
+
     public OrderResponseDto orderMenu(OrderRequestDto requestDto, Long id) {
         User user = findUserById(id);
         Cart cart = findCartByUser(user);
@@ -73,6 +74,7 @@ public class OrderService {
         orderedMenuRepository.saveAll(delivery.getOrderedMenuList());//계산하고 집어넣기
         user = findUserById(user.getId());
         user.pay(money);
+      
         addedMenuRepository.deleteAll(cart.getAddedMenuList());
         Delivery savedDelivery = orderRepository.save(delivery);
         return new OrderResponseDto(savedDelivery);
@@ -89,13 +91,11 @@ public class OrderService {
 
     private User findUserById(Long id) {
         User user = userRepository.findById(id).orElse(null);
-//        user.getDeliveryList().forEach(delivery -> delivery.getId());
         return user;
     }
 
     private AddedMenu findAddedMenuByCartAndMenu(Cart cart, Menu menu) {
         return addedMenuRepository.findAddedMenuByCartAndMenu(cart,menu);
-//        user.getDeliveryList().forEach(delivery -> delivery.getId());
     }
 
 

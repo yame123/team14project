@@ -37,7 +37,6 @@ public class Delivery {
     @Column(name= "address",nullable = false)
     private String address;
 
-
     public void addMenu(OrderedMenu orderedMenu) {
         this.orderedMenuList.add(orderedMenu);
     }
@@ -46,5 +45,9 @@ public class Delivery {
         this.user = user;
         this.address = requestDto.getAddress();
         this.store = store;
+    }
+
+    public void deliveryDone() {
+        this.delivered = true;
     }
 }
