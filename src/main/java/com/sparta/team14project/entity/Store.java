@@ -33,7 +33,7 @@ public class Store {
     private Float avgStar = 0f;
     // storePoint (Long)
     @Column(name = "storePoint", nullable = false)
-    private Long storePoint = 0l;
+    private int storePoint = 0;
 
     @OneToMany(mappedBy = "store", orphanRemoval = true)
     private List<Menu> menuList = new ArrayList<>();
@@ -54,5 +54,10 @@ public class Store {
         this.storeName = requestDto.getStoreName();
         this.storeDetails = requestDto.getStoreDetails();
         this.storeAddress = requestDto.getStoreAddress();
+    }
+
+
+    public void earnPoint(int price) {
+        this.storePoint += price;
     }
 }

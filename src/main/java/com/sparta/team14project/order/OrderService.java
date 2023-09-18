@@ -74,7 +74,7 @@ public class OrderService {
         orderedMenuRepository.saveAll(delivery.getOrderedMenuList());//계산하고 집어넣기
         user = findUserById(user.getId());
         user.pay(money);
-      
+        delivery.setPrice(money);
         addedMenuRepository.deleteAll(cart.getAddedMenuList());
         Delivery savedDelivery = orderRepository.save(delivery);
         return new OrderResponseDto(savedDelivery);

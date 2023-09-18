@@ -37,6 +37,9 @@ public class Delivery {
     @Column(name= "address",nullable = false)
     private String address;
 
+    @Column(name = "price")
+    private int price=0;
+
     public void addMenu(OrderedMenu orderedMenu) {
         this.orderedMenuList.add(orderedMenu);
     }
@@ -49,5 +52,8 @@ public class Delivery {
 
     public void deliveryDone() {
         this.delivered = true;
+        this.store.earnPoint(this.price);
     }
+
+
 }

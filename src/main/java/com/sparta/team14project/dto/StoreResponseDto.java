@@ -12,7 +12,7 @@ public class StoreResponseDto {
     private String storeDetails;
     private String storeAddress;
     private Float avgStar;
-    private Long storePoint;
+    private int storePoint;
 
     public StoreResponseDto(Store store){
         this.id = store.getId();
