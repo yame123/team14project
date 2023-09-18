@@ -8,15 +8,12 @@ import lombok.Getter;
 @Getter
 public class AddedMenuResponseDto {
 
-
-    private Menu menu;
+    private MenuResponseDto menuResponseDto;
 
     private int count;
 
     public AddedMenuResponseDto(AddedMenu addedMenu) {
-        System.out.println("$$$$$$$$$$$$$ AddedMenuResponseDto getMenu() $$$$$$$$$$$$$");
-        this.menu = addedMenu.getMenu();
-        System.out.println("$$$$$$$$$$$$$ AddedMenuResponseDto getCount() $$$$$$$$$$$$$");
+        this.menuResponseDto = new MenuResponseDto(addedMenu.getMenu());
         this.count = addedMenu.getCount();
     }
 }
