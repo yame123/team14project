@@ -60,13 +60,9 @@ public class OrderService {
     @Transactional
     public OrderResponseDto orderMenu(OrderRequestDto requestDto, Long userId) {
         int showCount = 1;
-        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         User user = findUserById(userId);
-        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         Cart cart = findCartByUser(user);
-        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         Store store = cart.getStore();
-        System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         Delivery delivery = new Delivery(requestDto, user, store);
         System.out.println("$$$$$$$$$$  " + showCount++ + "  &&&&&&&&&&&&&&&");
         int money = 0;
@@ -82,7 +78,8 @@ public class OrderService {
         if (user.getUserPoint() < money) throw new IllegalArgumentException("잔액이 부족합니다.");
         orderedMenuRepository.saveAll(delivery.getOrderedMenuList());//계산하고 집어넣기
         user.pay(money);
-//        addedMenuRepository.deleteAll(cart.getAddedMenuList());
+
+        addedMenuRepository.deleteAll(cart.getAddedMenuList());
         Delivery savedDelivery = orderRepository.save(delivery);
         return new OrderResponseDto(savedDelivery);
     }
@@ -98,13 +95,11 @@ public class OrderService {
 
     private User findUserById(Long id) {
         User user = userRepository.findById(id).orElse(null);
-        user.getDeliveryList().forEach(delivery -> delivery.getId());
         return user;
     }
 
     private AddedMenu findAddedMenuByCartAndMenu(Cart cart, Menu menu) {
         return addedMenuRepository.findAddedMenuByCartAndMenu(cart,menu);
-//        user.getDeliveryList().forEach(delivery -> delivery.getId());
     }
 
 

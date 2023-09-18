@@ -47,5 +47,10 @@ public class StoreController {
         return storeService.deleteStore(storeId, userDetails);
     }
 
+    @PutMapping("/delivery/{orderId}")
+    public MessageResponseDto deliveryDone(@PathVariable Long orderId) {
+        return storeService.deliveryDone(orderId);
+    }
+
 
 }

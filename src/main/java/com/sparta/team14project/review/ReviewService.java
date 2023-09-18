@@ -19,9 +19,9 @@ public class ReviewService {
     public ReviewResponseDto createReview(Long orderId, ReviewRequestDto requestDto, User user) {
         OrderReview review = new OrderReview(requestDto);
         Delivery delivery = findById(orderId);
-        if(!delivery.isDelivered()){
-            throw new IllegalArgumentException("완료된 배달에 대해서만 리뷰를 작성하실 수 있습니다.");
-        }
+//        if(!delivery.isDelivered()){
+//            throw new IllegalArgumentException("완료된 배달에 대해서만 리뷰를 작성하실 수 있습니다.");
+//        }
         review.setDelivery(delivery);
         reviewRepository.save(review);
 

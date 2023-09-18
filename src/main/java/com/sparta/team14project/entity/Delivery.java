@@ -31,12 +31,11 @@ public class Delivery {
     @OneToMany(mappedBy = "delivery", orphanRemoval = true)
     private List<OrderedMenu> orderedMenuList=new ArrayList<>();
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "delivered", nullable = false)
     private boolean delivered;
 
     @Column(name= "address",nullable = false)
     private String address;
-
 
     public void addMenu(OrderedMenu orderedMenu) {
         this.orderedMenuList.add(orderedMenu);
@@ -46,5 +45,9 @@ public class Delivery {
         this.user = user;
         this.address = requestDto.getAddress();
         this.store = store;
+    }
+
+    public void deliveryDone() {
+        this.delivered = true;
     }
 }

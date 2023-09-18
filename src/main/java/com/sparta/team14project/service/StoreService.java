@@ -3,8 +3,10 @@ package com.sparta.team14project.service;
 import com.sparta.team14project.dto.MessageResponseDto;
 import com.sparta.team14project.dto.StoreRequestDto;
 import com.sparta.team14project.dto.StoreResponseDto;
+import com.sparta.team14project.entity.Delivery;
 import com.sparta.team14project.entity.Store;
 import com.sparta.team14project.entity.User;
+import com.sparta.team14project.repository.DeliveryRepository;
 import com.sparta.team14project.repository.StoreRepository;
 import com.sparta.team14project.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.List;
 public class StoreService {
 
     private final StoreRepository storeRepository;
+    private final DeliveryRepository deliveryRepository;
 
     public StoreResponseDto createStore(StoreRequestDto requestDto, UserDetailsImpl userDetails) {
         if(userDetails.getUser().getUserRole().getAuthority().equals("ROLE_OWNER")){
@@ -77,5 +80,15 @@ public class StoreService {
             );
             return messageResponseDto;
         }
+    }
+
+    @Transactional
+    public MessageResponseDto deliveryDone(Long orderId) {
+        Delivery delivery = deliveryRepository.findById(orderId).orElseThrow(()->
+                new IllegalArgumentException("유효하지 않은 주문ID 입니다.")
+        );
+        Store store = delivery.getStore();
+        delivery.deliveryDone();
+        return new MessageResponseDto("배달이 완료되었습니다!", 200);
     }
 }
