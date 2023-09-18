@@ -83,11 +83,13 @@ public class StoreService {
     }
 
     @Transactional
-    public MessageResponseDto deliveryDone(Long orderId) {
+    public MessageResponseDto deliveryDone(Long orderId, User user) {
         Delivery delivery = deliveryRepository.findById(orderId).orElseThrow(()->
                 new IllegalArgumentException("유효하지 않은 주문ID 입니다.")
         );
         Store store = delivery.getStore();
+        if(store.getUser().getId() != user.getId())
+            throw new IllegalArgumentException("주문을 받은 가게의 주인만 배달 완료를 진행할 수 있습니다.");
         delivery.deliveryDone();
         return new MessageResponseDto("배달이 완료되었습니다!", 200);
     }

@@ -48,8 +48,8 @@ public class StoreController {
     }
 
     @PutMapping("/delivery/{orderId}")
-    public MessageResponseDto deliveryDone(@PathVariable Long orderId) {
-        return storeService.deliveryDone(orderId);
+    public MessageResponseDto deliveryDone(@PathVariable Long orderId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return storeService.deliveryDone(orderId, userDetails.getUser());
     }
 
 
