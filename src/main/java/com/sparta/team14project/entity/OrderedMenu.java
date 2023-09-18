@@ -23,8 +23,9 @@ public class OrderedMenu {
 
     private int count;
 
-    public OrderedMenu(AddedMenu am) {
+    public OrderedMenu(AddedMenu am, Delivery delivery) {
         this.menu = am.getMenu();
         this.count = am.getCount();
+        this.delivery = delivery;
     }
 }

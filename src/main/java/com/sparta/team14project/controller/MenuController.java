@@ -2,13 +2,10 @@ package com.sparta.team14project.controller;
 
 import com.sparta.team14project.dto.MenuRequestDto;
 import com.sparta.team14project.dto.MenuResponseDto;
-import com.sparta.team14project.entity.Menu;
-import com.sparta.team14project.repository.MenuRepository;
 import com.sparta.team14project.security.UserDetailsImpl;
 import com.sparta.team14project.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

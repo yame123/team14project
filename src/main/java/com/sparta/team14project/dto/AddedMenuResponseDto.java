@@ -2,17 +2,17 @@ package com.sparta.team14project.dto;
 
 
 import com.sparta.team14project.entity.AddedMenu;
-import com.sparta.team14project.entity.Menu;
+import lombok.Getter;
 
+@Getter
 public class AddedMenuResponseDto {
 
-
-    private Menu menu;
+    private MenuResponseDto menuResponseDto;
 
     private int count;
 
     public AddedMenuResponseDto(AddedMenu addedMenu) {
-        this.menu = addedMenu.getMenu();
+        this.menuResponseDto = new MenuResponseDto(addedMenu.getMenu());
         this.count = addedMenu.getCount();
     }
 }

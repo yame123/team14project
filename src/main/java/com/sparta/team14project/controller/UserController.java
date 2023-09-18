@@ -1,13 +1,16 @@
 package com.sparta.team14project.controller;
 
 import com.sparta.team14project.dto.EmailRequestDto;
-import com.sparta.team14project.dto.SignupRequestDto;
 import com.sparta.team14project.dto.MessageResponseDto;
+import com.sparta.team14project.dto.SignupRequestDto;
 import com.sparta.team14project.service.EmailService;
 import com.sparta.team14project.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor

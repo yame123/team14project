@@ -3,7 +3,6 @@ package com.sparta.team14project.service;
 import com.sparta.team14project.entity.SignupCode;
 import com.sparta.team14project.repository.SignupCodeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
