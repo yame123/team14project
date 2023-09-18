@@ -42,8 +42,9 @@ public class Delivery {
         this.orderedMenuList.add(orderedMenu);
     }
 
-    public Delivery(OrderRequestDto requestDto, User user) {
+    public Delivery(OrderRequestDto requestDto, User user, Store store) {
         this.user = user;
         this.address = requestDto.getAddress();
+        this.store = store;
     }
 }
