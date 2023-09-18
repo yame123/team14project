@@ -31,7 +31,7 @@ public class SignupCode {
         this.code = code;
         this.email = email;
         this.creationTime = LocalDateTime.now();
-        this.expirationTime = this.creationTime.plusMinutes(1);
+        this.expirationTime = this.creationTime.plusMinutes(5);
     }
 
     public void update(String code) {

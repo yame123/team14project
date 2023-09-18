@@ -62,9 +62,7 @@ public class WebSecurityConfig {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/api/user/**").permitAll() // '/api/auth/'로 시작하는 요청 모두 접근 허가
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
-                // 업장 정보 수정/삭제
-//                        .requestMatchers(HttpMethod.PUT, "/api/store/{storeId}").hasAuthority("ROLE_OWNER")
-//                        .requestMatchers(HttpMethod.DELETE, "/api/store/{storeId}").hasAuthority("ROLE_OWNER")
+
 
         );
 

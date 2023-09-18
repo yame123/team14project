@@ -19,35 +19,45 @@ public class OrderService {
     private final MenuRepository menuRepository;
     private final AddedMenuRepository addedMenuRepository;
     private final CartRepository cartRepository;
+    private final UserRepository userRepository;
 
     public CartResponseDto getCart(User user) {
         Cart cart = findCartById(user.getId());
         return new CartResponseDto(cart);
     }
 
-
-
-
     @Transactional
-    public CartResponseDto addMenu(Long menuId, User user) {
-
-        List<AddedMenu> addedMenuList = user.getCart().getAddedMenuList();
+    public CartResponseDto addMenu(Long menuId, Long userId) {
+        int showhiber = 1;
+        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
+        User user = findUserById(userId);
+        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
+        Cart cart = cartRepository.findCartByUser(user);
+        Long cartId = cart.getId();
+        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
         Menu menu = findMenuById(menuId);
-        AddedMenu check = null;
-        for(AddedMenu am:addedMenuList){
-            if (am.getMenu().getId()==menu.getId()){
-                check = am;
-                break;
-            }
+        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
+        AddedMenu addedMenu = addedMenuRepository.findByCartIdAndMenuId(cartId, menuId);
+        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
+        Store store = menu.getStore();
+        cart.updateCart(store);
+
+        if (addedMenu == null) {
+            addedMenu = new AddedMenu(menu, cart);
+            addedMenuRepository.save(addedMenu);
         }
-        if(check!=null) check.setCount(check.getCount()+1);
-        else addedMenuList.add(new AddedMenu(menu,1));
-        return new CartResponseDto(user.getCart());
+        else {
+            System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber++);
+            addedMenu.updateAddedMenu();
+        }
+        System.out.println("$$$$$$$$$$$보여주기$$$$$$$$$   " + showhiber);
+        return new CartResponseDto(cart);
     }
 
     @Transactional
     public CartResponseDto deleteMenu(Long menuId,User user) {
-        List<AddedMenu> addedMenuList = user.getCart().getAddedMenuList();
+        Cart cart = cartRepository.findCartByUser(user);
+        List<AddedMenu> addedMenuList = cart.getAddedMenuList();
         Menu menu = findMenuById(menuId);
         AddedMenu check = null;
         for(AddedMenu am:addedMenuList){
@@ -57,18 +67,14 @@ public class OrderService {
             }
         }
         if(check!=null) {
-            if (check.getCount() == 1) {
-                addedMenuRepository.delete(check);
-            } else {
-                check.setCount(check.getCount() - 1);
-            }
+            addedMenuRepository.delete(check);
         } else throw new NullPointerException("장바구니에 없는 메뉴입니다.");
-        return new CartResponseDto(user.getCart());
+        return new CartResponseDto(cart);
     }
 
     @Transactional
     public OrderResponseDto orderMenu(OrderRequestDto requestDto, User user) {
-        Cart cart = user.getCart();
+        Cart cart = cartRepository.findCartByUser(user);
         Delivery delivery = new Delivery();
         int money = 0;
         for(AddedMenu am: cart.getAddedMenuList()){
@@ -88,6 +94,12 @@ public class OrderService {
     }
     private Cart findCartById(Long id) {
         return cartRepository.findById(id).orElseThrow(()->new NullPointerException("카트 정보를 찾을 수 없습니다."));
+    }
+
+    private User findUserById(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+//        user.getDeliveryList().forEach(delivery -> delivery.getId());
+        return user;
     }
 
 

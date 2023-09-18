@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
+@Table(name = "added_menu")
 @NoArgsConstructor
 public class AddedMenu {
 
@@ -17,19 +17,24 @@ public class AddedMenu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
+    @ManyToOne
+    @JoinColumn(name = "cartId")
     private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id")
+    @JoinColumn(name = "menuId")
     private Menu menu;
 
     private int count;
 
 
-    public AddedMenu(Menu menu, int count) {
+    public AddedMenu(Menu menu, Cart cart) {
         this.menu = menu;
-        this.count = count;
+        this.cart = cart;
+        this.count = 1;
+    }
+
+    public void updateAddedMenu() {
+        this.count += 1;
     }
 }

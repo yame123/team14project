@@ -23,7 +23,7 @@ public class OrderController {
 
     @PostMapping("/cart/{menuId}")
     public CartResponseDto addMenu(@PathVariable Long menuId,@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return orderService.addMenu(menuId,userDetails.getUser());
+        return orderService.addMenu(menuId,userDetails.getUser().getId());
     }//유저 정보 받는 방식 입력
 
     @DeleteMapping("/cart/{menuId}")

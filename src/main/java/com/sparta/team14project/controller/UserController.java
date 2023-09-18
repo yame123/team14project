@@ -18,7 +18,7 @@ public class UserController {
     //회원가입 구현
     @PostMapping("/user/signup")
     public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
-        emailService.checkCode(signupRequestDto.getEmail(), signupRequestDto.getCode());
+        //emailService.checkCode(signupRequestDto.getEmail(), signupRequestDto.getCode());
         return userService.signup(signupRequestDto);
     }
 

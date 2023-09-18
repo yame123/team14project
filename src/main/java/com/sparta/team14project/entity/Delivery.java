@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Table(name = "delivery")
 @NoArgsConstructor
 public class Delivery {
     @Id
@@ -25,7 +26,7 @@ public class Delivery {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToMany(mappedBy = "delivery",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "delivery", orphanRemoval = true)
     private List<OrderedMenu> orderedMenuList;
 
     @Column(name = "username", nullable = false)
