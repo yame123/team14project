@@ -41,7 +41,7 @@ public class MenuService {
         }
     }
 
-    // @Transactional 야메 판단 트랜잭셔널 빼도됨
+
     public MenuResponseDto deleteBoard(Long id, User user) {
         Menu menu = findMenu(id);
 
