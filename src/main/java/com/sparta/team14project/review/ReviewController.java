@@ -20,7 +20,7 @@ public class ReviewController {
     }
 
     @PutMapping("/review/{reviewId}")
-    public String updateReview(@PathVariable Long reviewId, @RequestBody ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ReviewResponseDto updateReview(@PathVariable Long reviewId, @RequestBody ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return reviewService.updateReview(reviewId,requestDto,userDetails.getUser());
     }
 }

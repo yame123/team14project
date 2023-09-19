@@ -9,4 +9,5 @@ import java.util.List;
 public interface StoreRepository extends JpaRepository<Store, Long>{
     List<Store> findAllByStoreNameContains(String Keyword);
     Store findStoreByUser(User user);
+    Store findStoreById(Long id);
 }

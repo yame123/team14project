@@ -23,14 +23,13 @@ public class MenuController {
     // 메뉴 수정
     @PutMapping("/menu/{id}")       // menuId
     public MenuResponseDto updateMenu(@PathVariable Long id,
-                                      @RequestBody MenuRequestDto requestDto,
-                                      @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return menuService.updateMenu(id, requestDto, userDetails.getUser());
+                                      @RequestBody MenuRequestDto requestDto){
+        return menuService.updateMenu(id, requestDto);
     }
 
     // 메뉴 삭제
     @DeleteMapping("/menu/{id}")
-    public MenuResponseDto deleteBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return menuService.deleteBoard(id, userDetails.getUser());
+    public MenuResponseDto deleteMenu(@PathVariable Long id) {
+        return menuService.deleteBoard(id);
     }
 }

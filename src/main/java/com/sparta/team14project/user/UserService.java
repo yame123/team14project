@@ -45,7 +45,7 @@ public class UserService {
         //사용자 등록 =>입력한 이름과 암호화된 비밀번호 저장
         User user = new User(username, password, email, role, userPoint);
         userRepository.save(user);
-        Cart cart = new Cart (user);
+        Cart cart = new Cart (user); // user 생성 시 장바구니 동시 생성
         cartRepository.save(cart);
 
         MessageResponseDto messageResponseDto = new MessageResponseDto("회원가입 성공",200);

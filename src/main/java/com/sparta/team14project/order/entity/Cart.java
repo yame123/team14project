@@ -33,12 +33,18 @@ public class Cart {
         this.user = user;
     }
 
-    public void resetCart(){
-        this.addedMenuList.removeAll(this.addedMenuList);
+    public void resetStore(){
+        this.store = null;
     }
 
-    public void updateCart(Store store) {
+    public void updateStore(Store store) {
         this.store = store;
     }
+    public void addMenu(AddedMenu addedMenu){
+        this.addedMenuList.add(addedMenu);
+    }
 
+    public void removeMenu(AddedMenu addedMenu) {
+        this.addedMenuList.remove(addedMenu);
+    }
 }
