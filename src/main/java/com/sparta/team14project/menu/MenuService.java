@@ -19,38 +19,23 @@ public class MenuService {
     private final StoreRepository storeRepository;
 
     public MenuResponseDto createMenu(MenuRequestDto requestDto, User user) {
-        Menu menu = new Menu();
         Store store = storeRepository.findStoreByUser(user);
-
-        if (user.getUserRole().equals(UserRoleEnum.OWNER)) {
-            menu = menuRepository.save(new Menu(requestDto, store));
-        }
+        Menu menu = menuRepository.save(new Menu(requestDto, store));
         return new MenuResponseDto(menu);
     }
 
     // 메뉴 수정
     @Transactional
-    public MenuResponseDto updateMenu(Long id, MenuRequestDto requestDto, User user) {
+    public MenuResponseDto updateMenu(Long id, MenuRequestDto requestDto) {
         Menu menu = findMenu(id);
-
-        if (user.getUserRole().equals(UserRoleEnum.OWNER)) {
-            menu.update(requestDto);
-            return new MenuResponseDto(menu);
-        } else {
-            throw new IllegalArgumentException("메뉴 수정 권한이 없습니다.");
-        }
+        menu.update(requestDto);
+        return new MenuResponseDto(menu);
     }
 
-
-    public MenuResponseDto deleteBoard(Long id, User user) {
+    public MenuResponseDto deleteBoard(Long id) {
         Menu menu = findMenu(id);
-
-        if (user.getUserRole().equals(UserRoleEnum.OWNER)) {
-            menuRepository.delete(menu);
-            return new MenuResponseDto(menu);
-        } else {
-            throw new IllegalArgumentException("메뉴 삭제 실패하였습니다.");
-        }
+        menuRepository.delete(menu);
+        return new MenuResponseDto(menu);
     }
 
     // 메뉴 찾기
