@@ -28,7 +28,6 @@ public class OrderService {
     private final MenuRepository menuRepository;
     private final AddedMenuRepository addedMenuRepository;
     private final CartRepository cartRepository;
-    private final UserRepository userRepository;
     private final OrderedMenuRepository orderedMenuRepository;
 
 
@@ -38,8 +37,8 @@ public class OrderService {
     }
 
     @Transactional // 에디드매뉴 부르고 저장하는게 아니고 변경만 하는 코드가 있어서 지우면 안됨
-    public CartResponseDto addMenu(Long menuId, Long userId) {
-        User user = findUserById(userId); // user를 컨트롤러에서 불러온 것을 직접 쓰면 에러
+    public CartResponseDto addMenu(Long menuId, User user) {
+        // User user = findUserById(user);
         Cart cart = findCartByUser(user);
         Menu menu = findMenuById(menuId);
         Store store = menu.getStore();
@@ -64,7 +63,7 @@ public class OrderService {
 
     @Transactional
     public CartResponseDto deleteMenu(Long menuId,User user) {
-        Cart cart = findCartByUser(user); // 얘는 왜 또 그냥불렀는데 되냐
+        Cart cart = findCartByUser(user);
         Menu menu = findMenuById(menuId);
 
         AddedMenu addedMenu = findAddedMenuByCartAndMenu(cart,menu);
@@ -82,17 +81,19 @@ public class OrderService {
     }
 
     @Transactional
-
-    public OrderResponseDto orderMenu(OrderRequestDto requestDto, Long id) {
-        User user = findUserById(id);
-        Cart cart = findCartByUser(user); // 얜 또 이렇게햇네
+    public OrderResponseDto orderMenu(OrderRequestDto requestDto, User user) {
+        // User user = findUserById(id);
+        Cart cart = findCartByUser(user);
         Store store = cart.getStore();
+
+        if(cart.getAddedMenuList().isEmpty()){
+            throw new IllegalArgumentException("메뉴가 들어있지 않습니다.");
+        }
 
         Delivery delivery = new Delivery(requestDto,user,store);
         int money = 0;
 
         for(AddedMenu am: cart.getAddedMenuList()){
-
             money+= am.getMenu().getPrice() * am.getCount(); // 메뉴 가격 * 갯수로 지불금액 합산
             OrderedMenu orderedMenu = new OrderedMenu(am,delivery); // 담긴 메뉴를 주문할 메뉴로 변경
             delivery.addMenu(orderedMenu); // 주문 정보에 주문 메뉴 추가
@@ -113,12 +114,6 @@ public class OrderService {
     }
     private Cart findCartByUser(User user) {
         return cartRepository.findCartByUser(user);
-    }
-
-
-    private User findUserById(Long id) {
-        User user = userRepository.findById(id).orElse(null);
-        return user;
     }
 
     private AddedMenu findAddedMenuByCartAndMenu(Cart cart, Menu menu) {
