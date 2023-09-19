@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../static/css/style.css">
+    <script src="../../static/js/index.js"></script>
+
     <title>주문 현황</title>
 </head>
 <style>
@@ -12,7 +18,7 @@
 <body>
 <table align="center">
     <tr>
-        <td colspan="4" align="center" style="font-size: 30px;">주문 현황</td>
+        <td colspan="4" align="center" style="font-size: 30px;">주문 현황 페이지</td>
     </tr>
     <tr>
         <td align="left">국장님의 주문</td>
@@ -39,57 +45,26 @@
         <td align="right">X 2</td>
     </tr>
     <tr>
-        <td colspan="2"><button id="button1" class="button" onclick="cancelOrder()">취소</button></td>
-        <td colspan="2"><button id="button2" class="button" onclick="mergeButtons()">수락</button></td>
+        <td colspan="2">
+            <button id="button1" class="button" onclick="cancelOrder()">주문 취소</button>
+        </td>
+        <td colspan="2">
+            <button id="button2" class="button" onclick="mergeButtons()">주문 수락</button>
+        </td>
     </tr>
     <tr>
-        <td colspan="1"><button id="homeButton" class="button" style="display: none;" onclick="goHome()">뒤로 가기</button></td>
-        <td colspan="3" align="center"><div id="orderStatusText" style="display: none;">취소된 주문 입니다.</div></td>
+        <td colspan="1">
+            <button id="homeButton" class="button" style="display: none;" onclick="goHome()">뒤로 가기</button>
+        </td>
+        <td colspan="3" align="center">
+            <div id="orderStatusText" style="display: none;">취소된 주문 입니다.</div>
+        </td>
     </tr>
     <tr>
-        <td colspan="4"><button id="mergedButton" class="button" style="display: none;" onclick="completeOrder()">배달 완료</button></td>
+        <td colspan="4">
+            <button id="mergedButton" class="button" style="display: none;" onclick="completeOrder()">배달 완료</button>
+        </td>
     </tr>
 </table>
-<script>
-    function cancelOrder(){
-        const button1 = document.getElementById('button1');
-        const text = document.getElementById('orderStatusText');
-
-        if (button1.style.display !== 'none') {
-            button1.style.display = 'none';
-            button2.style.display = 'none';
-            homeButton.style.display = 'inline-block';
-            text.textContent = '취소된 주문 입니다.';
-            text.style.display = 'inline-block';
-        }
-    }
-    function mergeButtons() {
-        const button1 = document.getElementById('button1');
-        const button2 = document.getElementById('button2');
-        const mergedButton = document.getElementById('mergedButton');
-
-        if (button2.style.display !== 'none') {
-            button1.style.display = 'none';
-            button2.style.display = 'none';
-            mergedButton.style.display = 'inline-block';
-        }
-    }
-
-    function completeOrder(){
-        const mergedButton = document.getElementById('mergedButton');
-        const text = document.getElementById('orderStatusText');
-
-        if (mergedButton.style.display !== 'none') {
-            mergedButton.style.display = 'none';
-            homeButton.style.display = 'inline-block';
-            text.textContent = '배달 완료된 주문 입니다.';
-            text.style.display = 'inline-block';
-        }
-    }
-
-    function goHome(){
-        location.href="/";
-    }
-</script>
 </body>
 </html>

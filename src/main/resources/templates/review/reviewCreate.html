@@ -1,70 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>리뷰 생성</title>
-  <style>
-    .rating-stars {
-      display: flex;
-      justify-content: center;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../static/css/style.css">
+    <script src="../../static/js/index.js"></script>
 
-    .star {
-      font-size: 24px;
-      color: #ccc;
-      cursor: pointer;
-    }
-
-    .star.selected {
-      color: #ffcc00;
-    }
-  </style>
+    <title>리뷰 생성</title>
 </head>
 <body>
 <table align="center">
-  <tr>
-    <td align="center" style="font-size: 30px;">리뷰 생성</td>
-  </tr>
-  <tr>
-    <td>
-        <div class="rating-stars">
-          <span class="star" onclick="rateFood(1)">★</span>
-          <span class="star" onclick="rateFood(2)">★</span>
-          <span class="star" onclick="rateFood(3)">★</span>
-          <span class="star" onclick="rateFood(4)">★</span>
-          <span class="star" onclick="rateFood(5)">★</span>
-        </div>
-    </td>
+    <tr>
+        <td align="center" style="font-size: 30px;">리뷰 생성 페이지</td>
     </tr>
-  <tr>
-    <td align="center">메뉴 평가</td>
-  </tr>
-  <tr>
-    <td><input type="text" name="menuPrice" style="width:100%; height:50px;"></td>
-  </tr>
-  <tr>
-    <td align="center">
-      <button type="reset">취소</button>
-      <button type="submit">등록</button>
-    </td>
-  </tr>
+    <tr>
+        <td>
+            <div class="rating-stars">
+                <span class="star" onclick="rateMenu(1)">★</span>
+                <span class="star" onclick="rateMenu(2)">★</span>
+                <span class="star" onclick="rateMenu(3)">★</span>
+                <span class="star" onclick="rateMenu(4)">★</span>
+                <span class="star" onclick="rateMenu(5)">★</span>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">메뉴 평가</td>
+    </tr>
+    <tr>
+        <td><input type="text" name="menuPrice" style="width:100%; height:50px;"></td>
+    </tr>
+    <tr>
+        <td align="center">
+            <button type="reset" onclick="goHome()">취소</button>
+            <button type="submit">등록</button>
+        </td>
+    </tr>
 </table>
 
 <script>
-  let selectedRating = 0;
-
-  function rateFood(rating) {
-    selectedRating = rating;
-    const stars = document.querySelectorAll('.star');
-    stars.forEach((star, index) => {
-      if (index < rating) {
-        star.classList.add('selected');
-      } else {
-        star.classList.remove('selected');
-      }
-    });
-  }
+    // 평점 초기화
+    let selectedRating = 0;
 </script>
 </body>
 </html>

@@ -1,63 +1,46 @@
-html,body {
-    width:100%;
-}
-body,div,ul,li {
-    margin:0;
-    padding:0;
-}
-ul,li {
-    list-style:none;
+/* 상점 상세페이지 탭 관련 */
+.tab-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
-/*tab css*/
-.tab {
-    float:left;
-    width:600px;
-    height:290px;
+.tab-buttons {
+    display: flex;
 }
-.tabnav {
-    font-size:0;
-    width:600px;
-    border:1px solid #ddd;
+
+.tab-button {
+    flex: 1;
+    background-color: #f2f2f2;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-align: center;
 }
-.tabnav li {
-    display: inline-block;
-    height:46px;
-    text-align:center;
-    border-right:1px solid #ddd;
-}
-.tabnav li a:before {
-    content:"";
-    position:absolute;
-    left:0;
-    top:0px;
-    width:100%;
-    height:3px;
-}
-.tabnav li a.active:before {
-    background:#7ea21e;
-}
-.tabnav li a.active {
-    border-bottom:1px solid #fff;
-}
-.tabnav li a {
-    position:relative;
-    display:block;
-    background: #f8f8f8;
-    color: #000;
-    padding:0 30px;
-    line-height:46px;
-    text-decoration:none;
-    font-size:16px;
-}
-.tabnav li a:hover,
-.tabnav li a.active {
-    background:#fff;
-    color:#7ea21e;
-}
-.tabcontent {
+
+.tab-content {
+    display: none;
     padding: 20px;
-    height:244px;
-    border:1px solid #ddd;
-    border-top:none;
+    border: 1px solid #ccc;
+}
+
+/* 평점 별 관련 */
+.rating-stars {
+    display: flex;
+    justify-content: center;
+}
+
+.star {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.star.selected {
+    color: #ffcc00;
+}
+
+/* 주문 현황 버튼 관련 */
+.button {
+    width: 100%;
 }
