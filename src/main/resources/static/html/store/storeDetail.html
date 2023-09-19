@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../css/style.css" (type="text/css")>
+  <title>상점 상세 페이지</title>
+  <style>
+    /* CSS for horizontal tab layout */
+    .tab-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .tab-buttons {
+        display: flex;
+    }
+
+    .tab-button {
+        flex: 1;
+        background-color: #f2f2f2;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .tab-content {
+        display: none;
+        padding: 20px;
+        border: 1px solid #ccc;
+    }
+</style>
+</head>
+<body>
+  <table align="center">
+    <tr>
+      <td colspan="2"><img src="/images/store.jpg" name="menuPhoto"></td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center">⭐️⭐️⭐️⭐️⭐️</td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center" style="font-size: 30px;">닭발 조아</td>
+      </tr>
+  </table>
+  <script>
+    // JavaScript to handle tab switching
+    function openTab(tabName) {
+        var i, tabContent;
+
+        // Hide all tab content
+        tabContent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+        }
+
+        // Show the selected tab content
+        document.getElementById(tabName).style.display = "block";
+    }
+
+    // Display the default tab on page load
+    openTab("tab1");
+</script>
+<div class="tab-container">
+    <div class="tab-buttons">
+        <button class="tab-button" onclick="openTab('tab1')">메뉴</button>
+        <button class="tab-button" onclick="openTab('tab2')">매장 주소</button>
+    </div>
+
+    <div id="tab1" class="tab-content">
+        <table align="center">
+            <tr>
+            <td rowspan="2"><img src="/images/chickenfeet.jpg" name="menuPhoto" height="150px" width="150px"></td>
+            <td align="center" name="menuName">닭발</td>
+            <td align="center" name="menuPrice">5000</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center" name="menuDetail">세상에서 제일 맛있게 매운 닭발 입니다.</td>
+            </tr>
+            <tr>
+                <td rowspan="2"><img src="/images/chickenfeet.jpg" name="menuPhoto" height="150px" width="150px"></td>
+                <td align="center" name="menuName">닭발</td>
+                <td align="center" name="menuPrice">5000</td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center" name="menuDetail">세상에서 제일 맛있게 매운 닭발 입니다.</td>
+                </tr>
+                <tr>
+                    <td rowspan="2"><img src="/images/chickenfeet.jpg" name="menuPhoto" height="150px" width="150px"></td>
+                    <td align="center" name="menuName">닭발</td>
+                    <td align="center" name="menuPrice">5000</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center" name="menuDetail">세상에서 제일 맛있게 매운 닭발 입니다.</td>
+                    </tr>
+        </table>
+    </div>
+
+    <div id="tab2" class="tab-content">
+        <table align="center">
+            <td><img src="/images/map.jpg" align="center" name="storePhoto"></td>
+        </table>
+    </div>
+</div>
+</body>
+</html>
