@@ -29,6 +29,7 @@ public class OrderService {
     private final AddedMenuRepository addedMenuRepository;
     private final CartRepository cartRepository;
     private final OrderedMenuRepository orderedMenuRepository;
+    private final UserRepository userRepository;
 
 
     public CartResponseDto getCart(User user) {
@@ -80,9 +81,9 @@ public class OrderService {
         return new CartResponseDto(cart);
     }
 
-    @Transactional
+    @Transactional // 지불 시 유저 정보가 변경됨
     public OrderResponseDto orderMenu(OrderRequestDto requestDto, User user) {
-        // User user = findUserById(id);
+        user = findUserById(user.getId());
         Cart cart = findCartByUser(user);
         Store store = cart.getStore();
 
@@ -118,6 +119,11 @@ public class OrderService {
 
     private AddedMenu findAddedMenuByCartAndMenu(Cart cart, Menu menu) {
         return addedMenuRepository.findAddedMenuByCartAndMenu(cart,menu);
+    }
+
+    private User findUserById(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        return user;
     }
 
 
