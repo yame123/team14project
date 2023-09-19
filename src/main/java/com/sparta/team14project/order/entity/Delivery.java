@@ -58,4 +58,9 @@ public class Delivery {
     }
 
 
+    public void payAndSetPrice(int money) {
+        this.user.pay(money);
+        this.price = money;
+
+    }
 }

@@ -17,11 +17,13 @@ public class ReviewService {
     private final OrderReviewRepository reviewRepository;
     private final OrderRepository orderRepository;
     public ReviewResponseDto createReview(Long orderId, ReviewRequestDto requestDto, User user) {
+        Delivery delivery = findById(orderId); // 배달 찿기
+        if(!delivery.isDelivered()){ // 리뷰 유효성 검사
+            throw new IllegalArgumentException("완료된 배달에 대해서만 리뷰를 작성하실 수 있습니다.");
+        } else if(delivery.getUser().getId() != user.getId()){
+            throw new IllegalArgumentException("주문한 사람만 리뷰를 작성할 수 있습니다.");
+        }
         OrderReview review = new OrderReview(requestDto);
-        Delivery delivery = findById(orderId);
-//        if(!delivery.isDelivered()){
-//            throw new IllegalArgumentException("완료된 배달에 대해서만 리뷰를 작성하실 수 있습니다.");
-//        }
         review.setDelivery(delivery);
         reviewRepository.save(review);
 
@@ -29,12 +31,12 @@ public class ReviewService {
     }
 
     @Transactional
-    public String updateReview(Long reviewId, ReviewRequestDto requestDto, User user) {
-        OrderReview review = findReviewById(reviewId);
-        if(review.getDelivery().getUser().getId() != user.getId())
+    public ReviewResponseDto updateReview(Long reviewId, ReviewRequestDto requestDto, User user) {
+        OrderReview review = findReviewById(reviewId); // 리뷰 찾기
+        if(review.getDelivery().getUser().getId() != user.getId()) // 리뷰 수정 유효성 검사
             throw new IllegalArgumentException("수정 권한이 없는 사용자입니다.");
         review.update(requestDto);
-        return "{statusCode: 200, msg: “리뷰가 수정 되었습니다.”}";
+        return new ReviewResponseDto(review);
     }
 
     private Delivery findById(Long id){
