@@ -1,12 +1,12 @@
 package com.sparta.team14project.review;
 
-import com.sparta.team14project.dto.ReviewRequestDto;
-import com.sparta.team14project.dto.ReviewResponseDto;
-import com.sparta.team14project.entity.Delivery;
-import com.sparta.team14project.entity.OrderReview;
-import com.sparta.team14project.entity.User;
-import com.sparta.team14project.repository.OrderRepository;
-import com.sparta.team14project.repository.OrderReviewRepository;
+import com.sparta.team14project.order.entity.Delivery;
+import com.sparta.team14project.review.entity.OrderReview;
+import com.sparta.team14project.review.dto.ReviewRequestDto;
+import com.sparta.team14project.review.dto.ReviewResponseDto;
+import com.sparta.team14project.user.entity.User;
+import com.sparta.team14project.order.repository.OrderRepository;
+import com.sparta.team14project.order.repository.OrderReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
