@@ -1,42 +1,64 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>장바구니 페이지</title>
-  <script src="../js/index.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>장바구니 페이지</title>
+    <script src="../js/index.js"></script>
 </head>
 <body>
-  <table align="center">
+<table align="center">
     <tr>
-      <td colspan="3" align="center" style="font-size: 30px;">내 장바구니</td>
+        <td colspan="3" align="center" style="font-size: 30px;">내 장바구니</td>
     </tr>
     <tr>
         <td rowspan="2"><img src="/images/chickenfeet.jpg" name="menuPhoto" height="150px" width="150px"></td>
         <td align="center" name="menuName">닭발</td>
         <td align="center" name="menuPrice">5000</td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center" name="menuDetail">세상에서 제일 맛있게 매운 닭발 입니다.</td>
-        </tr>
-        <tr>
-            <td rowspan="2"><img src="/images/chickenfeet.jpg" name="menuPhoto" height="150px" width="150px"></td>
-            <td align="center" name="menuName">닭발</td>
-            <td align="center" name="menuPrice">5000</td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center" name="menuDetail">세상에서 제일 맛있게 매운 닭발 입니다.</td>
-            </tr>
-            <tr>
-                <td rowspan="2"><img src="/images/chickenfeet.jpg" name="menuPhoto" height="150px" width="150px"></td>
-                <td align="center" name="menuName">닭발</td>
-                <td align="center" name="menuPrice">5000</td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center" name="menuDetail">세상에서 제일 맛있게 매운 닭발 입니다.</td>
-                </tr>
-  </table>
+    </tr>
+    <tr>
+        <td align="right">
+            <input type='button' onclick='count("minus")' value='-'/>
+            <input type='button' onclick='count("plus")' value='+'/>
+            <div id='result'>0</div>
+        </td>
+    </tr>
+    <tr>
+        <td rowspan="2"><img src="/images/chickenfeet.jpg" name="menuPhoto" height="150px" width="150px"></td>
+        <td align="center" name="menuName">닭발</td>
+        <td align="center" name="menuPrice">5000</td>
+    </tr>
+    <tr>
+        <td align="right">
+            <input type='button' onclick='count("minus")' value='-'/>
+            <input type='button' onclick='count("plus")' value='+'/>
+            <div id='result'>0</div>
+        </td>
+    </tr>
+    <tr>
+        <td rowspan="2"><img src="/images/chickenfeet.jpg" name="menuPhoto" height="150px" width="150px"></td>
+        <td align="center" name="menuName">닭발</td>
+        <td align="center" name="menuPrice">5000</td>
+    </tr>
+    <tr>
+        <td align="right">
+            <input type='button' onclick='count("minus")' value='-'/>
+            <input type='button' onclick='count("plus")' value='+'/>
+            <div id='result'>0</div>
+        </td>
+    </tr>
+    <tr>
+        <td align="left">합계 금액</td>
+        <td colspan="2" align="right">15000</td>
+    </tr>
+    <tr>
+        <td colspan="3" align="right">
+            <button type="rest">취소</button>
+            <button type="submit">주문하기</button>
+        </td>
+    </tr>
+</table>
 </body>
 </html>
