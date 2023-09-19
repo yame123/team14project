@@ -1,8 +1,8 @@
 package com.sparta.team14project.review;
 
-import com.sparta.team14project.dto.ReviewRequestDto;
-import com.sparta.team14project.dto.ReviewResponseDto;
-import com.sparta.team14project.security.UserDetailsImpl;
+import com.sparta.team14project.review.dto.ReviewRequestDto;
+import com.sparta.team14project.review.dto.ReviewResponseDto;
+import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
