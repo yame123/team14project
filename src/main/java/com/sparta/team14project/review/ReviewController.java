@@ -1,8 +1,8 @@
 package com.sparta.team14project.review;
 
-import com.sparta.team14project.dto.ReviewRequestDto;
-import com.sparta.team14project.dto.ReviewResponseDto;
-import com.sparta.team14project.security.UserDetailsImpl;
+import com.sparta.team14project.review.dto.ReviewRequestDto;
+import com.sparta.team14project.review.dto.ReviewResponseDto;
+import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class ReviewController {
     }
 
     @PutMapping("/review/{reviewId}")
-    public String updateReview(@PathVariable Long reviewId, @RequestBody ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ReviewResponseDto updateReview(@PathVariable Long reviewId, @RequestBody ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return reviewService.updateReview(reviewId,requestDto,userDetails.getUser());
     }
 }

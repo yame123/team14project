@@ -1,9 +1,9 @@
 package com.sparta.team14project.order;
 
-import com.sparta.team14project.dto.CartResponseDto;
-import com.sparta.team14project.dto.OrderRequestDto;
-import com.sparta.team14project.dto.OrderResponseDto;
-import com.sparta.team14project.security.UserDetailsImpl;
+import com.sparta.team14project.order.dto.CartResponseDto;
+import com.sparta.team14project.order.dto.OrderRequestDto;
+import com.sparta.team14project.order.dto.OrderResponseDto;
+import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class OrderController {
 
     @PostMapping("/cart/{menuId}")
     public CartResponseDto addMenu(@PathVariable Long menuId,@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return orderService.addMenu(menuId,userDetails.getUser().getId());
+        return orderService.addMenu(menuId,userDetails.getUser());
     }//유저 정보 받는 방식 입력
 
     @DeleteMapping("/cart/{menuId}")
@@ -33,6 +33,6 @@ public class OrderController {
 
     @PostMapping("/order")
     public OrderResponseDto orderMenu(@RequestBody OrderRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return orderService.orderMenu(requestDto,userDetails.getUser().getId());
+        return orderService.orderMenu(requestDto,userDetails.getUser());
     }
 }
