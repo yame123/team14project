@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
+
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="/js/basic.js"></script>
+  <title>업장 정보</title>
+</head>
+<body>
+<div class="header" style="position:relative;">
+  <!--headr-->
+  <div id="header-title-login-user">
+    배달의 달인
+  </div>
+  <a id="login-text" href="javascript:logout()">
+    내 정보
+  </a>
+  <!--/headr-->
+</div>
+<form id = "store-info">
+  <h2 id="header-title-store">
+    음식 주문하기
+  </h2>
+  <span id = "store-name-show"> 업장 이름: </span>
+  <span id = "store-address-show"> 업장 주소: </span>
+  <span id = "store-detail-show">업장 설명: </span>
+  <span id = "avg-star-show">평점: </span>
+  <span id = "store-points-show">잔여 포인트: </span>
+  <span id = "store-menu-show">메뉴: </span>
+  <table class="table" id = "store-menu-table">
+    <thead>
+    <tr class = "menu-info-show">
+      <th scope="col">사진</th>
+      <th scope="col">음식</th>
+      <th scope="col">수량</th>
+      <th id = "menu-button-col" scope="col">버튼</th>
+      <th id = "menu-price-col" scope="col">가격</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>사진</td>
+      <td>스팸부대찌개</td>
+      <td>1</td>
+      <button type="button" class="btn btn-primary" id = "menu-1-button-plus">+</button>
+      <button type="button" class="btn btn-primary" id = "menu-1-button-minus">-</button>
+      <td class = "price-show">10000원</td>
+    </tr>
+    <tr>
+      <td>사진</td>
+      <td>베이컨햄부대찌개</td>
+      <td>1</td>
+      <button type="button" class="btn btn-primary" id = "menu-2-button-plus">+</button>
+      <button type="button" class="btn btn-primary" id = "menu-2-button-minus">-</button>
+      <td class = "price-show">12000원</td>
+    </tr>
+    <tr>
+      <td>사진</td>
+      <td>맥주</td>
+      <td>2</td>
+      <button type="button" class="btn btn-primary" id = "menu-3-button-plus">+</button>
+      <button type="button" class="btn btn-primary" id = "menu-3-button-minus">-</button>
+      <td class = "price-show">1000원</td>
+    </tr>
+    </tbody>
+  </table>
+  <span id = "total-price-show">합계: </span>
+  <button type="submit" class="btn btn-primary" id = "store-submit">주문하기</button>
+  <button type="submit" class="btn btn-primary" id = "store-cancel">돌아가기</button>
+</form>
+
+</body>
+</html>

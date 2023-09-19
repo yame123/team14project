@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/js/basic.js"></script>
+    <title>평점 페이지</title>
+</head>
+<body>
+<div class="header" style="position:relative;">
+    <!--headr-->
+    <div id="header-title-login-user">
+        배달의 달인
+    </div>
+    <a id="login-text" href="javascript:logout()">
+        내 정보
+    </a>
+    <!--/headr-->
+</div>
+<h1 id = "review-title">평점</h1>
+<form id = "review-info">
+    <div class="form-group" id = "review-name">
+        <label for="review-name">리뷰 제목</label>
+        <input type="text" class="form-control" aria-describedby="review-help" placeholder="후기 제목을 등록하세요.">
+    </div>
+    <div class="form-group" id = "review-detail">
+        <label for="review-detail">리뷰 내용</label>
+        <input type="text" class="form-control" placeholder="후기 내용을 등록하세요.">
+    </div>
+    <table class="review-picture">
+        <thead>
+        <tr>
+            <th scope="col">사진: </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">사진 URL</th>
+        </tr>
+        </tbody>
+    </table>
+    <!-- Example single danger button -->
+    <div id = "review-star">
+        <label for = "review-star">당신의 평점은?</label>
+    <div class="radio">
+        <label><input type="radio" name="optradio" checked>1</label>
+    </div>
+    <div class="radio">
+        <label><input type="radio" name="optradio">2</label>
+    </div>
+    <div class="radio disabled">
+        <label><input type="radio" name="optradio" disabled>3</label>
+    </div>
+    <div class="radio disabled">
+        <label><input type="radio" name="optradio" disabled>4</label>
+    </div>
+    <div class="radio disabled">
+        <label><input type="radio" name="optradio" disabled>5</label>
+    </div>
+    </div>
+    <button type="submit" class="btn btn-primary" id = "review-submit">등록하기</button>
+    <button type="submit" class="btn btn-primary" id = "review-cancel">취소하기</button>
+</form>
+
+</body>
+</html>
