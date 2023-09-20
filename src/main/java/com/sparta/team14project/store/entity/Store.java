@@ -31,8 +31,11 @@ public class Store {
     @Column(name = "storeAddress", nullable = false)
     private String storeAddress;
     // avgStar (Long)
-    @Column(name = "avgStar", nullable = false)
-    private Float avgStar = 0f;
+    @Column(name = "star", nullable = false)
+    private double star = 0;
+    @Column(name = "reviewedPeople", nullable = false)
+    private double reviewedPeople = 0;
+
     // storePoint (Long)
     @Column(name = "storePoint", nullable = false)
     private int storePoint = 0;
@@ -44,6 +47,8 @@ public class Store {
     @OneToOne(fetch = FetchType.LAZY)// cascade는 직접 지우면 사라지지 않지만 orphanRemoval은 사라진다.
     @JoinColumn(name = "owner_id")
     private User user;
+
+
 
     public Store(StoreRequestDto requestDto, User user){
         this.storeName = requestDto.getStoreName();
@@ -61,5 +66,9 @@ public class Store {
 
     public void earnPoint(int price) {
         this.storePoint += price;
+    }
+
+    public void addStar(int star) {
+        this.star += star;
     }
 }
