@@ -11,7 +11,7 @@ public class StoreResponseDto {
     private String storeName;
     private String storeDetails;
     private String storeAddress;
-    private Float avgStar;
+    private double avgStar;
     private int storePoint;
 
     public StoreResponseDto(Store store){
@@ -19,7 +19,7 @@ public class StoreResponseDto {
         this.storeName = store.getStoreName();
         this.storeDetails = store.getStoreDetails();
         this.storeAddress = store.getStoreAddress();
-        this.avgStar = store.getAvgStar();
+        this.avgStar = store.getReviewedPeople()!=0?store.getStar()/store.getReviewedPeople():null;
         this.storePoint = store.getStorePoint();
     }
 

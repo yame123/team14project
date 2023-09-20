@@ -4,6 +4,8 @@ import com.sparta.team14project.order.entity.Delivery;
 import com.sparta.team14project.review.entity.OrderReview;
 import com.sparta.team14project.review.dto.ReviewRequestDto;
 import com.sparta.team14project.review.dto.ReviewResponseDto;
+import com.sparta.team14project.store.entity.Store;
+import com.sparta.team14project.store.repository.StoreRepository;
 import com.sparta.team14project.user.entity.User;
 import com.sparta.team14project.order.repository.OrderRepository;
 import com.sparta.team14project.order.repository.OrderReviewRepository;
@@ -16,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReviewService {
     private final OrderReviewRepository reviewRepository;
     private final OrderRepository orderRepository;
+    private final StoreRepository storeRepository;
+
+    @Transactional
     public ReviewResponseDto createReview(Long orderId, ReviewRequestDto requestDto, User user) {
         Delivery delivery = findById(orderId); // 배달 찿기
         if(!delivery.isDelivered()){ // 리뷰 유효성 검사
@@ -23,6 +28,8 @@ public class ReviewService {
         } else if(delivery.getUser().getId() != user.getId()){
             throw new IllegalArgumentException("주문한 사람만 리뷰를 작성할 수 있습니다.");
         }
+        Store store = storeRepository.findById(delivery.getStore().getId()).orElseThrow(()->new NullPointerException("가게 정보를 찾을 수 없습니다."));
+        store.addStar(requestDto.getStar());
         OrderReview review = new OrderReview(requestDto);
         review.setDelivery(delivery);
         reviewRepository.save(review);
