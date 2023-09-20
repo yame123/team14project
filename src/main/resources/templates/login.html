@@ -35,10 +35,6 @@
 </div>
 </body>
 <script>
-  $(document).ready(function () {
-    // 토큰 삭제
-    Cookies.remove('Authorization', {path: '/'});
-  });
 
   const href = location.href;
   const queryString = href.substring(href.indexOf("?") + 1)
