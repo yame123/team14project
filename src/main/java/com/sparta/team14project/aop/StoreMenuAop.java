@@ -1,9 +1,11 @@
 package com.sparta.team14project.aop;
 
+import com.sparta.team14project.exception.NotMineException;
 import com.sparta.team14project.menu.entity.Menu;
 import com.sparta.team14project.menu.repository.MenuRepository;
 import com.sparta.team14project.store.entity.Store;
 import com.sparta.team14project.store.repository.StoreRepository;
+import com.sparta.team14project.user.entity.User;
 import com.sparta.team14project.user.entity.UserRoleEnum;
 import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,8 @@ public class StoreMenuAop {
             "|| execution(* com.sparta.team14project.menu.MenuController.updateMenu(..)) " +
             "|| execution(* com.sparta.team14project.menu.MenuController.deleteMenu(..))")
     private void allStoreAndMenuOperations() {}
+    @Pointcut("execution(* com.sparta.team14project.store.StoreController.createStore(..))")
+    private void createStore() {}
     @Pointcut("execution(* com.sparta.team14project.store.StoreController.updateStore(..))")
     private void updateStore() {}
     @Pointcut("execution(* com.sparta.team14project.store.StoreController.deleteStore(..))")
@@ -58,6 +62,12 @@ public class StoreMenuAop {
         }
     }
 
+    @Before("createStore()")
+    public void checkHaveStore() {
+        if (storeRepository.findStoreByUser(getCurrentUser()) != null)
+            throw new IllegalArgumentException("이미 내 Store이 존재합니다.");
+    }
+
     @Before("updateStore() || deleteStore() || deliveryCheck()")
     public void checkStoreMine(JoinPoint joinPoint) {
         Long currentUserId = getCurrentUserId();
@@ -65,7 +75,7 @@ public class StoreMenuAop {
         Long storeId = getObjectId(joinPoint);
 
         if (!isStoreMine(storeId, currentUserId)) {
-            throw new IllegalArgumentException("당신의 Store가 아닙니다.");
+            throw new NotMineException("당신의 Store가 아닙니다.");
         }
     }
 
@@ -79,7 +89,7 @@ public class StoreMenuAop {
                 new IllegalArgumentException("존재하지 않는 메뉴입니다."));
         Long storeId = menu.getStore().getId();
         if (!isStoreMine(storeId, currentUserId)) {
-            throw new IllegalArgumentException("당신의 Store가 아닙니다.");
+            throw new NotMineException("당신의 Store가 아닙니다.");
         }
     }
 
@@ -102,16 +112,17 @@ public class StoreMenuAop {
         return objectId;
     }
 
-    private Long getCurrentUserId() {
+    private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return userDetails.getUser().getId();
+        return userDetails.getUser();
+    }
+    private Long getCurrentUserId() {
+        return getCurrentUser().getId();
     }
 
     private UserRoleEnum getCurrentUserRole() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return userDetails.getUser().getUserRole();
+        return getCurrentUser().getUserRole();
     }
 
 }

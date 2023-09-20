@@ -66,7 +66,7 @@ public class WebSecurityConfig {
 
         http.formLogin((formLogin) ->
                 formLogin
-                        .loginPage("/api/user/login").permitAll()
+                        .loginPage("/api/user/login-page").permitAll()
         );
 
 
