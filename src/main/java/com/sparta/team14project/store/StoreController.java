@@ -52,7 +52,7 @@ public class StoreController {
 
     @GetMapping("/delivery/{storeId}")
     public List<OrderResponseDto> deliveryCheck(@PathVariable Long storeId,@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return storeService.deliveryCheck(storeId, userDetails.getUser());
+        return storeService.deliveryCheck(storeId);
     }
 
 
