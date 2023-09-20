@@ -36,15 +36,13 @@ public class StoreController {
 
     @PutMapping("/store/{storeId}")
     public StoreResponseDto updateStore(@PathVariable("storeId") Long storeId,
-                                        @RequestBody StoreRequestDto requestDto,
-                                        @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return storeService.updateStore(storeId, requestDto, userDetails);
+                                        @RequestBody StoreRequestDto requestDto){
+        return storeService.updateStore(storeId, requestDto);
     }
 
     @DeleteMapping("/store/{storeId}")
-    public MessageResponseDto deleteStore(@PathVariable("storeId") Long storeId,
-                                          @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return storeService.deleteStore(storeId, userDetails);
+    public MessageResponseDto deleteStore(@PathVariable("storeId") Long storeId){
+        return storeService.deleteStore(storeId);
     }
 
     @PutMapping("/delivery/{orderId}")
@@ -54,7 +52,7 @@ public class StoreController {
 
     @GetMapping("/delivery/{storeId}")
     public List<OrderResponseDto> deliveryCheck(@PathVariable Long storeId,@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return storeService.deliveryCheck(storeId, userDetails.getUser());
+        return storeService.deliveryCheck(storeId);
     }
 
 
