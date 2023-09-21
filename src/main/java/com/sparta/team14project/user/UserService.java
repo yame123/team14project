@@ -22,7 +22,7 @@ public class UserService {
     private final CartRepository cartRepository;
 
     //회원가입 기능
-    public MessageResponseDto signup(SignupRequestDto signupRequestDto) {
+    public void signup(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
         String email = signupRequestDto.getEmail();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
@@ -31,7 +31,8 @@ public class UserService {
         //회원 중복 확인
         Optional<User> checkUsername = userRepository.findByUsername(username);
         if (checkUsername.isPresent()) {
-            return new MessageResponseDto("중복된 username 입니다.",400);
+            return;
+//            return new MessageResponseDto("중복된 username 입니다.",400);
         }
 
         //사용자 role 확인
@@ -48,9 +49,8 @@ public class UserService {
         Cart cart = new Cart (user); // user 생성 시 장바구니 동시 생성
         cartRepository.save(cart);
 
-        MessageResponseDto messageResponseDto = new MessageResponseDto("회원가입 성공",200);
-
-        return messageResponseDto;
+//        MessageResponseDto messageResponseDto = new MessageResponseDto("회원가입 성공",200);
+//        return messageResponseDto;
     }
 
 }
