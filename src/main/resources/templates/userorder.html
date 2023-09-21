@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Order Information</title>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+</head>
+<body>
+<h1>User Order Information</h1>
+<div id="orderInfo">
+    <!-- 주문 정보가 여기에 표시됩니다. -->
+</div>
+
+<script>
+    $(document).ready(function () {
+        const auth = getToken();
+        if (auth !== undefined && auth !== '') {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                jqXHR.setRequestHeader('Authorization', auth);
+            });
+        } else {
+            window.location.href = host + '/user/login-page';
+            return;
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: `/api/order`,
+            success: function (orders) {
+                tmp = `<p>Username: ${orders[0].username}</p><hr>`
+                orders.forEach(order=>{
+                    tmp += `<p>Address: ${order.address}</p>
+                        <p>Delivered: ${order.delivered ? "Yes" : "No"}</p>
+                        <p>MenuList</p>
+                    `;
+                    order.orderList.forEach(menu=>{
+                        tmp+=`<p>  Menu: ${menu.menuResponseDto.name}</p>
+                              <p>  Count: ${menu.count}</p>`
+                    })
+                    tmp+=`<hr>`
+                    // $('#orderInfo').append(tmp);
+
+                })
+                const orderInfoDiv = document.getElementById("orderInfo");
+                const orderItem = document.createElement("div");
+                orderItem.innerHTML =tmp;
+                orderInfoDiv.appendChild(orderItem);
+            }
+        })
+    })
+    // 쿠키에서 유저 정보를 읽어옵니다.
+    function getToken() {
+
+        let auth = Cookies.get('Authorization');
+
+        if(auth === undefined) {
+            return '';
+        }
+
+        // kakao 로그인 사용한 경우 Bearer 추가
+        if(auth.indexOf('Bearer') === -1 && auth !== ''){
+            auth = 'Bearer ' + auth;
+        }
+
+        return auth;
+    }
+
+</script>
+</body>
+</html>

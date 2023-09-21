@@ -34,6 +34,36 @@ public class HomeController {
 
         return new UserInfoDto(username, isOwner);
     }
+    @GetMapping("/user/cart")
+    public String userCartPage() {
+        return "cart";
+    }
+    @GetMapping("/user/order")
+    public String userOrderPage() {
+        return "userorder";
+    }
+    @GetMapping("/user/review")
+    public String userReviewPage() {
+        return "review"; // - 이거 그냥 한데 박을수 있지 않을까
+    }
 
+    @GetMapping("/owner")
+    public String ownerPage() {
+        return "owner";
+    }
+
+    @GetMapping("/owner/store")
+    public String ownerStorePage() {
+        return "ownerstore";
+    }
+
+    @GetMapping("/owner/menu")
+    public String ownerMenuPage() {
+        return "ownermenu";
+    }
+    @GetMapping("/owner/order")
+    public String ownerOrderPage() {
+        return "ownerorder";
+    }
 
 }

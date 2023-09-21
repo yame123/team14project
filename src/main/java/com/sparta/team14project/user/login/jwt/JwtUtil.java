@@ -83,13 +83,7 @@ public class JwtUtil {
     }
 
     // JWT 토큰 substring
-    public String substringToken(String tokenValue) {
-        if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
-            return tokenValue.substring(7);
-        }
-        logger.error("Not Found Token");
-        throw new NullPointerException("Not Found Token");
-    }
+
 
     // 토큰 검증
     public boolean validateToken(String token) {
