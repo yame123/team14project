@@ -10,7 +10,7 @@
 </head>
 <body>
 <h1>Update Store</h1>
-<form id="updateStoreForm">
+<form>
     <label for="storeId">Store Id:</label>
     <input type="text" id="storeId" name="storeId" required>
     <br>
@@ -27,7 +27,8 @@
     <input type="text" id="updateStoreAddress" name="updateStoreAddress" required>
     <br>
 
-    <input type="submit" value="Update Store">
+    <button type="button" id="createStore">Create Store</button>
+    <button type="button" id="updateStore">Update Store</button>
     <button type="button" id="deleteStore">Delete Store</button>
 </form>
 
@@ -46,9 +47,34 @@
             return;
         }
 
-        $('#updateStoreForm').submit(function (event) {
+        $('#createStore').click(function () {
             event.preventDefault(); // 기본 동작 방지
 
+            // 폼 데이터 가져오기
+            const formData = {
+                storeName: $('#updateStoreName').val(),
+                storeDetails: $('#updateStoreDetails').val(),
+                storeAddress: $('#updateStoreAddress').val()
+            };
+
+            // 상점 생성 요청 보내기
+            $.ajax({
+                type: 'POST',
+                url: `/api/store/create`,
+                data: JSON.stringify(formData),
+                contentType: 'application/json',
+                success: function (response) {
+                    // 상점 생성 성공 메시지를 표시
+                    $('#updateResult').html('<p>Store created successfully!</p>');
+                },
+                error: function (error) {
+                    // 상점 생성 실패 메시지를 표시
+                    $('#updateResult').html('<p>Error creating store.</p>');
+                }
+            });
+        });
+
+        $('#updateStore').click(function () {
             // 폼 데이터 가져오기
             const formData = {
                 storeId: $('#storeId').val(), // 상점 ID를 가져와서 사용

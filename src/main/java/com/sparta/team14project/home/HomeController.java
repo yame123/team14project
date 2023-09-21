@@ -25,14 +25,9 @@ public class HomeController {
         return "signup"; // 로그인 페이지의 뷰 이름 (templates 디렉토리 아래의 HTML 파일 이름)
     }
 
-    @GetMapping("/user/store/create") // 상점 생성
-    public String createStore() {
-        return "store/storeCreate";
-    }
-
-    @GetMapping("/user/store/update") // 상점 수정 및 삭제
+    @GetMapping("/user/store/cud") // 상점 수정 및 삭제
     public String updateStore() {
-        return "store/storeUpdate";
+        return "store/storeCUD";
     }
 
     @GetMapping("/user-info")

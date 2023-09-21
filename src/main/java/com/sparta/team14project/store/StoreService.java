@@ -88,7 +88,6 @@ public class StoreService {
     }
 
     public Long getStoreId(UserDetailsImpl userDetails) {
-        System.out.println("여긴가");
         return storeRepository.findStoreByUser(userDetails.getUser()).getId();
     }
 }
