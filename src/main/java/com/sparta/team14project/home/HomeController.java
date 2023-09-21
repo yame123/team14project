@@ -30,6 +30,11 @@ public class HomeController {
         return "store/storeCUD";
     }
 
+    @GetMapping("/user/store") // 상점 수정 및 삭제
+    public String getStore() {
+        return "store/storeDetail";
+    }
+
     @GetMapping("/user/menu/cud") // 상점 수정 및 삭제
     public String CUDMenu() {
         return "menu/menuCUD";
