@@ -45,12 +45,12 @@ public class StoreController {
         return storeService.deleteStore(storeId);
     }
 
-    @PutMapping("/delivery/{orderId}")
+    @PutMapping("/store/order/{orderId}")
     public MessageResponseDto deliveryDone(@PathVariable Long orderId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return storeService.deliveryDone(orderId, userDetails.getUser());
     }
 
-    @GetMapping("/delivery/{storeId}")
+    @GetMapping("/store/order/{storeId}")
     public List<OrderResponseDto> deliveryCheck(@PathVariable Long storeId,@AuthenticationPrincipal UserDetailsImpl userDetails){
         return storeService.deliveryCheck(storeId);
     }
