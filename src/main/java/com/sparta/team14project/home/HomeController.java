@@ -11,12 +11,12 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/api/user/login-page")
+    @GetMapping("/user/login-page")
     public String loginPage() {
         return "login"; // 로그인 페이지의 뷰 이름 (templates 디렉토리 아래의 HTML 파일 이름)
     }
 
-    @GetMapping("/api/user/signup")
+    @GetMapping("/user/signup")
     public String signupPage() {
         return "signup"; // 로그인 페이지의 뷰 이름 (templates 디렉토리 아래의 HTML 파일 이름)
     }

@@ -1,33 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
   <meta charset="UTF-8">
   <title>회원가입 페이지</title>
   <script>
-    function onclickAdmin() {
+    function onclickOwner() {
       // Get the checkbox
-      var checkBox = document.getElementById("admin-check");
+      var checkBox = document.getElementById("owner-check");
       // Get the output text
-      var box = document.getElementById("admin-token");
-
-      // If the checkbox is checked, display the output text
       if (checkBox.checked == true){
         box.style.display = "block";
       } else {
         box.style.display = "none";
       }
     }
+
+    function sendEmailVerification() {
+      try {
+        // Get the email input field
+        var emailInput = document.getElementsByName("email")[0];
+
+        // Extract the email address
+        var email = emailInput.value;
+
+        fetch('/api/user/mail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: email }),
+        })
+      } catch (error) {
+        console.error('Error:', error);
+        alert('이메일 인증 요청을 보낼 수 없습니다.');
+      }
+    }
+  </script>
   </script>
 </head>
 <body>
 <div id="login-form">
-  <div id="login-title">배달의 달인 회원가입</div>
+  <div id="login-title">Sign up Select Shop</div>
 
   <form action="/api/user/signup" method="post">
     <div class="login-id-label">Username</div>
@@ -39,12 +58,13 @@
     <div class="login-id-label">E-mail</div>
     <input type="text" name="email" placeholder="E-mail" class="login-input-box">
 
+    <button id="email-verification-button" type="button" onclick="sendEmailVerification()">이메일 인증 요청</button>
+
     <div class="login-id-label">Code</div>
-    <input type="text" name="code" placeholder="code" class="login-input-box">
+    <input type="text" name="code" placeholder="Code" class="login-input-box">
 
     <div>
-      <input id="admin-check" type="checkbox" name="admin" onclick="onclickAdmin()" style="margin-top: 40px;">관리자
-      <input id="admin-token" type="password" name="adminToken" placeholder="관리자 암호" class="login-input-box" style="display:none">
+      <input id="owner-check" type="checkbox" name="owner" onclick="onclickOwner()" style="margin-top: 40px;">사장님
     </div>
     <button id="login-id-submit">회원 가입</button>
   </form>
