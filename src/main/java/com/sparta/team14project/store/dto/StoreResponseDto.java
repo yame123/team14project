@@ -19,7 +19,7 @@ public class StoreResponseDto {
         this.storeName = store.getStoreName();
         this.storeDetails = store.getStoreDetails();
         this.storeAddress = store.getStoreAddress();
-        this.avgStar = store.getReviewedPeople()!=0?store.getStar()/store.getReviewedPeople():null;
+        this.avgStar = store.getReviewedPeople()!=0?store.getStar()/store.getReviewedPeople():0;
         this.storePoint = store.getStorePoint();
     }
 

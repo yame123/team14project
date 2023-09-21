@@ -34,6 +34,11 @@ public class StoreController {
         return storeService.getStoreByKeyword(keyword);
     }
 
+    @GetMapping("/store/getStoreId")
+    public Long getStoreId(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return storeService.getStoreId(userDetails);
+    }
+
     @PutMapping("/store/{storeId}")
     public StoreResponseDto updateStore(@PathVariable("storeId") Long storeId,
                                         @RequestBody StoreRequestDto requestDto){

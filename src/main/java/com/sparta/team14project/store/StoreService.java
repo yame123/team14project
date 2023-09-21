@@ -86,4 +86,9 @@ public class StoreService {
                 () -> new IllegalArgumentException("데이터가 없습니다.")
         );
     }
+
+    public Long getStoreId(UserDetailsImpl userDetails) {
+        System.out.println("여긴가");
+        return storeRepository.findStoreByUser(userDetails.getUser()).getId();
+    }
 }
