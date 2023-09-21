@@ -28,6 +28,7 @@
     <br>
 
     <input type="submit" value="Update Store">
+    <button type="button" id="deleteStore">Delete Store</button>
 </form>
 
 <!-- 업데이트 결과를 표시할 엘리먼트 -->
@@ -72,8 +73,25 @@
                 }
             });
         });
-    });
 
+        // Delete 버튼 클릭 시 상점 삭제
+        $('#deleteStore').click(function () {
+            const storeId = $('#storeId').val();
+
+            $.ajax({
+                type: 'DELETE',
+                url: `/api/store/${storeId}`,
+                success: function (response) {
+                    // 상점 삭제 성공 메시지를 표시
+                    $('#updateResult').html('<p>Store deleted successfully!</p>');
+                },
+                error: function (error) {
+                    // 상점 삭제 실패 메시지를 표시
+                    $('#updateResult').html('<p>Error deleting store.</p>');
+                }
+            });
+        });
+    });
     // 쿠키에서 유저 정보를 읽어옵니다.
     function getToken() {
         let auth = Cookies.get('Authorization');
