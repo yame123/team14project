@@ -13,12 +13,15 @@ import com.sparta.team14project.order.repository.AddedMenuRepository;
 import com.sparta.team14project.order.repository.CartRepository;
 import com.sparta.team14project.order.repository.OrderRepository;
 import com.sparta.team14project.order.repository.OrderedMenuRepository;
+import com.sparta.team14project.store.dto.StoreResponseDto;
 import com.sparta.team14project.store.entity.Store;
 import com.sparta.team14project.user.entity.User;
 import com.sparta.team14project.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -109,6 +112,11 @@ public class OrderService {
         return new OrderResponseDto(savedDelivery);
     }
 
+    public List<OrderResponseDto> getOrder(User user) {
+        List<OrderResponseDto> answer =orderRepository.findAllByUser(user).stream().map(OrderResponseDto::new).toList();
+        return answer;
+    }
+
     private Menu findMenuById(Long id){
         Menu menu = menuRepository.findById(id).orElseThrow(()->new NullPointerException("메뉴 정보를 찾을 수 없습니다."));
         return menu;
@@ -125,6 +133,7 @@ public class OrderService {
         User user = userRepository.findById(id).orElse(null);
         return user;
     }
+
 
 
 }
