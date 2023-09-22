@@ -70,20 +70,7 @@
     }
 
     // /api/order 엔드포인트로 주문을 생성하는 함수
-    function createOrder(address) {
-        return fetch("/api/cart", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                address: address
-                // 필요한 다른 필드들을 여기에 추가할 수 있습니다.
-            })
-        })
-            .then(response => response.json())
-            .catch(error => console.error("Error creating order:", error));
-    }
+
 
     // "주문하기" 버튼 클릭 시 주문을 생성하고 주문 정보를 업데이트합니다.
     const orderButton = document.getElementById("orderButton");
@@ -92,17 +79,33 @@
         const address = addressInput.value;
 
         if (address) {
-            createOrder(address).then(() => {
-                // 주문이 성공적으로 생성되면 주문 정보를 업데이트합니다.
-                window.location.href = host+'/user/order'
-            });
+            createOrder(address).then(() => {});
+            window.location.href = host+'/user/order'
         } else {
             alert("주문 주소를 입력하세요.");
         }
     });
 
+    function createOrder(address) {
+        const formData = {
+            address: address
+        };
+        $.ajax({
+            type: 'POST',
+            url: "/api/order",
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+            success: function (response) {
+                // 상점 생성 성공 메시지를 표시
+                console.log(response)
 
-
+            },
+            error: function (error) {
+                // 상점 생성 실패 메시지를 표시
+                $('#updateResult').html('<p>Error creating store.</p>');
+            }
+        });
+    }
 </script>
 </body>
 </html>
