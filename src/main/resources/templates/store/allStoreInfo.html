@@ -39,8 +39,8 @@
                         <p>Store Details: ${store.storeDetails}</p>
                         <p>Store Address: ${store.storeAddress}</p>
                         <p>Average Star: ${store.avgStar.toFixed(1)}</p>
-                        <button onclick="showReviews(${store.id})">리뷰 보기</button> <!-- 리뷰 보기 버튼 추가 -->
-                        <div id="storeReviews_${store.id}"></div> <!-- 리뷰를 표시할 div 추가 -->
+                        <button onclick="toggleReviews(${store.id})">리뷰 보기</button> <!-- 리뷰 보기 버튼 추가 -->
+                        <div id="storeReviews_${store.id}" style="display: none;"></div> <!-- 리뷰를 표시할 div 추가 -->
                     `;
                     storeInfoDiv.appendChild(storeItem);
                 });
@@ -48,9 +48,22 @@
         });
     });
 
-    // 리뷰를 보여주는 함수
-    function showReviews(storeId) {
+    // 리뷰를 보여주거나 숨기는 함수
+    function toggleReviews(storeId) {
         const storeReviewsDiv = document.getElementById(`storeReviews_${storeId}`);
+        const isVisible = storeReviewsDiv.style.display === 'block';
+
+        // 상태에 따라 토글
+        storeReviewsDiv.style.display = isVisible ? 'none' : 'block';
+
+        if (!isVisible) {
+            // 리뷰를 보여주는 함수 호출
+            showReviews(storeId, storeReviewsDiv);
+        }
+    }
+
+    // 리뷰를 보여주는 함수
+    function showReviews(storeId, storeReviewsDiv) {
         // 해당 상점의 리뷰를 가져오는 AJAX 요청
         $.ajax({
             type: 'GET',
