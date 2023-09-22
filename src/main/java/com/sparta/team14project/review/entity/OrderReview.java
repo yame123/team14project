@@ -25,6 +25,8 @@ public class OrderReview {
     private String details;
     private String image;
 
+    private Long storeId;
+
     public OrderReview(ReviewRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.star = requestDto.getStar();

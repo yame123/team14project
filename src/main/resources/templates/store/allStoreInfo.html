@@ -39,12 +39,41 @@
                         <p>Store Details: ${store.storeDetails}</p>
                         <p>Store Address: ${store.storeAddress}</p>
                         <p>Average Star: ${store.avgStar.toFixed(1)}</p>
+                        <button onclick="showReviews(${store.id})">리뷰 보기</button> <!-- 리뷰 보기 버튼 추가 -->
+                        <div id="storeReviews_${store.id}"></div> <!-- 리뷰를 표시할 div 추가 -->
                     `;
                     storeInfoDiv.appendChild(storeItem);
                 });
             }
         });
     });
+
+    // 리뷰를 보여주는 함수
+    function showReviews(storeId) {
+        const storeReviewsDiv = document.getElementById(`storeReviews_${storeId}`);
+        // 해당 상점의 리뷰를 가져오는 AJAX 요청
+        $.ajax({
+            type: 'GET',
+            url: `/api/reviews/${storeId}`,
+            success: function (reviews) {
+                storeReviewsDiv.innerHTML = ''; // 이전 리뷰를 지우고 새로운 리뷰 표시
+                reviews.forEach(review => {
+                    const reviewItem = document.createElement("div");
+                    reviewItem.innerHTML = `
+                        <p>Title: ${review.title}</p>
+                        <p>Star: ${review.star}</p>
+                        <p>Detail: ${review.detail}</p>
+                        <p>Image: ${review.image}</p>
+                        <p>Username: ${review.username}</p>
+                        <p>Store Name: ${review.storename}</p>
+                        <p>Menu Names: ${review.menunamelist.join(', ')}</p>
+                        <hr>
+                    `;
+                    storeReviewsDiv.appendChild(reviewItem);
+                });
+            }
+        });
+    }
 
     // 쿠키에서 유저 정보를 읽어옵니다.
     function getToken() {
