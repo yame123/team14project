@@ -48,4 +48,6 @@ public class User {
     public void pay(int money) {
         this.userPoint -= money;
     }
+
+    public void earn(int money) { this.userPoint += money; }
 }
