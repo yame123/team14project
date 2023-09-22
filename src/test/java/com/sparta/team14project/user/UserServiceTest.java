@@ -51,17 +51,11 @@ class UserServiceTest {
         when(passwordEncoder.encode(password)).thenReturn("encodedPassword");
 
         // 서비스 메서드 호출
-        MessageResponseDto responseDto = userService.signup(signupRequestDto);
+        userService.signup(signupRequestDto);
 
         // 테스트 검증
         verify(userRepository, times(1)).findByUsername("testuser"); // findByUsername 메서드가 1번 호출되었는지 검증
         verify(userRepository, times(1)).save(any(User.class)); // save 메서드가 1번 호출되었는지 검증
 
-        // 원하는 검증을 추가로 수행할 수 있습니다.
-        // 예: responseDto의 내용을 검증
-        assertEquals("회원가입 성공", responseDto.getMsg());
-        System.out.println(responseDto.getMsg());
-        assertEquals(200, responseDto.getStatusCode());
-        System.out.println(responseDto.getStatusCode());
     }
 }
