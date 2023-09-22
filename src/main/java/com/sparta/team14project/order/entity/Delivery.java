@@ -55,6 +55,7 @@ public class Delivery {
     public void deliveryDone() {
         this.delivered = true;
         this.store.earnPoint(this.price);
+        this.store.getUser().earn(this.price);
     }
 
 

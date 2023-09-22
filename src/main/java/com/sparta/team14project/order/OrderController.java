@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //카트추가도 여기 담을겁니다
 
 @RestController
@@ -34,5 +36,10 @@ public class OrderController {
     @PostMapping("/order")
     public OrderResponseDto orderMenu(@RequestBody OrderRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return orderService.orderMenu(requestDto,userDetails.getUser());
+    }
+
+    @GetMapping("/order")
+    public List<OrderResponseDto> getOrder(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return orderService.getOrder(userDetails.getUser());
     }
 }
