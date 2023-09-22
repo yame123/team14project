@@ -4,9 +4,11 @@ import com.sparta.team14project.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Getter
 @NoArgsConstructor
-public class StoreResponseDto {
+public class StoreResponseDto implements Serializable {
     private Long id;
     private String storeName;
     private String storeDetails;
@@ -22,5 +24,4 @@ public class StoreResponseDto {
         this.avgStar = store.getReviewedPeople()!=0?store.getStar()/store.getReviewedPeople():0;
         this.storePoint = store.getStorePoint();
     }
-
 }
