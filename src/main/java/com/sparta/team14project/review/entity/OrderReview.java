@@ -20,10 +20,12 @@ public class OrderReview {
     @JoinColumn(name = "order_id")
     private Delivery delivery;
 
+    @Column(name = "title", nullable = false)
     private String title;
+    @Column(name = "star", nullable = false)
     private int star;
+    @Column(name = "details", nullable = false)
     private String details;
-    private String image;
 
     private Long storeId;
 
@@ -31,13 +33,11 @@ public class OrderReview {
         this.title = requestDto.getTitle();
         this.star = requestDto.getStar();
         this.details = requestDto.getDetail();
-        this.image= requestDto.getImage();
     }
 
     public void update(ReviewRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.star = requestDto.getStar();
         this.details = requestDto.getDetail();
-        this.image= requestDto.getImage();
     }
 }

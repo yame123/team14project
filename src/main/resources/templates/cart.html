@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cart Information</title>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+</head>
+<body>
+<h1>Cart Information</h1>
+<div id="cartInfo">
+    <!-- 카트 정보가 여기에 표시됩니다. -->
+</div>
+<!-- 주문 주소 입력 폼 -->
+<div>
+    <label for="address">주문 주소:</label>
+    <input type="text" id="address" placeholder="주문 주소를 입력하세요">
+</div>
+
+<!-- 주문하기 버튼 -->
+<button id="orderButton">주문하기</button>
+
+<script>
+    host = window.location.host
+    $(document).ready(function () {
+        const auth = getToken();
+        if (auth !== undefined && auth !== '') {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                jqXHR.setRequestHeader('Authorization', auth);
+            });
+        } else {
+            window.location.href = host + '/user/login-page';
+            return;
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: `/api/cart`,
+            success: function (cart) {
+                tmp = `<p>Username: ${cart.username}</p><hr>`
+                tmp += `<p>MenuList</p>`;
+                cart.addedMenuList.forEach(menu=>{
+                    tmp+=`<p>  Menu: ${menu.menuResponseDto.name}</p>
+                          <p>  Count: ${menu.count}</p>`
+                })
+                tmp+=`<hr>`
+                const cartInfoDiv = document.getElementById("cartInfo");
+                const cartItem = document.createElement("div");
+                cartItem.innerHTML =tmp;
+                cartInfoDiv.appendChild(cartItem);
+            }
+        })
+    })
+    // 쿠키에서 유저 정보를 읽어옵니다.
+    function getToken() {
+
+        let auth = Cookies.get('Authorization');
+
+        if(auth === undefined) {
+            return '';
+        }
+
+        // kakao 로그인 사용한 경우 Bearer 추가
+        if(auth.indexOf('Bearer') === -1 && auth !== ''){
+            auth = 'Bearer ' + auth;
+        }
+
+        return auth;
+    }
+
+    // /api/order 엔드포인트로 주문을 생성하는 함수
+
+
+    // "주문하기" 버튼 클릭 시 주문을 생성하고 주문 정보를 업데이트합니다.
+    const orderButton = document.getElementById("orderButton");
+    orderButton.addEventListener("click", () => {
+        const addressInput = document.getElementById("address");
+        const address = addressInput.value;
+
+        if (address) {
+            createOrder(address).then(() => {});
+            window.location.href = host+'/user/order'
+        } else {
+            alert("주문 주소를 입력하세요.");
+        }
+    });
+
+    function createOrder(address) {
+        const formData = {
+            address: address
+        };
+        $.ajax({
+            type: 'POST',
+            url: "/api/order",
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+            success: function (response) {
+                // 상점 생성 성공 메시지를 표시
+                console.log(response)
+
+            },
+            error: function (error) {
+                // 상점 생성 실패 메시지를 표시
+                $('#updateResult').html('<p>Error creating store.</p>');
+            }
+        });
+    }
+</script>
+</body>
+</html>
