@@ -2,10 +2,12 @@ package com.sparta.team14project.store;
 
 import com.sparta.team14project.message.MessageResponseDto;
 import com.sparta.team14project.order.dto.OrderResponseDto;
+import com.sparta.team14project.store.dto.KeywordRequestDto;
 import com.sparta.team14project.store.dto.StoreRequestDto;
 import com.sparta.team14project.store.dto.StoreResponseDto;
 import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +29,22 @@ public class StoreController {
         return storeService.getStores();
     }
 
-    @GetMapping("/store/{keyword}")
-    public List<StoreResponseDto> getStoresByKeyword(@RequestParam String keyword){
-        return storeService.getStoreByKeyword(keyword);
+    @GetMapping("/store-search")
+    public List<StoreResponseDto> getStoresByKeyword(@RequestBody KeywordRequestDto keywordRequestDto){
+        return storeService.getStoreByKeyword(keywordRequestDto.getKeyword());
+    }
+
+    @DeleteMapping("/delete-cache")
+    public ResponseEntity<String> clearStoreCache(@RequestBody KeywordRequestDto keywordRequestDto) {
+        String keyword = keywordRequestDto.getKeyword();
+        storeService.clearStoreCache(keyword);
+        return ResponseEntity.ok("Cache cleared for keyword: " + keyword);
+    }
+
+    @DeleteMapping("/delete-caches")
+    public ResponseEntity<String> clearAllStoreCaches() {
+        storeService.clearAllStoreCaches();
+        return ResponseEntity.ok("All cache cleared.");
     }
 
     @GetMapping("/store/getStoreId")

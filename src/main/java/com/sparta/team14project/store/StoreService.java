@@ -11,6 +11,8 @@ import com.sparta.team14project.user.entity.User;
 import com.sparta.team14project.order.repository.DeliveryRepository;
 import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final DeliveryRepository deliveryRepository;
 
+    @CacheEvict(value = "storeCache", allEntries = true)
     public StoreResponseDto createStore(StoreRequestDto requestDto, UserDetailsImpl userDetails) {
         // user 정보 userDetails에서 추출
         User user = userDetails.getUser();
@@ -44,17 +47,29 @@ public class StoreService {
 //        return storeRepository.findAll().stream().map(StoreResponseDto::new).toList();
     }
 
+    @Cacheable(value = "storeCache", key = "#keyword")
     public List<StoreResponseDto> getStoreByKeyword(String keyword) {
-        return storeRepository.findAllByStoreNameContains(keyword).stream().map(StoreResponseDto::new).toList();
+        return storeRepository.findAllByStoreNameContaining(keyword).stream().map(StoreResponseDto::new).toList();
+    }
+
+    @CacheEvict(value = "storeCache", key = "#keyword")
+    public void clearStoreCache(String keyword) {
+        // 특정 키워드의 캐시를 지움
+    }
+
+    @CacheEvict(value = "storeCache", allEntries = true)
+    public void clearAllStoreCaches() {
     }
 
     @Transactional
+    @CacheEvict(value = "storeCache", allEntries = true)
     public StoreResponseDto updateStore(Long id, StoreRequestDto requestDto) {
         Store store = findStore(id);
         store.update(requestDto);
         return new StoreResponseDto(store);
     }
 
+    @CacheEvict(value = "storeCache", allEntries = true)
     public MessageResponseDto deleteStore(Long id) {
         Store store = findStore(id);
         storeRepository.delete(store);
