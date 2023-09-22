@@ -7,11 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../../static/css/style2.css">
     <script src="../../static/js/index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 
     <title>메뉴 상세 페이지</title>
 </head>
 <body>
-<table align="center">
+<table id="menuDetailTable" align="center">
     <tr>
         <td colspan="2" align="center" style="font-size: 30px;">메뉴 상세 페이지</td>
     </tr>
@@ -20,15 +23,15 @@
     </tr>
     <tr>
         <td align="center">메뉴 이름</td>
-        <td align="center" name="menuName">닭발</td>
+        <td align="center" id="menuName" name="menuName">닭발</td>
     </tr>
     <tr>
         <td align="center">메뉴 가격</td>
-        <td align="center" name="menuPrice">5000</td>
+        <td align="center" id="menuPrice" name="menuPrice">5000</td>
     </tr>
     <tr>
         <td align="center">메뉴 설명</td>
-        <td align="center" name="menuDetail">세상에서 제일 맛있게 매운 닭발 입니다.</td>
+        <td align="center" id="menuDetail" name="menuDetail">세상에서 제일 맛있게 매운 닭발 입니다.</td>
     </tr>
     <tr>
         <td align="center">음식 수량</td>
@@ -46,5 +49,88 @@
         </td>
     </tr>
 </table>
+
+<script>
+    $(document).ready(function () {
+        const auth = getToken();
+        if (auth !== undefined && auth !== '') {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                jqXHR.setRequestHeader('Authorization', auth);
+            });
+        } else {
+            window.location.href = host + '/user/login-page';
+            return;
+        }
+
+
+        const id = 2;
+
+        // 선택한 메뉴 정보 가져오기
+        $.ajax({
+            type: 'GET',
+            url: `/api/menu/${id}`,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            async: false,
+            success: function (menu) {
+                // if (menu === undefined) { return undefined; }
+                // menu = JSON.parse(menu);
+                const menuDetailTable = document.getElementById("menuDetailTable");
+                    const menuItem = document.createElement("table");
+                    menuItem.innerHTML = `
+                        <tr>
+                            <td colspan="2"><img src="../../static/images/chickenfeet.jpg" name="menuPhoto"></td>
+                        </tr>
+                        <tr>
+                            <td align="center">메뉴 이름</td>
+                            <td align="center">${menu.name}</td>
+                        </tr>
+                        <tr>
+                            <td align="center">메뉴 가격</td>
+                            <td align="center">${menu.price}</td>
+                        </tr>
+                        <tr>
+                            <td align="center">메뉴 설명</td>
+                            <td align="center" name="menuDetail">${menu.detail}</td>
+                        </tr>
+                        <tr>
+                            <td align="center">음식 수량</td>
+                            <td align="right">
+                                <input type='button' onclick='count("minus")' value='-'/>
+                                <input type='button' onclick='count("plus")' value='+'/>
+                                <div id='cnt'>0</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td align="right">
+                                <button type="reset" onclick="goHome()">취소</button>
+                                <button type="submit">장바구니 담기</button>
+                            </td>
+                        </tr>
+                    `;
+                    menuDetailTable.appendChild(menuItem);
+            }
+        })//.done(function (data){console.log(data)}).fail(function (error){console.log(error)});
+        // let test;
+        // console.log(function(test){ });
+    });
+
+
+
+    // 쿠키에서 유저 정보를 읽어옵니다.
+    function getToken() {
+        let auth = Cookies.get('Authorization');
+        if (auth === undefined) {
+            return '';
+        }
+
+        // kakao 로그인 사용한 경우 Bearer 추가
+        if (auth.indexOf('Bearer') === -1 && auth !== '') {
+            auth = 'Bearer ' + auth;
+        }
+        return auth;
+    }
+</script>
 </body>
 </html>

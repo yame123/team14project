@@ -6,5 +6,5 @@ import lombok.Getter;
 public class MenuRequestDto {
     private String name;
     private int price;
-    private String details;
+    private String detail;
 }

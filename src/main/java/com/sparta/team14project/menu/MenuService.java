@@ -44,4 +44,9 @@ public class MenuService {
                 new IllegalArgumentException("선택한 Board는 존재하지 않습니다.")
         );
     }
+
+    public MenuResponseDto showMenuDetail(Long id) {
+        Menu menu = findMenu(id);
+        return new MenuResponseDto(menu);
+    }
 }

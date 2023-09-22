@@ -2,6 +2,7 @@ package com.sparta.team14project.menu;
 
 import com.sparta.team14project.menu.dto.MenuRequestDto;
 import com.sparta.team14project.menu.dto.MenuResponseDto;
+import com.sparta.team14project.menu.entity.Menu;
 import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import com.sparta.team14project.menu.MenuService;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,11 @@ public class MenuController {
     @DeleteMapping("/menu/{id}")
     public MenuResponseDto deleteMenu(@PathVariable Long id) {
         return menuService.deleteBoard(id);
+    }
+
+    // 메뉴 상세 조회
+    @GetMapping("/menu/{id}")       // menuId
+    public MenuResponseDto showMenuDetail(@PathVariable Long id) {
+        return menuService.showMenuDetail(id);
     }
 }

@@ -40,6 +40,11 @@ public class HomeController {
         return "menu/menuCUD";
     }
 
+    @GetMapping("/store/menu") // 메뉴 상세 정보 조회
+    public String showMenuDetail() {
+        return "menu/menuDetail";
+    }
+
     @GetMapping("/user-info")
     @ResponseBody
     public UserInfoDto getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
