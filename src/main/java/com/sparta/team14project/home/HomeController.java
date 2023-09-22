@@ -25,6 +25,21 @@ public class HomeController {
         return "signup"; // 로그인 페이지의 뷰 이름 (templates 디렉토리 아래의 HTML 파일 이름)
     }
 
+    @GetMapping("/user/store/cud") // 상점 수정 및 삭제
+    public String CUDStore() {
+        return "store/storeCUD";
+    }
+
+    @GetMapping("/user/store") // 상점 수정 및 삭제
+    public String getStore() {
+        return "store/allStoreInfo";
+    }
+
+    @GetMapping("/user/menu/cud") // 상점 수정 및 삭제
+    public String CUDMenu() {
+        return "menu/menuCUD";
+    }
+
     @GetMapping("/user-info")
     @ResponseBody
     public UserInfoDto getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {

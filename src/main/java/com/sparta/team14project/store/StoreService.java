@@ -40,7 +40,8 @@ public class StoreService {
     }
 
     public List<StoreResponseDto> getStores() {
-        return storeRepository.findAll().stream().map(StoreResponseDto::new).toList();
+        return storeRepository.findAllByOrderByStorePointDesc().stream().map(StoreResponseDto::new).toList();
+//        return storeRepository.findAll().stream().map(StoreResponseDto::new).toList();
     }
 
     public List<StoreResponseDto> getStoreByKeyword(String keyword) {
@@ -85,5 +86,9 @@ public class StoreService {
         return storeRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("데이터가 없습니다.")
         );
+    }
+
+    public Long getStoreId(UserDetailsImpl userDetails) {
+        return storeRepository.findStoreByUser(userDetails.getUser()).getId();
     }
 }

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <title>Update Store</title>
+</head>
+<body>
+<h1>Update Store</h1>
+<form>
+    <label for="storeId">Store Id:</label>
+    <input type="text" id="storeId" name="storeId" required>
+    <br>
+
+    <label for="updateStoreName">Store Name:</label>
+    <input type="text" id="updateStoreName" name="updateStoreName" required>
+    <br>
+
+    <label for="updateStoreDetails">Store Details:</label>
+    <textarea id="updateStoreDetails" name="updateStoreDetails" rows="4" required></textarea>
+    <br>
+
+    <label for="updateStoreAddress">Store Address:</label>
+    <input type="text" id="updateStoreAddress" name="updateStoreAddress" required>
+    <br>
+
+    <button type="button" id="createStore">Create Store</button>
+    <button type="button" id="updateStore">Update Store</button>
+    <button type="button" id="deleteStore">Delete Store</button>
+</form>
+
+<!-- 업데이트 결과를 표시할 엘리먼트 -->
+<div id="updateResult"></div>
+
+<script>
+    $(document).ready(function () {
+        const auth = getToken();
+        if (auth !== undefined && auth !== '') {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                jqXHR.setRequestHeader('Authorization', auth);
+            });
+        } else {
+            window.location.href = host + '/user/login-page';
+            return;
+        }
+
+        $('#createStore').click(function () {
+            event.preventDefault(); // 기본 동작 방지
+
+            // 폼 데이터 가져오기
+            const formData = {
+                storeName: $('#updateStoreName').val(),
+                storeDetails: $('#updateStoreDetails').val(),
+                storeAddress: $('#updateStoreAddress').val()
+            };
+
+            // 상점 생성 요청 보내기
+            $.ajax({
+                type: 'POST',
+                url: `/api/store/create`,
+                data: JSON.stringify(formData),
+                contentType: 'application/json',
+                success: function (response) {
+                    // 상점 생성 성공 메시지를 표시
+                    $('#updateResult').html('<p>Store created successfully!</p>');
+                },
+                error: function (error) {
+                    // 상점 생성 실패 메시지를 표시
+                    $('#updateResult').html('<p>Error creating store.</p>');
+                }
+            });
+        });
+
+        $('#updateStore').click(function () {
+            // 폼 데이터 가져오기
+            const formData = {
+                storeId: $('#storeId').val(), // 상점 ID를 가져와서 사용
+                storeName: $('#updateStoreName').val(),
+                storeDetails: $('#updateStoreDetails').val(),
+                storeAddress: $('#updateStoreAddress').val()
+            };
+
+            // 상점 업데이트 요청 보내기
+            $.ajax({
+                type: 'PUT',
+                url: `/api/store/${formData.storeId}`, // 업데이트할 Store의 ID를 포함한 URL
+                data: JSON.stringify(formData),
+                contentType: 'application/json',
+                success: function (response) {
+                    // 상점 업데이트 성공 메시지를 표시
+                    $('#updateResult').html('<p>Store updated successfully!</p>');
+                },
+                error: function (error) {
+                    // 상점 업데이트 실패 메시지를 표시
+                    $('#updateResult').html('<p>Error updating store.</p>');
+                }
+            });
+        });
+
+        // Delete 버튼 클릭 시 상점 삭제
+        $('#deleteStore').click(function () {
+            const storeId = $('#storeId').val();
+
+            $.ajax({
+                type: 'DELETE',
+                url: `/api/store/${storeId}`,
+                success: function (response) {
+                    // 상점 삭제 성공 메시지를 표시
+                    $('#updateResult').html('<p>Store deleted successfully!</p>');
+                },
+                error: function (error) {
+                    // 상점 삭제 실패 메시지를 표시
+                    $('#updateResult').html('<p>Error deleting store.</p>');
+                }
+            });
+        });
+    });
+    // 쿠키에서 유저 정보를 읽어옵니다.
+    function getToken() {
+        let auth = Cookies.get('Authorization');
+        if (auth === undefined) {
+            return '';
+        }
+
+        // kakao 로그인 사용한 경우 Bearer 추가
+        if (auth.indexOf('Bearer') === -1 && auth !== '') {
+            auth = 'Bearer ' + auth;
+        }
+
+        return auth;
+    }
+</script>
+</body>
+</html>

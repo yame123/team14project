@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Order Information</title>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+</head>
+<body>
+<h1>Store Information</h1>
+<div id="storeInfo">
+    <!-- 상점 정보가 여기에 표시됩니다. -->
+</div>
+
+<script>
+    $(document).ready(function () {
+        const auth = getToken();
+        if (auth !== undefined && auth !== '') {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                jqXHR.setRequestHeader('Authorization', auth);
+            });
+        } else {
+            window.location.href = host + '/user/login-page';
+            return;
+        }
+
+        // 상점 정보 가져오기
+        $.ajax({
+            type: 'GET',
+            url: `/api/store`,
+            success: function (stores) {
+                const storeInfoDiv = document.getElementById("storeInfo");
+                stores.forEach(store => {
+                    const storeItem = document.createElement("div");
+                    storeItem.innerHTML = `
+                        <br>
+                        <p>Store Name: ${store.storeName}</p>
+                        <p>Store Details: ${store.storeDetails}</p>
+                        <p>Store Address: ${store.storeAddress}</p>
+                        <p>Average Star: ${store.avgStar.toFixed(1)}</p>
+                    `;
+                    storeInfoDiv.appendChild(storeItem);
+                });
+            }
+        });
+    });
+
+    // 쿠키에서 유저 정보를 읽어옵니다.
+    function getToken() {
+        let auth = Cookies.get('Authorization');
+        if (auth === undefined) {
+            return '';
+        }
+
+        // kakao 로그인 사용한 경우 Bearer 추가
+        if (auth.indexOf('Bearer') === -1 && auth !== '') {
+            auth = 'Bearer ' + auth;
+        }
+
+        return auth;
+    }
+</script>
+</body>
+</html>

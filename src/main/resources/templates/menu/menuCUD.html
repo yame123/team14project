@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <title>Update Menu</title>
+</head>
+<body>
+<h1>Update Menu</h1>
+<form>
+    <label for="menuId">Menu Id:</label>
+    <input type="text" id="menuId" name="menuId" required>
+    <br>
+
+    <label for="menuName">Menu Name:</label>
+    <input type="text" id="menuName" name="menuName" required>
+    <br>
+
+    <label for="menuPrice">Menu Price:</label>
+    <input id="menuPrice" name="menuPrice" required>
+    <br>
+
+    <label for="menuDetails">Menu details:</label>
+    <input type="text" id="menuDetails" name="menuDetails" required>
+    <br>
+
+    <button type="button" id="createMenu">Create Menu</button>
+    <button type="button" id="updateMenu">Update Menu</button>
+    <button type="button" id="deleteMenu">Delete Menu</button>
+</form>
+
+<!-- 업데이트 결과를 표시할 엘리먼트 -->
+<div id="menuResult"></div>
+
+<script>
+    $(document).ready(function () {
+        const auth = getToken();
+        if (auth !== undefined && auth !== '') {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                jqXHR.setRequestHeader('Authorization', auth);
+            });
+        } else {
+            window.location.href = host + '/user/login-page';
+            return;
+        }
+
+        $('#createMenu').click(function () {
+
+            // 폼 데이터 가져오기
+            const formData = {
+                name: $('#menuName').val(),
+                price: $('#menuPrice').val(),
+                details: $('#menuDetails').val()
+            };
+
+            // 상점 생성 요청 보내기
+            $.ajax({
+                type: 'POST',
+                url: `/api/menu`,
+                data: JSON.stringify(formData),
+                contentType: 'application/json',
+                success: function (response) {
+                    // 상점 생성 성공 메시지를 표시
+                    $('#menuResult').html('<p>Store created successfully!</p>');
+                },
+                error: function (error) {
+                    // 상점 생성 실패 메시지를 표시
+                    $('#menuResult').html('<p>Error creating store.</p>');
+                }
+            });
+        });
+
+        $('#updateMenu').click(function () {
+            // 폼 데이터 가져오기
+            const formData = {
+                id: $('#menuId').val(), // 상점 ID를 가져와서 사용
+                name: $('#menuName').val(),
+                price: $('#menuPrice').val(),
+                details: $('#menuDetails').val()
+            };
+
+            // 상점 업데이트 요청 보내기
+            $.ajax({
+                type: 'PUT',
+                url: `/api/menu/${formData.id}`, // 업데이트할 Store의 ID를 포함한 URL
+                data: JSON.stringify(formData),
+                contentType: 'application/json',
+                success: function (response) {
+                    // 상점 업데이트 성공 메시지를 표시
+                    $('#menuResult').html('<p>Store updated successfully!</p>');
+                },
+                error: function (error) {
+                    // 상점 업데이트 실패 메시지를 표시
+                    $('#menuResult').html('<p>Error updating store.</p>');
+                }
+            });
+        });
+
+        // Delete 버튼 클릭 시 상점 삭제
+        $('#deleteMenu').click(function () {
+            const id = $('#menuId').val();
+
+            $.ajax({
+                type: 'DELETE',
+                url: `/api/menu/${id}`,
+                success: function (response) {
+                    // 상점 삭제 성공 메시지를 표시
+                    $('#menuResult').html('<p>Store deleted successfully!</p>');
+                },
+                error: function (error) {
+                    // 상점 삭제 실패 메시지를 표시
+                    $('#menuResult').html('<p>Error deleting store.</p>');
+                }
+            });
+        });
+    });
+    // 쿠키에서 유저 정보를 읽어옵니다.
+    function getToken() {
+        let auth = Cookies.get('Authorization');
+        if (auth === undefined) {
+            return '';
+        }
+
+        // kakao 로그인 사용한 경우 Bearer 추가
+        if (auth.indexOf('Bearer') === -1 && auth !== '') {
+            auth = 'Bearer ' + auth;
+        }
+
+        return auth;
+    }
+</script>
+</body>
+</html>

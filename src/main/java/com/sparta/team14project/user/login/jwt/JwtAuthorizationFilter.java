@@ -49,8 +49,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(tokenValue)) {
             // JWT 토큰 substring
-
-
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token Error");
                 objectMapper.writeValue(res.getWriter(), responseDto);
