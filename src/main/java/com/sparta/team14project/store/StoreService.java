@@ -4,6 +4,7 @@ import com.sparta.team14project.message.MessageResponseDto;
 import com.sparta.team14project.order.dto.OrderResponseDto;
 import com.sparta.team14project.order.entity.Delivery;
 import com.sparta.team14project.order.repository.DeliveryRepository;
+import com.sparta.team14project.redis.CacheNames;
 import com.sparta.team14project.store.dto.CookieStoreResponseDto;
 import com.sparta.team14project.store.dto.StoreRequestDto;
 import com.sparta.team14project.store.dto.StoreResponseDto;
@@ -44,11 +45,16 @@ public class StoreService {
     }
 
     public List<StoreResponseDto> getStores() {
-        return storeRepository.findAllByOrderByStorePointDesc().stream().map(StoreResponseDto::new).toList();
-//        return storeRepository.findAll().stream().map(StoreResponseDto::new).toList();
+        return storeRepository.findAll().stream().map(StoreResponseDto::new).toList();
     }
 
-    @Cacheable(cacheNames = "storeCache", key = "#keyword")
+    @Cacheable(cacheNames = CacheNames.RANK_CACHE, key = "'storeRank'")
+    public List<CookieStoreResponseDto> getStoresRank() { // 랭킹 시스탬
+        return storeRepository.findAllByOrderByStorePointDesc()
+                .stream().map(CookieStoreResponseDto::new).toList();
+    }
+
+    @Cacheable(cacheNames = CacheNames.SEARCH_CACHE, key = "#keyword")
     public List<CookieStoreResponseDto> getStoreByKeyword(String keyword) {
         List<CookieStoreResponseDto> results = storeRepository.findAllByStoreNameContaining(keyword)
                 .stream().map(CookieStoreResponseDto::new).toList();
@@ -60,7 +66,7 @@ public class StoreService {
         // 특정 키워드의 캐시를 지움
     }
 
-    @CacheEvict(value = "storeCache", allEntries = true)
+    @CacheEvict(value = "*", allEntries = true)
     public void clearAllStoreCaches() {
     }
 

@@ -9,7 +9,8 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class CacheConfig {
@@ -24,13 +25,25 @@ public class CacheConfig {
         RedisSerializationContext.SerializationPair<String> keySerializer =
                 RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer());
 
+        Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
+
+        cacheConfigurations.put(CacheNames.SEARCH_CACHE, RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(keySerializer)
+                .serializeValuesWith(jsonSerializer)
+                .entryTtl(CacheNames.SEARCH_TTL));
+
+        cacheConfigurations.put(CacheNames.RANK_CACHE, RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(keySerializer)
+                .serializeValuesWith(jsonSerializer)
+                .entryTtl(CacheNames.RANK_TTL));
+
+        cacheConfigurations.put(CacheNames.ALL_STORE_CACHE, RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(keySerializer)
+                .serializeValuesWith(jsonSerializer)
+                .entryTtl(CacheNames.ALL_STORE_TTL));
+
         RedisCacheManager redisCacheManager = RedisCacheManager.builder(connectionFactory)
-                .cacheDefaults(
-                        RedisCacheConfiguration.defaultCacheConfig()
-                                .serializeKeysWith(keySerializer)
-                                .serializeValuesWith(jsonSerializer)
-                                .entryTtl(Duration.ofSeconds(20))
-                )
+                .withInitialCacheConfigurations(cacheConfigurations)
                 .build();
 
         return redisCacheManager;

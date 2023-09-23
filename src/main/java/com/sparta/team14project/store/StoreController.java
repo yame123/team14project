@@ -30,6 +30,11 @@ public class StoreController {
         return storeService.getStores();
     }
 
+    @GetMapping("/store-rank")
+    public List<CookieStoreResponseDto> getStoresRank() {
+        return storeService.getStoresRank();
+    }
+
     @GetMapping("/store-search")
     public List<CookieStoreResponseDto> getStoresByKeyword(@RequestBody KeywordRequestDto keywordRequestDto){
         return storeService.getStoreByKeyword(keywordRequestDto.getKeyword());
