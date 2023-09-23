@@ -45,7 +45,7 @@ public class MenuService {
         );
     }
 
-    public MenuResponseDto showMenuDetail(Long id) {
+    public MenuResponseDto showMenuDetails(Long id) {
         Menu menu = findMenu(id);
         return new MenuResponseDto(menu);
     }

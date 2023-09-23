@@ -8,12 +8,12 @@ public class MenuResponseDto {
     private Long id;
     private String name;
     private int price;
-    private String detail;
+    private String details;
 
     public MenuResponseDto(Menu menu){
         this.id = menu.getId();
         this.name = menu.getName();
         this.price = menu.getPrice();
-        this.detail = menu.getDetail();
+        this.details = menu.getDetails();
     }
 }

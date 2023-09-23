@@ -36,7 +36,7 @@ public class MenuController {
 
     // 메뉴 상세 조회
     @GetMapping("/menu/{id}")       // menuId
-    public MenuResponseDto showMenuDetail(@PathVariable Long id) {
-        return menuService.showMenuDetail(id);
+    public MenuResponseDto showMenuDetails(@PathVariable Long id) {
+        return menuService.showMenuDetails(id);
     }
 }

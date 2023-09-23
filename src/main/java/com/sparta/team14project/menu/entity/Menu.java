@@ -20,8 +20,8 @@ public class Menu {
     private String name;
     @Column(name = "price", nullable = false)
     private int price;
-    @Column(name = "detail", nullable = false)
-    private String detail;
+    @Column(name = "details", nullable = false)
+    private String details;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
@@ -30,13 +30,13 @@ public class Menu {
     public Menu(MenuRequestDto requestDto, Store store){
         this.name = requestDto.getName();
         this.price = requestDto.getPrice();
-        this.detail = requestDto.getDetail();
+        this.details = requestDto.getDetails();
         this.store = store;
     }
 
     public void update(MenuRequestDto requestDto) {
         this.name = requestDto.getName();
         this.price = requestDto.getPrice();
-        this.detail = requestDto.getDetail();
+        this.details = requestDto.getDetails();
     }
 }

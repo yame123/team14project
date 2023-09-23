@@ -5,7 +5,7 @@ function goHome(){
 
 // 메뉴 클릭시 메뉴 상세 페이지 이동
 function goMenuDetail(){
-    location.href="/templates/menu/menuDetail.html";
+    location.href="../../templates/menu/menuDetails.html";
 }
 
 // 주문 수량 카운트
