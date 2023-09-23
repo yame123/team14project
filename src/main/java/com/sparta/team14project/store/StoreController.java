@@ -2,6 +2,7 @@ package com.sparta.team14project.store;
 
 import com.sparta.team14project.message.MessageResponseDto;
 import com.sparta.team14project.order.dto.OrderResponseDto;
+import com.sparta.team14project.store.dto.CookieStoreResponseDto;
 import com.sparta.team14project.store.dto.KeywordRequestDto;
 import com.sparta.team14project.store.dto.StoreRequestDto;
 import com.sparta.team14project.store.dto.StoreResponseDto;
@@ -30,7 +31,7 @@ public class StoreController {
     }
 
     @GetMapping("/store-search")
-    public List<StoreResponseDto> getStoresByKeyword(@RequestBody KeywordRequestDto keywordRequestDto){
+    public List<CookieStoreResponseDto> getStoresByKeyword(@RequestBody KeywordRequestDto keywordRequestDto){
         return storeService.getStoreByKeyword(keywordRequestDto.getKeyword());
     }
 

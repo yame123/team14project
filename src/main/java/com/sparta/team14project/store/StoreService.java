@@ -2,13 +2,14 @@ package com.sparta.team14project.store;
 
 import com.sparta.team14project.message.MessageResponseDto;
 import com.sparta.team14project.order.dto.OrderResponseDto;
+import com.sparta.team14project.order.entity.Delivery;
+import com.sparta.team14project.order.repository.DeliveryRepository;
+import com.sparta.team14project.store.dto.CookieStoreResponseDto;
 import com.sparta.team14project.store.dto.StoreRequestDto;
 import com.sparta.team14project.store.dto.StoreResponseDto;
-import com.sparta.team14project.order.entity.Delivery;
 import com.sparta.team14project.store.entity.Store;
 import com.sparta.team14project.store.repository.StoreRepository;
 import com.sparta.team14project.user.entity.User;
-import com.sparta.team14project.order.repository.DeliveryRepository;
 import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -47,9 +48,11 @@ public class StoreService {
 //        return storeRepository.findAll().stream().map(StoreResponseDto::new).toList();
     }
 
-    @Cacheable(value = "storeCache", key = "#keyword")
-    public List<StoreResponseDto> getStoreByKeyword(String keyword) {
-        return storeRepository.findAllByStoreNameContaining(keyword).stream().map(StoreResponseDto::new).toList();
+    @Cacheable(cacheNames = "storeCache", key = "#keyword")
+    public List<CookieStoreResponseDto> getStoreByKeyword(String keyword) {
+        List<CookieStoreResponseDto> results = storeRepository.findAllByStoreNameContaining(keyword)
+                .stream().map(CookieStoreResponseDto::new).toList();
+        return results;
     }
 
     @CacheEvict(value = "storeCache", key = "#keyword")

@@ -6,20 +6,20 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class StoreResponseDto{
-    private Long id;
+public class CookieStoreResponseDto{
+    private String id;
     private String storeName;
     private String storeDetails;
     private String storeAddress;
-    private double avgStar;
-    private int storePoint;
+    private String avgStar;
+    private String storePoint;
 
-    public StoreResponseDto(Store store){
-        this.id = store.getId();
+    public CookieStoreResponseDto(Store store){
+        this.id = Long.toString(store.getId());
         this.storeName = store.getStoreName();
         this.storeDetails = store.getStoreDetails();
         this.storeAddress = store.getStoreAddress();
-        this.avgStar = store.getReviewedPeople() != 0 ? store.getStar() / store.getReviewedPeople() : 0;
-        this.storePoint = store.getStorePoint();
+        this.avgStar = Double.toString(store.getReviewedPeople() != 0 ? store.getStar() / store.getReviewedPeople() : 0);
+        this.storePoint = Integer.toString(store.getStorePoint());
     }
 }
