@@ -1,5 +1,6 @@
 package com.sparta.team14project.menu.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.team14project.menu.dto.MenuRequestDto;
 import com.sparta.team14project.store.entity.Store;
 import jakarta.persistence.*;
@@ -23,7 +24,7 @@ public class Menu {
     @Column(name = "detail", nullable = false)
     private String detail;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
 

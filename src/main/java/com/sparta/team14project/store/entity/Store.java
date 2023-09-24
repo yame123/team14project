@@ -58,11 +58,14 @@ public class Store {
         this.user = user;
     }
 
+
     public void update(StoreRequestDto requestDto){
         this.storeName = requestDto.getStoreName();
         this.storeDetails = requestDto.getStoreDetails();
         this.storeAddress = requestDto.getStoreAddress();
     }
+
+
 
     public void earnPoint(int price) {
         this.storePoint += price;

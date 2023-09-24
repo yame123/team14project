@@ -1,10 +1,13 @@
 package com.sparta.team14project.store;
 
+import com.sparta.team14project.menu.entity.Menu;
 import com.sparta.team14project.message.MessageResponseDto;
 import com.sparta.team14project.order.dto.OrderResponseDto;
 import com.sparta.team14project.store.dto.KeywordRequestDto;
+import com.sparta.team14project.store.dto.StoreMenuResponseDto;
 import com.sparta.team14project.store.dto.StoreRequestDto;
 import com.sparta.team14project.store.dto.StoreResponseDto;
+import com.sparta.team14project.store.entity.Store;
 import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,11 @@ public class StoreController {
     @PostMapping("/store/create")
     public StoreResponseDto createStore(@RequestBody StoreRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
             return storeService.createStore(requestDto, userDetails);
+    }
+
+    @GetMapping("/store/{storeId}")
+    public StoreMenuResponseDto getStore(@PathVariable("storeId") Long storeId){
+        return storeService.getStore(storeId);
     }
 
     @GetMapping("/store")

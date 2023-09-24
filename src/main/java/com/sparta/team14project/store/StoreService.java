@@ -1,7 +1,12 @@
 package com.sparta.team14project.store;
 
+import com.sparta.team14project.menu.dto.MenuResponseDto;
+import com.sparta.team14project.menu.entity.Menu;
 import com.sparta.team14project.message.MessageResponseDto;
 import com.sparta.team14project.order.dto.OrderResponseDto;
+import com.sparta.team14project.review.dto.ReviewResponseDto;
+import com.sparta.team14project.review.entity.OrderReview;
+import com.sparta.team14project.store.dto.StoreMenuResponseDto;
 import com.sparta.team14project.store.dto.StoreRequestDto;
 import com.sparta.team14project.store.dto.StoreResponseDto;
 import com.sparta.team14project.order.entity.Delivery;
@@ -25,6 +30,7 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
     private final DeliveryRepository deliveryRepository;
+    private StoreResponseDto List;
 
     @CacheEvict(value = "storeCache", allEntries = true)
     public StoreResponseDto createStore(StoreRequestDto requestDto, UserDetailsImpl userDetails) {
@@ -106,4 +112,13 @@ public class StoreService {
     public Long getStoreId(UserDetailsImpl userDetails) {
         return storeRepository.findStoreByUser(userDetails.getUser()).getId();
     }
+
+    public StoreMenuResponseDto getStore(Long id){
+        Store store = findStore(id);
+
+        StoreMenuResponseDto storeInfo = new StoreMenuResponseDto(store);
+        return storeInfo;
+    }
+
+
 }
