@@ -44,8 +44,15 @@ public class StoreService {
         return storeResponseDto;
     }
 
-    public List<StoreResponseDto> getStores() {
-        return storeRepository.findAll().stream().map(StoreResponseDto::new).toList();
+//    public List<StoreResponseDto> getStores() {
+//        return storeRepository.findAll().stream().map(StoreResponseDto::new).toList();
+//    }
+
+    // redis cache 적용시킴, 필요하면 프론트에서 형변환해서 이용해야 함
+    @Cacheable(cacheNames = CacheNames.ALL_STORE_CACHE, key = "'allStores'")
+    public List<CookieStoreResponseDto> getStores() {
+        return storeRepository.findAll()
+                .stream().map(CookieStoreResponseDto::new).toList();
     }
 
     @Cacheable(cacheNames = CacheNames.RANK_CACHE, key = "'storeRank'")
@@ -71,14 +78,14 @@ public class StoreService {
     }
 
     @Transactional
-    @CacheEvict(value = "storeCache", allEntries = true)
+    @CacheEvict(value = "*", allEntries = true)
     public StoreResponseDto updateStore(Long id, StoreRequestDto requestDto) {
         Store store = findStore(id);
         store.update(requestDto);
         return new StoreResponseDto(store);
     }
 
-    @CacheEvict(value = "storeCache", allEntries = true)
+    @CacheEvict(value = "*", allEntries = true)
     public MessageResponseDto deleteStore(Long id) {
         Store store = findStore(id);
         storeRepository.delete(store);

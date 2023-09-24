@@ -25,8 +25,12 @@ public class StoreController {
             return storeService.createStore(requestDto, userDetails);
     }
 
+//    @GetMapping("/store")
+//    public List<StoreResponseDto> getStores() {
+//        return storeService.getStores();
+//    }
     @GetMapping("/store")
-    public List<StoreResponseDto> getStores() {
+    public List<CookieStoreResponseDto> getStores() {
         return storeService.getStores();
     }
 
