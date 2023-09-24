@@ -1,11 +1,14 @@
 package com.sparta.team14project.store;
 
+import com.sparta.team14project.menu.dto.CookieMenuResponseDto;
+import com.sparta.team14project.menu.dto.MenuResponseDto;
 import com.sparta.team14project.message.MessageResponseDto;
 import com.sparta.team14project.order.dto.OrderResponseDto;
 import com.sparta.team14project.order.entity.Delivery;
 import com.sparta.team14project.order.repository.DeliveryRepository;
 import com.sparta.team14project.redis.CacheNames;
 import com.sparta.team14project.store.dto.CookieStoreResponseDto;
+import com.sparta.team14project.store.dto.StoreInfoResponseDto;
 import com.sparta.team14project.store.dto.StoreRequestDto;
 import com.sparta.team14project.store.dto.StoreResponseDto;
 import com.sparta.team14project.store.entity.Store;
@@ -53,6 +56,13 @@ public class StoreService {
     public List<CookieStoreResponseDto> getStores() {
         return storeRepository.findAll()
                 .stream().map(CookieStoreResponseDto::new).toList();
+    }
+
+    @Cacheable(cacheNames = CacheNames.STORE_INFO_CACHE, key = "#storeId")
+    public Object getStoreInfo(String storeId) {
+        Store store = storeRepository.findStoreById(Long.valueOf(storeId));
+        List<CookieMenuResponseDto> menuResponseDtoList = store.getMenuList().stream().map(CookieMenuResponseDto::new).toList();
+        return new StoreInfoResponseDto(store, menuResponseDtoList);
     }
 
     @Cacheable(cacheNames = CacheNames.RANK_CACHE, key = "'storeRank'")

@@ -42,6 +42,11 @@ public class CacheConfig {
                 .serializeValuesWith(jsonSerializer)
                 .entryTtl(CacheNames.ALL_STORE_TTL));
 
+        cacheConfigurations.put(CacheNames.STORE_INFO_CACHE, RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(keySerializer)
+                .serializeValuesWith(jsonSerializer) // JSON 직렬화를 사용
+                .entryTtl(CacheNames.STORE_INFO_TTL));
+
         RedisCacheManager redisCacheManager = RedisCacheManager.builder(connectionFactory)
                 .withInitialCacheConfigurations(cacheConfigurations)
                 .build();

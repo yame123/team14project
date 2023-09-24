@@ -2,10 +2,7 @@ package com.sparta.team14project.store;
 
 import com.sparta.team14project.message.MessageResponseDto;
 import com.sparta.team14project.order.dto.OrderResponseDto;
-import com.sparta.team14project.store.dto.CookieStoreResponseDto;
-import com.sparta.team14project.store.dto.KeywordRequestDto;
-import com.sparta.team14project.store.dto.StoreRequestDto;
-import com.sparta.team14project.store.dto.StoreResponseDto;
+import com.sparta.team14project.store.dto.*;
 import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +29,11 @@ public class StoreController {
     @GetMapping("/store")
     public List<CookieStoreResponseDto> getStores() {
         return storeService.getStores();
+    }
+
+    @GetMapping("/store-info/{storeId}")
+    public Object getStoreInfo(@PathVariable("storeId") Long storeId) { // ResponsDto의 자료형들이 Redis가 혀용하는 자료형들의 혼합이라면 Object사용!
+        return storeService.getStoreInfo(Long.toString(storeId));
     }
 
     @GetMapping("/store-rank")
