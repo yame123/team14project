@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebSocket Chat</title>
+  <meta charset="UTF-8">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+  <style>
+    /* 출력 칸 스타일 */
+    #messageOutput {
+      border: 1px solid #ccc;
+      padding: 10px;
+      max-height: 200px; /* 최대 높이 설정 (스크롤 가능하도록) */
+      overflow-y: auto; /* 스크롤 설정 */
+    }
+
+    /* 입력 칸 스타일 */
+    #messageInput {
+      width: 100%;
+      max-width: 400px; /* 최대 가로 길이 설정 */
+      height: 100px; /* 여러 줄 입력 가능하도록 높이 설정 */
+    }
+  </style>
+</head>
+<body>
+<h1>WebSocket Chat</h1>
+
+<!-- 웹 소켓 연결 입력 폼 -->
+<div>
+  <button onclick="storeOpen()">가게 오픈</button>
+  <span id="connectionStatus"> </span> <!-- 연결 상태 표시 -->
+</div>
+
+<!-- 데이터 입력 폼 및 전송 버튼 -->
+<div>
+  <label for="messageInput">데이터 입력:</label>
+  <textarea id="messageInput" placeholder="데이터를 입력하세요"></textarea>
+  <button onclick="sendMessage()">전송</button>
+</div>
+
+<!-- 데이터 출력 영역 -->
+<div id="messageOutput"></div>
+
+<h1>Store Order Information</h1>
+<div id="orderInfo">
+  <!-- 주문 정보가 여기에 표시됩니다. -->
+</div>
+
+<script>
+  let name
+  let webSocket;
+  let ownerid;
+  const messageInput = document.getElementById("messageInput");
+  const messageOutput = document.getElementById("messageOutput");
+  const connectionStatus = document.getElementById("connectionStatus"); // 연결 상태 표시
+  console.log(connectionStatus)
+  $(document).ready(function () {
+    const auth = getToken();
+    if (auth !== undefined && auth !== '') {
+      $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        jqXHR.setRequestHeader('Authorization', auth);
+      });
+    } else {
+      window.location.href = host + '/user/login-page';
+      return;
+    }
+    console.log(-3)
+    connectWebSocket();
+    console.log(-2)
+
+    $.ajax({
+      type: 'GET',
+      url: `/api/user-info`,
+      contentType: 'application/json',
+    })
+            .done(function (res, status, xhr) {
+              console.log(res)
+              const username = res.username;
+              name = res.username;
+              ownerid = res.userid;
+              console.log(-1)
+              if (!username) {
+                window.location.href = '/api/user/login-page';
+                return;
+              }
+              console.log(0)
+            })
+            .fail(function (jqXHR, textStatus) {
+              logout();
+            });
+    // user 이름으로 된 채팅방에 알아서 진입
+     //store 주문정보 호출
+    $.ajax({
+      type: 'GET',
+      url: `/api/store/order`,
+      success: function (orders) {
+        tmp = `<p>Username: ${orders[0].storename}</p><hr>`
+        orders.forEach(order=>{
+          tmp += `<p>Storename: ${order.username}</p>
+                        <p>Address: ${order.address}</p>
+                        <p>Delivered: ${order.delivered ? "Yes" : "No"}</p>
+                        <p>MenuList</p>
+                    `;
+          order.orderList.forEach(menu=>{
+            tmp+=`<p>  Menu: ${menu.menuResponseDto.name}</p>
+                              <p>  Count: ${menu.count}</p>`
+          })
+          tmp+=`<button onclick="sendMessage(${order.userid,order.id})">배달 완료</button><hr>`
+          // $('#orderInfo').append(tmp);
+
+        })
+        const orderInfoDiv = document.getElementById("orderInfo");
+        const orderItem = document.createElement("div");
+        orderItem.innerHTML =tmp;
+        orderInfoDiv.appendChild(orderItem);
+      }
+    })
+
+
+  })
+
+  // 쿠키에서 유저 정보를 읽어옵니다.
+  function getToken() {
+
+    let auth = Cookies.get('Authorization');
+
+    if(auth === undefined) {
+      return '';
+    }
+
+    // kakao 로그인 사용한 경우 Bearer 추가
+    if(auth.indexOf('Bearer') === -1 && auth !== ''){
+      auth = 'Bearer ' + auth;
+    }
+
+    return auth;
+  }
+  function storeOpen(){
+    const message = `{
+              "type":"ENTER",
+              "roomId":"${ownerid}",
+              "sender":"${name}",
+              "message":"입장"
+              }`
+    console.log(message)
+    //const message = messageInput.value;
+    webSocket.send(message);
+
+    console.log(1)
+    messageInput.value = "";
+    console.log(2)
+    messageOutput.innerHTML += `<p>송신: ${message}</p>`;
+    console.log(3)
+  }
+
+
+
+  // 웹 소켓 연결 함수
+  function connectWebSocket() {
+    const socketUrl = 'ws://localhost:8080/ws/chat';
+    if (!webSocket && socketUrl.trim() !== "") {
+      webSocket = new WebSocket(socketUrl);
+
+      // 웹 소켓 연결 성공 시
+      webSocket.onopen = (event) => {
+        console.log("WebSocket 연결 성공!");
+        connectionStatus.textContent = "연결됨"; // 연결 상태 표시 업데이트
+      };
+
+      // 웹 소켓 메시지 수신 시
+      webSocket.onmessage = (event) => {
+        const message = event.data;
+        messageOutput.innerHTML += `<p>수신: ${message}</p>`;
+      };
+
+      // 웹 소켓 연결 종료 시
+      webSocket.onclose = (event) => {
+        console.log("WebSocket 연결 종료!");
+        connectionStatus.textContent = "연결 종료"; // 연결 상태 표시 업데이트
+      };
+    }
+  }
+
+  // 메시지 전송 함수
+  function sendMessage(userid,orderid) {
+    if (webSocket && messageInput.value.trim() !== "") {
+      const message = `{
+        "type":"DONE",
+        "roomId":"${userid}",
+        "sender":"${name}",
+        "message":"${orderid}번 주문이 완료되었습니다!"
+      }`
+
+      //const message = messageInput.value;
+      webSocket.send(message);
+      messageInput.value = "";
+      messageOutput.innerHTML += `<p>송신: ${message}</p>`;
+    }
+  };
+</script>
+</body>
+</html>

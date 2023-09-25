@@ -6,15 +6,16 @@ import com.sparta.team14project.order.entity.OrderedMenu;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 public class OrderResponseDto {
 
     private long id;
     private String username;
+    private long userid;
+    private String storename;
+    private long storeownerid;
     private String address;
     private List<OrderedMenuResponseDto> orderList = new ArrayList<>();
     private boolean delivered;
@@ -22,6 +23,9 @@ public class OrderResponseDto {
     public OrderResponseDto(Delivery delivery) {
         this.id = delivery.getId();
         this.username = delivery.getUser().getUsername();
+        this.userid = delivery.getUser().getId();
+        this.storename = delivery.getStore().getStoreName();
+        this.storeownerid = delivery.getStore().getUser().getId();
         this.address = delivery.getAddress();
         this.delivered = delivery.isDelivered();
         for(OrderedMenu om: delivery.getOrderedMenuList()){
