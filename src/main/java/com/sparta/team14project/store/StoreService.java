@@ -32,7 +32,7 @@ public class StoreService {
     private final DeliveryRepository deliveryRepository;
     private StoreResponseDto List;
 
-    // @CacheEvict(value = "storeCache", allEntries = true)
+    @CacheEvict(value = "storeCache", allEntries = true)
     public StoreResponseDto createStore(StoreRequestDto requestDto, UserDetailsImpl userDetails) {
         // user 정보 userDetails에서 추출
         User user = userDetails.getUser();
