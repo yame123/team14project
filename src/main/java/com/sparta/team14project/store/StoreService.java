@@ -32,7 +32,7 @@ public class StoreService {
     private final DeliveryRepository deliveryRepository;
     private StoreResponseDto List;
 
-    @CacheEvict(value = "storeCache", allEntries = true)
+    // @CacheEvict(value = "storeCache", allEntries = true)
     public StoreResponseDto createStore(StoreRequestDto requestDto, UserDetailsImpl userDetails) {
         // user 정보 userDetails에서 추출
         User user = userDetails.getUser();
@@ -53,17 +53,17 @@ public class StoreService {
 //        return storeRepository.findAll().stream().map(StoreResponseDto::new).toList();
     }
 
-    @Cacheable(value = "storeCache", key = "#keyword")
+    // @Cacheable(value = "storeCache", key = "#keyword")
     public List<StoreResponseDto> getStoreByKeyword(String keyword) {
         return storeRepository.findAllByStoreNameContaining(keyword).stream().map(StoreResponseDto::new).toList();
     }
 
-    @CacheEvict(value = "storeCache", key = "#keyword")
+    // @CacheEvict(value = "storeCache", key = "#keyword")
     public void clearStoreCache(String keyword) {
         // 특정 키워드의 캐시를 지움
     }
 
-    @CacheEvict(value = "storeCache", allEntries = true)
+    // @CacheEvict(value = "storeCache", allEntries = true)
     public void clearAllStoreCaches() {
     }
 
@@ -75,7 +75,7 @@ public class StoreService {
         return new StoreResponseDto(store);
     }
 
-    @CacheEvict(value = "storeCache", allEntries = true)
+    // @CacheEvict(value = "storeCache", allEntries = true)
     public MessageResponseDto deleteStore(Long id) {
         Store store = findStore(id);
         storeRepository.delete(store);
