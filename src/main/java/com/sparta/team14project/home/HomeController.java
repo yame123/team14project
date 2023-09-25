@@ -43,9 +43,9 @@ public class HomeController {
         return "menu/menuCUD";
     }
 
-    @GetMapping("/store/menu") // 메뉴 상세 정보 조회
-    public String showMenuDetail() {
-        return "menu/menuDetail";
+    @GetMapping("/menu") // 메뉴 상세 정보 조회
+    public String showMenuDetails() {
+        return "menu/menuDetails";
     }
 
     @GetMapping("/user-info")
