@@ -68,7 +68,7 @@ public class StoreService {
     }
 
     @Transactional
-    @CacheEvict(value = "storeCache", allEntries = true)
+    // @CacheEvict(value = "storeCache", allEntries = true)
     public StoreResponseDto updateStore(Long id, StoreRequestDto requestDto) {
         Store store = findStore(id);
         store.update(requestDto);
