@@ -40,14 +40,15 @@ public class HomeController {
         return "menu/menuCUD";
     }
 
-    @GetMapping("/user-info")
+    @GetMapping("/api/user-info")
     @ResponseBody
     public UserInfoDto getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userid = userDetails.getUser().getId();
         String username = userDetails.getUser().getUsername();
         UserRoleEnum role = userDetails.getUser().getUserRole();
         boolean isOwner = (role == UserRoleEnum.OWNER);
 
-        return new UserInfoDto(username, isOwner);
+        return new UserInfoDto(userid,username, isOwner);
     }
     @GetMapping("/user/cart")
     public String userCartPage() {
@@ -62,20 +63,7 @@ public class HomeController {
         return "review"; // - 이거 그냥 한데 박을수 있지 않을까
     }
 
-    @GetMapping("/owner")
-    public String ownerPage() {
-        return "owner";
-    }
 
-    @GetMapping("/owner/store")
-    public String ownerStorePage() {
-        return "ownerstore";
-    }
-
-    @GetMapping("/owner/menu")
-    public String ownerMenuPage() {
-        return "ownermenu";
-    }
     @GetMapping("/owner/order")
     public String ownerOrderPage() {
         return "ownerorder";
