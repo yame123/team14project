@@ -23,15 +23,14 @@ public class MenuController {
 
     // 메뉴 수정
     @PutMapping("/menu/{id}")       // menuId
-    public MenuResponseDto updateMenu(@PathVariable Long id,
-                                      @RequestBody MenuRequestDto requestDto){
+    public MenuResponseDto updateMenu(@PathVariable Long id, @RequestBody MenuRequestDto requestDto){
         return menuService.updateMenu(id, requestDto);
     }
 
     // 메뉴 삭제
     @DeleteMapping("/menu/{id}")
     public MenuResponseDto deleteMenu(@PathVariable Long id) {
-        return menuService.deleteBoard(id);
+        return menuService.deleteMenu(id);
     }
 
     // 메뉴 상세 조회
@@ -39,4 +38,7 @@ public class MenuController {
     public MenuResponseDto showMenuDetails(@PathVariable Long id) {
         return menuService.showMenuDetails(id);
     }
+
+    // 메뉴 장바구니 담기
+
 }

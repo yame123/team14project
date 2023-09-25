@@ -5,8 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../../static/css/style2.css">
-    <script src="../../static/js/index.js"></script>
+    <link rel="stylesheet" href="/css/style2.css">
+    <script src="/js/index.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -18,39 +18,10 @@
     <tr>
         <td colspan="2" align="center" style="font-size: 30px;">메뉴 상세 페이지</td>
     </tr>
-    <tr>
-        <td colspan="2"><img src="../../static/images/chickenfeet.jpg" name="menuPhoto"></td>
-    </tr>
-    <tr>
-        <td align="center">메뉴 이름</td>
-        <td align="center" id="menuName" name="menuName">닭발</td>
-    </tr>
-    <tr>
-        <td align="center">메뉴 가격</td>
-        <td align="center" id="menuPrice" name="menuPrice">5000</td>
-    </tr>
-    <tr>
-        <td align="center">메뉴 설명</td>
-        <td align="center" id="menuDetails" name="menuDetails">세상에서 제일 맛있게 매운 닭발 입니다.</td>
-    </tr>
-    <tr>
-        <td align="center">음식 수량</td>
-        <td align="right">
-            <input type='button' onclick='count("minus")' value='-'/>
-            <input type='button' onclick='count("plus")' value='+'/>
-            <div id='cnt'>0</div>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td align="right">
-            <button type="reset" onclick="goHome()">취소</button>
-            <button type="submit">장바구니 담기</button>
-        </td>
-    </tr>
 </table>
 
 <script>
+    host = window.location.host
     $(document).ready(function () {
         const auth = getToken();
         if (auth !== undefined && auth !== '') {
@@ -62,7 +33,9 @@
             return;
         }
 
-        const id = 2;
+        // $("#menuDetailsTable").empty();
+
+        const id = 3;
 
         // 선택한 메뉴 정보 가져오기
         $.ajax({
@@ -73,10 +46,10 @@
             async: false,
             success: function (menu) {
                 const menuDetailsTable = document.getElementById("menuDetailsTable");
-                    const menuItem = document.createElement("table");
+                const menuItem = document.createElement("table");
                     menuItem.innerHTML = `
                         <tr>
-                            <td colspan="2"><img src="../../static/images/chickenfeet.jpg" name="menuPhoto"></td>
+                            <td colspan="2"><img src="/images/chickenfeet.jpg" name="menuPhoto"></td>
                         </tr>
                         <tr>
                             <td align="center">메뉴 이름</td>
@@ -88,7 +61,7 @@
                         </tr>
                         <tr>
                             <td align="center">메뉴 설명</td>
-                            <td align="center" name="menuDetails">${menu.details}</td>
+                            <td align="center">${menu.details}</td>
                         </tr>
                         <tr>
                             <td align="center">음식 수량</td>
@@ -102,7 +75,7 @@
                             <td></td>
                             <td align="right">
                                 <button type="reset" onclick="goHome()">취소</button>
-                                <button type="submit">장바구니 담기</button>
+                                <button type="submit" id="addMenuButton">장바구니 담기</button>
                             </td>
                         </tr>
                     `;
@@ -111,7 +84,23 @@
         })
     });
 
-
+    window.onload = function() {
+        const id = 3;
+        const addMenuButton = document.getElementById("addMenuButton");
+        addMenuButton.addEventListener("click", () => {
+            $.ajax({
+                type: 'POST', // Use POST method to send data
+                url: `/api/cart/${id}`, // Replace with your actual endpoint
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                async: false,
+                success: function (response) {
+                    console.log(response);
+                    console.log(id);
+                }
+            });
+        });
+    }
 
     // 쿠키에서 유저 정보를 읽어옵니다.
     function getToken() {
