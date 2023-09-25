@@ -27,6 +27,8 @@ public class OrderReview {
     @Column(name = "details", nullable = false)
     private String details;
 
+    private Long storeId;
+
     public OrderReview(ReviewRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.star = requestDto.getStar();
