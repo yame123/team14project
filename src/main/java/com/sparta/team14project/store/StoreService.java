@@ -97,8 +97,8 @@ public class StoreService {
         return new MessageResponseDto("배달이 완료되었습니다!", 200);
     }
 
-    public List<OrderResponseDto> deliveryCheck(Long storeId) {
-        Store store = findStore(storeId);
+    public List<OrderResponseDto> deliveryCheck(User user) {
+        Store store = findStoreByUser(user);
         List<OrderResponseDto> responseDtos = deliveryRepository.findAllByStore(store).stream().map(OrderResponseDto::new).collect(Collectors.toList());
         return responseDtos;
     }
@@ -111,6 +111,10 @@ public class StoreService {
 
     public Long getStoreId(UserDetailsImpl userDetails) {
         return storeRepository.findStoreByUser(userDetails.getUser()).getId();
+    }
+
+    private Store findStoreByUser(User user){
+        return storeRepository.findStoreByUser(user);
     }
 
     public StoreMenuResponseDto getStore(Long id){

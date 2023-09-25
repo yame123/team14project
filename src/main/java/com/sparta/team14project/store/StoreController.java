@@ -76,9 +76,9 @@ public class StoreController {
         return storeService.deliveryDone(orderId, userDetails.getUser());
     }
 
-    @GetMapping("/store/order/{storeId}")
-    public List<OrderResponseDto> deliveryCheck(@PathVariable Long storeId,@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return storeService.deliveryCheck(storeId);
+    @GetMapping("/store/order")
+    public List<OrderResponseDto> deliveryCheckTest(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return storeService.deliveryCheck(userDetails.getUser());
     }
 
 }
