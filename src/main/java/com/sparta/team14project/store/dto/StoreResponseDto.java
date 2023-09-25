@@ -4,11 +4,9 @@ import com.sparta.team14project.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Getter
 @NoArgsConstructor
-public class StoreResponseDto implements Serializable {
+public class StoreResponseDto {
     private Long id;
     private String storeName;
     private String storeDetails;
