@@ -165,7 +165,7 @@
 
     }
     function connectWebSocket() {
-        const socketUrl = 'ws://43.201.67.57/ws/chat';
+        const socketUrl = 'ws://43.201.67.57:8080/ws/chat';
         if (!webSocket && socketUrl.trim() !== "") {
             webSocket = new WebSocket(socketUrl);
 
