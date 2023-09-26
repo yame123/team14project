@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>User Order Information</title>
+  <meta charset="UTF-8">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+</head>
+<body>
+<div align="center">
+  <h1>Store Rank</h1>
+  <div id="storeRank">
+    <!-- 상점 정보가 여기에 표시됩니다. -->
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function () {
+    const auth = getToken();
+    if (auth !== undefined && auth !== '') {
+      $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        jqXHR.setRequestHeader('Authorization', auth);
+      });
+    } else {
+      window.location.href = host + '/user/login-page';
+      return;
+    }
+
+    // 상점 정보 가져오기
+    $.ajax({
+      type: 'GET',
+      url: `/api/store-rank`,
+      success: function (stores) {
+        const storeInfoDiv = document.getElementById("storeRank");
+        let rank = 1;
+        stores.forEach(store => {
+          const storeItem = document.createElement("div");
+          storeItem.innerHTML = `
+                        <p>랭킹 ${rank}위: ${store.storeName}</p>
+                        <td align="right"><a href="/user/store/store-detail/${store.id}">상점 바로가기</a></td>
+                    `;
+          storeInfoDiv.appendChild(storeItem);
+          rank++
+        });
+      }
+    });
+  });
+
+  // 쿠키에서 유저 정보를 읽어옵니다.
+  function getToken() {
+    let auth = Cookies.get('Authorization');
+    if (auth === undefined) {
+      return '';
+    }
+
+    // kakao 로그인 사용한 경우 Bearer 추가
+    if (auth.indexOf('Bearer') === -1 && auth !== '') {
+      auth = 'Bearer ' + auth;
+    }
+
+    return auth;
+  }
+</script>
+</body>
+</html>

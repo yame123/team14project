@@ -42,11 +42,12 @@
         return;
       }
 
-    const id = 1;
+      const url = window.location.href;
+      const storeId = url.substring(url.lastIndexOf("/") + 1);
 
     $.ajax({
       type: 'GET',
-      url: `/api/store/${id}`,
+      url: `/api/store/${storeId}`,
       dataType: 'json',
       contentType: 'application/json; charset=utf-8',
       success: function(store){
