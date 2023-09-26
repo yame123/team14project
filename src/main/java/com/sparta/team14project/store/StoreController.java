@@ -47,11 +47,11 @@ public class StoreController {
         return storeService.getStoreByKeyword(keywordRequestDto.getKeyword());
     }
 
-    @DeleteMapping("/delete-caches")
-    public ResponseEntity<String> clearAllStoreCaches() {
-        storeService.clearAllStoreCaches();
-        return ResponseEntity.ok("All cache cleared.");
-    }
+//    @DeleteMapping("/delete-caches")
+//    public ResponseEntity<String> clearAllStoreCaches() {
+//        storeService.clearAllStoreCaches();
+//        return ResponseEntity.ok("All cache cleared.");
+//    }
 
     @GetMapping("/store/getStoreId")
     public Long getStoreId(@AuthenticationPrincipal UserDetailsImpl userDetails) {
