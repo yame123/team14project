@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Order Information</title>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+</head>
+<body>
+<h1>Store Search</h1>
+<form>
+    <label for="keyword">검색어</label>
+    <input type="text" id="keyword" name="keyword" required>
+    <br>
+
+    <button type="button" id="searchStore">검색</button>
+</form>
+
+<div id="storeInfo">
+    <!-- 상점 정보가 여기에 표시됩니다. -->
+</div>
+
+<script>
+    $(document).ready(function () {
+        const auth = getToken();
+        if (auth !== undefined && auth !== '') {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                jqXHR.setRequestHeader('Authorization', auth);
+            });
+        } else {
+            window.location.href = host + '/user/login-page';
+            return;
+        }
+        $('#searchStore').click(function () {
+            const keyword = $('#keyword').val();
+
+            // 상점 생성 요청 보내기
+            $.ajax({
+                type: 'GET',
+                url: `/api/store-search?keyword=${keyword}`,
+                success: function (stores) {
+                    const storeInfoDiv = document.getElementById("storeInfo");
+                    storeInfoDiv.innerHTML = '';
+                    stores.forEach(store => {
+                        const storeItem = document.createElement("div");
+                        storeItem.innerHTML = `
+                        <br>
+                        <p>Store Name: ${store.storeName}</p>
+                        <p>Store Details: ${store.storeDetails}</p>
+                        <p>Store Address: ${store.storeAddress}</p>
+                        <p>Average Star: ${store.avgStar}</p>
+                        <td align="right"><a href="/user/store/store-detail/${store.id}">상점 바로가기</a></td>
+                        <button onclick="toggleReviews(${store.id})">리뷰 보기</button> <!-- 리뷰 보기 버튼 추가 -->
+                        <div id="storeReviews_${store.id}" style="display: none;"></div> <!-- 리뷰를 표시할 div 추가 -->
+                    `;
+                        storeInfoDiv.appendChild(storeItem);
+                    });
+                }
+            });
+        });
+    });
+
+    // 리뷰를 보여주거나 숨기는 함수
+    function toggleReviews(storeId) {
+        const storeReviewsDiv = document.getElementById(`storeReviews_${storeId}`);
+        const isVisible = storeReviewsDiv.style.display === 'block';
+
+        // 상태에 따라 토글
+        storeReviewsDiv.style.display = isVisible ? 'none' : 'block';
+
+        if (!isVisible) {
+            // 리뷰를 보여주는 함수 호출
+            showReviews(storeId, storeReviewsDiv);
+        }
+    }
+
+    // 리뷰를 보여주는 함수
+    function showReviews(storeId, storeReviewsDiv) {
+        // 해당 상점의 리뷰를 가져오는 AJAX 요청
+        $.ajax({
+            type: 'GET',
+            url: `/api/reviews/${storeId}`,
+            success: function (reviews) {
+                storeReviewsDiv.innerHTML = ''; // 이전 리뷰를 지우고 새로운 리뷰 표시
+                reviews.forEach(review => {
+                    const reviewItem = document.createElement("div");
+                    reviewItem.innerHTML = `
+                        <p>Title: ${review.title}</p>
+                        <p>Star: ${review.star}</p>
+                        <p>Detail: ${review.detail}</p>
+                        <p>Image: ${review.image}</p>
+                        <p>Username: ${review.username}</p>
+                        <p>Store Name: ${review.storename}</p>
+                        <p>Menu Names: ${review.menunamelist.join(', ')}</p>
+                        <hr>
+                    `;
+                    storeReviewsDiv.appendChild(reviewItem);
+                });
+            }
+        });
+    }
+
+    // 쿠키에서 유저 정보를 읽어옵니다.
+    function getToken() {
+        let auth = Cookies.get('Authorization');
+        if (auth === undefined) {
+            return '';
+        }
+
+        // kakao 로그인 사용한 경우 Bearer 추가
+        if (auth.indexOf('Bearer') === -1 && auth !== '') {
+            auth = 'Bearer ' + auth;
+        }
+
+        return auth;
+    }
+</script>
+</body>
+</html>

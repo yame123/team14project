@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 @Getter
 public class ReviewResponseDto {
     private String title;
-    private int star;
+    private String star;
     private String detail;
     private String username;
     private String storename;
@@ -17,7 +17,7 @@ public class ReviewResponseDto {
 
     public ReviewResponseDto(OrderReview review) {
         this.title = review.getTitle();
-        this.star = review.getStar();
+        this.star = Integer.toString(review.getStar());
         this.detail = review.getDetails();
         this.username = review.getDelivery().getUser().getUsername();
         this.storename = review.getDelivery().getStore().getStoreName();

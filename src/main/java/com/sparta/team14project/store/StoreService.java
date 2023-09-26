@@ -26,7 +26,6 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
     private final DeliveryRepository deliveryRepository;
-    private StoreResponseDto List;
 
 //    @CacheEvict(value = "*", allEntries = true)
     public StoreResponseDto createStore(StoreRequestDto requestDto, UserDetailsImpl userDetails) {
