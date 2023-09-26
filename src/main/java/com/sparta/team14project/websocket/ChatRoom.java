@@ -24,8 +24,8 @@ public class ChatRoom {
         sendMessage(chatMessage, chatService);
         if (chatMessage.getType().equals(ChatMessage.MessageType.ORDER)
                 ||chatMessage.getType().equals(ChatMessage.MessageType.DONE)) {
-            //chatMessage.setMessage(chatMessage.getSender() +"님이 주문했숑");
-            sendMessage(chatMessage, chatService);
+            // chatMessage.setMessage(chatMessage.getSender() +"님이 주문했숑");
+            // sendMessage(chatMessage, chatService);
         }
     }
 

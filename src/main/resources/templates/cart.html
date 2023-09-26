@@ -130,6 +130,15 @@
                             console.log(res)
                         }
                 })
+                $.ajax({
+                    type: 'POST',
+                    url: "/chat",
+                    data:JSON.stringify({id:response.storeownerid}),
+                    contentType: 'application/json',
+                    success: function (res){
+                        console.log(res)
+                    }
+                })
                 console.log(1)
                 // websocket 시작
 
