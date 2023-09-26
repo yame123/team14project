@@ -1,13 +1,8 @@
 package com.sparta.team14project.store;
 
-import com.sparta.team14project.menu.entity.Menu;
 import com.sparta.team14project.message.MessageResponseDto;
 import com.sparta.team14project.order.dto.OrderResponseDto;
-import com.sparta.team14project.store.dto.KeywordRequestDto;
-import com.sparta.team14project.store.dto.StoreMenuResponseDto;
-import com.sparta.team14project.store.dto.StoreRequestDto;
-import com.sparta.team14project.store.dto.StoreResponseDto;
-import com.sparta.team14project.store.entity.Store;
+import com.sparta.team14project.store.dto.*;
 import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +28,18 @@ public class StoreController {
     }
 
     @GetMapping("/store")
-    public List<StoreResponseDto> getStores() {
+    public List<CookieStoreResponseDto> getStores() {
         return storeService.getStores();
+    }
+
+    @GetMapping("/store-rank")
+    public List<CookieStoreResponseDto> getStoresRank() {
+        return storeService.getStoresRank();
+    }
+
+    @GetMapping("/store-info/{storeId}")
+    public Object getStoreInfo(Long storeId) {
+        return storeService.getStoreInfo(Long.toString(storeId));
     }
 
     @GetMapping("/store-search")
