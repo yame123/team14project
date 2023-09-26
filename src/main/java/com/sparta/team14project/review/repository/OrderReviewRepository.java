@@ -1,4 +1,4 @@
-package com.sparta.team14project.order.repository;
+package com.sparta.team14project.review.repository;
 
 import com.sparta.team14project.review.entity.OrderReview;
 import org.springframework.data.jpa.repository.JpaRepository;

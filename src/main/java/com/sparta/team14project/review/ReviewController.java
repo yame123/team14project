@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping({"/api"})
 @RequiredArgsConstructor
@@ -27,7 +25,7 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/{storeId}")
-    public List<ReviewResponseDto> getReviews(@PathVariable Long storeId) {
+    public Object getReviews(@PathVariable Long storeId) {
         return reviewService.getStoreReviews(storeId);
     }
 }
