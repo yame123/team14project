@@ -32,11 +32,19 @@ public class MenuService {
         return new MenuResponseDto(menu);
     }
 
-    public MenuResponseDto deleteBoard(Long id) {
+    public MenuResponseDto deleteMenu(Long id) {
         Menu menu = findMenu(id);
         menuRepository.delete(menu);
         return new MenuResponseDto(menu);
     }
+
+    // 메뉴 상세 조회
+    public MenuResponseDto showMenuDetails(Long id) {
+        Menu menu = findMenu(id);
+        return new MenuResponseDto(menu);
+    }
+
+
 
     // 메뉴 찾기
     private Menu findMenu(Long id) {

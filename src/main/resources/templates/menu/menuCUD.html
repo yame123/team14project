@@ -53,22 +53,22 @@
             const formData = {
                 name: $('#menuName').val(),
                 price: $('#menuPrice').val(),
-                details: $('#menuDetails').val()
+                detail: $('#menuDetails').val()
             };
 
-            // 상점 생성 요청 보내기
+            // 메뉴 생성 요청 보내기
             $.ajax({
                 type: 'POST',
                 url: `/api/menu`,
                 data: JSON.stringify(formData),
                 contentType: 'application/json',
                 success: function (response) {
-                    // 상점 생성 성공 메시지를 표시
-                    $('#menuResult').html('<p>Store created successfully!</p>');
+                    // 메뉴 생성 성공 메시지를 표시
+                    $('#menuResult').html('<p>Menu created successfully!</p>');
                 },
                 error: function (error) {
-                    // 상점 생성 실패 메시지를 표시
-                    $('#menuResult').html('<p>Error creating store.</p>');
+                    // 메뉴 생성 실패 메시지를 표시
+                    $('#menuResult').html('<p>Error creating Menu.</p>');
                 }
             });
         });
@@ -82,19 +82,19 @@
                 details: $('#menuDetails').val()
             };
 
-            // 상점 업데이트 요청 보내기
+            // 메뉴 업데이트 요청 보내기
             $.ajax({
                 type: 'PUT',
                 url: `/api/menu/${formData.id}`, // 업데이트할 Store의 ID를 포함한 URL
                 data: JSON.stringify(formData),
                 contentType: 'application/json',
                 success: function (response) {
-                    // 상점 업데이트 성공 메시지를 표시
-                    $('#menuResult').html('<p>Store updated successfully!</p>');
+                    // 메뉴 업데이트 성공 메시지를 표시
+                    $('#menuResult').html('<p>Menu updated successfully!</p>');
                 },
                 error: function (error) {
-                    // 상점 업데이트 실패 메시지를 표시
-                    $('#menuResult').html('<p>Error updating store.</p>');
+                    // 메뉴 업데이트 실패 메시지를 표시
+                    $('#menuResult').html('<p>Error updating Menu.</p>');
                 }
             });
         });

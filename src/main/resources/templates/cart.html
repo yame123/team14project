@@ -9,6 +9,7 @@
 </head>
 <body>
 <h1>Cart Information</h1>
+<div id="messageOutput"></div>
 <div id="cartInfo">
     <!-- 카트 정보가 여기에 표시됩니다. -->
 </div>
@@ -16,13 +17,17 @@
 <div>
     <label for="address">주문 주소:</label>
     <input type="text" id="address" placeholder="주문 주소를 입력하세요">
+    <span id="connectionStatus"></span> <!-- 연결 상태 표시 -->
 </div>
 
 <!-- 주문하기 버튼 -->
 <button id="orderButton">주문하기</button>
 
 <script>
+    const orderButton = document.getElementById("orderButton");
     host = window.location.host
+    let webSocket;
+
     $(document).ready(function () {
         const auth = getToken();
         if (auth !== undefined && auth !== '') {
@@ -33,7 +38,23 @@
             window.location.href = host + '/user/login-page';
             return;
         }
-
+        // 페이지 진입 시에 user info를 불러온 후 그 id에 맞는 채팅방 신설(있다면 백엔드에서 신설 대신 기존 채팅방을 출력)
+        $.ajax({
+            type: 'GET',
+            url: `/api/user-info`,
+            contentType: 'application/json',
+        })
+            .done(function (res, status, xhr) {
+                $.ajax({
+                    type: 'POST',
+                    url: "/chat",
+                    data: JSON.stringify({id: res.userid}),
+                    contentType: 'application/json',
+                    success: function (res) {
+                        console.log(res)
+                    }
+                })
+            })
         $.ajax({
             type: 'GET',
             url: `/api/cart`,
@@ -51,6 +72,7 @@
                 cartInfoDiv.appendChild(cartItem);
             }
         })
+        connectWebSocket();
     })
     // 쿠키에서 유저 정보를 읽어옵니다.
     function getToken() {
@@ -71,24 +93,21 @@
 
     // /api/order 엔드포인트로 주문을 생성하는 함수
 
-
-    // "주문하기" 버튼 클릭 시 주문을 생성하고 주문 정보를 업데이트합니다.
-    const orderButton = document.getElementById("orderButton");
     orderButton.addEventListener("click", () => {
+        console.log("test1")
         const addressInput = document.getElementById("address");
         const address = addressInput.value;
 
         if (address) {
-            createOrder(address).then(() => {});
-            window.location.href = host+'/user/order'
+            createOrder(address);
         } else {
             alert("주문 주소를 입력하세요.");
         }
     });
 
-    function createOrder(address) {
+    function createOrder(adr) {
         const formData = {
-            address: address
+            address: adr
         };
         $.ajax({
             type: 'POST',
@@ -99,12 +118,75 @@
                 // 상점 생성 성공 메시지를 표시
                 console.log(response)
 
+                // 상점을 생성하고 상점 생성 요청을 보내기
+
+                // 상점 생성 시
+                $.ajax({
+                        type: 'POST',
+                        url: "/chat",
+                        data:JSON.stringify({id:response.userid}),
+                        contentType: 'application/json',
+                        success: function (res){
+                            console.log(res)
+                        }
+                })
+                console.log(1)
+                // websocket 시작
+
+
+                const messageOutput = document.getElementById("messageOutput");
+                const connectionStatus = document.getElementById("connectionStatus"); // 연결 상태 표시
+                console.log(connectionStatus)
+                // 웹 소켓 연결 함수
+                console.log(2)
+
+                console.log(3)
+                // 메시지 전송 함수
+                const message = `{
+                "type":"ORDER",
+                "roomId":"${response.storeownerid}",
+                "sender":"${response.username}",
+                "message":"${response.id}번 주문 요청이 접수되었습니다!"
+                }`
+                console.log(7)
+                //const message = messageInput.value;
+                webSocket.send(message);
+                // send(message);
+                console.log(8)
+                messageOutput.innerHTML += `<p>송신: ${message}</p>`;
+                console.log(10)
+
             },
             error: function (error) {
                 // 상점 생성 실패 메시지를 표시
                 $('#updateResult').html('<p>Error creating store.</p>');
             }
         });
+
+    }
+    function connectWebSocket() {
+        const socketUrl = 'ws://43.201.67.57:8080/ws/chat';
+        if (!webSocket && socketUrl.trim() !== "") {
+            webSocket = new WebSocket(socketUrl);
+
+            // 웹 소켓 연결 성공 시
+            webSocket.onopen = (event) => {
+                console.log("WebSocket 연결 성공!");
+                connectionStatus.textContent = "연결됨"; // 연결 상태 표시 업데이트
+            };
+
+            // 웹 소켓 메시지 수신 시
+            webSocket.onmessage = (event) => {
+                const message = event.data;
+                messageOutput.innerHTML += `<p>수신: ${message}</p>`;
+            };
+
+            // 웹 소켓 연결 종료 시
+            webSocket.onclose = (event) => {
+                console.log("WebSocket 연결 종료!");
+                connectionStatus.textContent = "연결 종료"; // 연결 상태 표시 업데이트
+            };
+        }
     }
 </script>
 </body>

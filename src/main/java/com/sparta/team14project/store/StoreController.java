@@ -1,8 +1,13 @@
 package com.sparta.team14project.store;
 
+import com.sparta.team14project.menu.entity.Menu;
 import com.sparta.team14project.message.MessageResponseDto;
 import com.sparta.team14project.order.dto.OrderResponseDto;
-import com.sparta.team14project.store.dto.*;
+import com.sparta.team14project.store.dto.KeywordRequestDto;
+import com.sparta.team14project.store.dto.StoreMenuResponseDto;
+import com.sparta.team14project.store.dto.StoreRequestDto;
+import com.sparta.team14project.store.dto.StoreResponseDto;
+import com.sparta.team14project.store.entity.Store;
 import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,27 +27,18 @@ public class StoreController {
             return storeService.createStore(requestDto, userDetails);
     }
 
-//    @GetMapping("/store")
-//    public List<StoreResponseDto> getStores() {
-//        return storeService.getStores();
-//    }
+    @GetMapping("/store/{storeId}")
+    public StoreMenuResponseDto getStore(@PathVariable("storeId") Long storeId){
+        return storeService.getStore(storeId);
+    }
+
     @GetMapping("/store")
-    public List<CookieStoreResponseDto> getStores() {
+    public List<StoreResponseDto> getStores() {
         return storeService.getStores();
     }
 
-    @GetMapping("/store-info/{storeId}")
-    public Object getStoreInfo(@PathVariable("storeId") Long storeId) { // ResponsDto의 자료형들이 Redis가 혀용하는 자료형들의 혼합이라면 Object사용!
-        return storeService.getStoreInfo(Long.toString(storeId));
-    }
-
-    @GetMapping("/store-rank")
-    public List<CookieStoreResponseDto> getStoresRank() {
-        return storeService.getStoresRank();
-    }
-
     @GetMapping("/store-search")
-    public List<CookieStoreResponseDto> getStoresByKeyword(@RequestBody KeywordRequestDto keywordRequestDto){
+    public List<StoreResponseDto> getStoresByKeyword(@RequestBody KeywordRequestDto keywordRequestDto){
         return storeService.getStoreByKeyword(keywordRequestDto.getKeyword());
     }
 
@@ -80,9 +76,9 @@ public class StoreController {
         return storeService.deliveryDone(orderId, userDetails.getUser());
     }
 
-    @GetMapping("/store/order/{storeId}")
-    public List<OrderResponseDto> deliveryCheck(@PathVariable Long storeId,@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return storeService.deliveryCheck(storeId);
+    @GetMapping("/store/order")
+    public List<OrderResponseDto> deliveryCheckTest(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return storeService.deliveryCheck(userDetails.getUser());
     }
 
 }
