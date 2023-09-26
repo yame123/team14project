@@ -84,6 +84,15 @@
                 window.location.href = '/api/user/login-page';
                 return;
               }
+                $.ajax({
+                type: 'POST',
+                url: "/chat",
+                data:JSON.stringify({id:response.userid}),
+                contentType: 'application/json',
+                success: function (res){
+                  console.log(res)
+                }
+              })
               console.log(0)
             })
             .fail(function (jqXHR, textStatus) {
@@ -184,6 +193,15 @@
 
   // 메시지 전송 함수
   function sendMessage(userid,orderid) {
+    $.ajax({
+      type: 'POST',
+      url: "/chat",
+      data:JSON.stringify({id:userid}),
+      contentType: 'application/json',
+      success: function (res){
+        console.log(res)
+      }
+    })
     if (webSocket && messageInput.value.trim() !== "") {
       const message = `{
         "type":"DONE",
