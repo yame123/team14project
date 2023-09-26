@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -32,6 +35,7 @@ public class ReviewService {
         store.addStar(requestDto.getStar());
         OrderReview review = new OrderReview(requestDto);
         review.setDelivery(delivery);
+        review.setStoreId(store.getId());
         reviewRepository.save(review);
 
         return new ReviewResponseDto(review);
@@ -52,5 +56,11 @@ public class ReviewService {
 
     private OrderReview findReviewById(Long id){
         return reviewRepository.findById(id).orElseThrow(()->new NullPointerException("리뷰 정보를 찾을 수 없습니다."));
+    }
+
+    public List<ReviewResponseDto> getStoreReviews(Long storeId) {
+        List<OrderReview> reviewList = reviewRepository.findAllByStoreId(storeId);
+        // OrderReview를 ReviewResponseDto로 변환하여 리스트로 반환
+        return reviewList.stream().map(ReviewResponseDto::new).collect(Collectors.toList());
     }
 }

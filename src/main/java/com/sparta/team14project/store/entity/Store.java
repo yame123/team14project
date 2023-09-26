@@ -33,6 +33,7 @@ public class Store {
     // avgStar (Long)
     @Column(name = "star", nullable = false)
     private double star = 0;
+
     @Column(name = "reviewedPeople", nullable = false)
     private double reviewedPeople = 0;
 
@@ -57,11 +58,13 @@ public class Store {
         this.user = user;
     }
 
+
     public void update(StoreRequestDto requestDto){
         this.storeName = requestDto.getStoreName();
         this.storeDetails = requestDto.getStoreDetails();
         this.storeAddress = requestDto.getStoreAddress();
     }
+
 
 
     public void earnPoint(int price) {
@@ -70,5 +73,6 @@ public class Store {
 
     public void addStar(int star) {
         this.star += star;
+        this.reviewedPeople ++;
     }
 }

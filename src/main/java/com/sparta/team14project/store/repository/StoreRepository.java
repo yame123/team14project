@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface StoreRepository extends JpaRepository<Store, Long>{
-    List<Store> findAllByStoreNameContains(String Keyword);
+    List<Store> findAllByStoreNameContaining(String Keyword);
     Store findStoreByUser(User user);
     Store findStoreById(Long id);
 

@@ -22,6 +22,5 @@ public class ReviewResponseDto {
         this.username = review.getDelivery().getUser().getUsername();
         this.storename = review.getDelivery().getStore().getStoreName();
         this.menunamelist = review.getDelivery().getOrderedMenuList().stream().map(i->i.getMenu().getName()).collect(Collectors.toList()); // 뒤에 매핑해서 list 정보를 메뉴 이름만 저장하도록
-
     }
 }
