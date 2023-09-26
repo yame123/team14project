@@ -87,7 +87,7 @@
                 $.ajax({
                 type: 'POST',
                 url: "/chat",
-                data:JSON.stringify({id:response.userid}),
+                data:JSON.stringify({id:ownerid}),
                 contentType: 'application/json',
                 success: function (res){
                   console.log(res)
