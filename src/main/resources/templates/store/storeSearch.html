@@ -8,7 +8,15 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 </head>
 <body>
-<h1>Store Information</h1>
+<h1>Store Search</h1>
+<form>
+    <label for="keyword">검색어</label>
+    <input type="text" id="keyword" name="keyword" required>
+    <br>
+
+    <button type="button" id="searchStore">검색</button>
+</form>
+
 <div id="storeInfo">
     <!-- 상점 정보가 여기에 표시됩니다. -->
 </div>
@@ -24,27 +32,32 @@
             window.location.href = host + '/user/login-page';
             return;
         }
+        $('#searchStore').click(function () {
+            const keyword = $('#keyword').val();
 
-        // 상점 정보 가져오기
-        $.ajax({
-            type: 'GET',
-            url: `/api/store`,
-            success: function (stores) {
-                const storeInfoDiv = document.getElementById("storeInfo");
-                stores.forEach(store => {
-                    const storeItem = document.createElement("div");
-                    storeItem.innerHTML = `
+            // 상점 생성 요청 보내기
+            $.ajax({
+                type: 'GET',
+                url: `/api/store-search?keyword=${keyword}`,
+                success: function (stores) {
+                    const storeInfoDiv = document.getElementById("storeInfo");
+                    storeInfoDiv.innerHTML = '';
+                    stores.forEach(store => {
+                        const storeItem = document.createElement("div");
+                        storeItem.innerHTML = `
                         <br>
-                        <td align="left"><a href="/user/store/store-detail/${store.id}">상점 이름: ${store.storeName}</a></td>
+                        <p>Store Name: ${store.storeName}</p>
                         <p>Store Details: ${store.storeDetails}</p>
                         <p>Store Address: ${store.storeAddress}</p>
                         <p>Average Star: ${store.avgStar}</p>
+                        <td align="right"><a href="/user/store/store-detail/${store.id}">상점 바로가기</a></td>
                         <button onclick="toggleReviews(${store.id})">리뷰 보기</button> <!-- 리뷰 보기 버튼 추가 -->
                         <div id="storeReviews_${store.id}" style="display: none;"></div> <!-- 리뷰를 표시할 div 추가 -->
                     `;
-                    storeInfoDiv.appendChild(storeItem);
-                });
-            }
+                        storeInfoDiv.appendChild(storeItem);
+                    });
+                }
+            });
         });
     });
 

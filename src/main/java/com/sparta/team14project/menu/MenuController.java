@@ -34,11 +34,8 @@ public class MenuController {
     }
 
     // 메뉴 상세 조회
-    @GetMapping("/menu/{id}")       // menuId
-    public MenuResponseDto showMenuDetails(@PathVariable Long id) {
-        return menuService.showMenuDetails(id);
+    @GetMapping("/menu/{menuId}")       // menuId
+    public MenuResponseDto showMenuDetails(@PathVariable Long menuId) {
+        return menuService.showMenuDetails(menuId);
     }
-
-    // 메뉴 장바구니 담기
-
 }

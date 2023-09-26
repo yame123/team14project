@@ -1,23 +1,19 @@
 package com.sparta.team14project.store;
 
-import com.sparta.team14project.menu.dto.MenuResponseDto;
-import com.sparta.team14project.menu.entity.Menu;
+import com.sparta.team14project.menu.dto.CookieMenuResponseDto;
 import com.sparta.team14project.message.MessageResponseDto;
 import com.sparta.team14project.order.dto.OrderResponseDto;
-import com.sparta.team14project.review.dto.ReviewResponseDto;
-import com.sparta.team14project.review.entity.OrderReview;
-import com.sparta.team14project.store.dto.StoreMenuResponseDto;
-import com.sparta.team14project.store.dto.StoreRequestDto;
-import com.sparta.team14project.store.dto.StoreResponseDto;
 import com.sparta.team14project.order.entity.Delivery;
+import com.sparta.team14project.order.repository.DeliveryRepository;
+//import com.sparta.team14project.redis.CacheNames;
+import com.sparta.team14project.store.dto.*;
 import com.sparta.team14project.store.entity.Store;
 import com.sparta.team14project.store.repository.StoreRepository;
 import com.sparta.team14project.user.entity.User;
-import com.sparta.team14project.order.repository.DeliveryRepository;
 import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+//import org.springframework.cache.annotation.CacheEvict;
+//import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +26,8 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
     private final DeliveryRepository deliveryRepository;
-    private StoreResponseDto List;
 
-    @CacheEvict(value = "storeCache", allEntries = true)
+//    @CacheEvict(value = "*", allEntries = true)
     public StoreResponseDto createStore(StoreRequestDto requestDto, UserDetailsImpl userDetails) {
         // user 정보 userDetails에서 추출
         User user = userDetails.getUser();
@@ -48,34 +43,42 @@ public class StoreService {
         return storeResponseDto;
     }
 
-    public List<StoreResponseDto> getStores() {
-        return storeRepository.findAllByOrderByStorePointDesc().stream().map(StoreResponseDto::new).toList();
-//        return storeRepository.findAll().stream().map(StoreResponseDto::new).toList();
+//    @Cacheable(cacheNames = CacheNames.ALL_STORE_CACHE, key = "'allStores'")
+    public List<CookieStoreResponseDto> getStores() {
+        return storeRepository.findAll()
+                .stream().map(CookieStoreResponseDto::new).toList();
     }
 
-    @Cacheable(value = "storeCache", key = "#keyword")
+//    @Cacheable(cacheNames = CacheNames.STORE_INFO_CACHE, key = "#storeId")
+    public Object getStoreInfo(String storeId) {
+        Store store = storeRepository.findStoreById(Long.valueOf(storeId));
+        List<CookieMenuResponseDto> menuResponseDtoList = store.getMenuList().stream().map(CookieMenuResponseDto::new).toList();
+        return new StoreInfoResponseDto(store, menuResponseDtoList);
+    }
+
+//    @Cacheable(cacheNames = CacheNames.RANK_CACHE, key = "'storeRank'")
+    public List<CookieStoreResponseDto> getStoresRank() { // 랭킹 시스탬
+        return storeRepository.findAllByOrderByStorePointDesc()
+                .stream().map(CookieStoreResponseDto::new).toList();
+    }
+
+//    @Cacheable(value = CacheNames.SEARCH_CACHE, key = "#keyword")
     public List<StoreResponseDto> getStoreByKeyword(String keyword) {
         return storeRepository.findAllByStoreNameContaining(keyword).stream().map(StoreResponseDto::new).toList();
     }
 
-    @CacheEvict(value = "storeCache", key = "#keyword")
-    public void clearStoreCache(String keyword) {
-        // 특정 키워드의 캐시를 지움
-    }
-
-    @CacheEvict(value = "storeCache", allEntries = true)
-    public void clearAllStoreCaches() {
-    }
+//    @CacheEvict(value = "*", allEntries = true)
+//    public void clearAllStoreCaches() {}
 
     @Transactional
-    @CacheEvict(value = "storeCache", allEntries = true)
+//    @CacheEvict(value = "*", allEntries = true)
     public StoreResponseDto updateStore(Long id, StoreRequestDto requestDto) {
         Store store = findStore(id);
         store.update(requestDto);
         return new StoreResponseDto(store);
     }
 
-    @CacheEvict(value = "storeCache", allEntries = true)
+////    @CacheEvict(value = "*", allEntries = true)
     public MessageResponseDto deleteStore(Long id) {
         Store store = findStore(id);
         storeRepository.delete(store);
