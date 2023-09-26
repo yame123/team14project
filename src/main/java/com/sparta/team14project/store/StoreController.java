@@ -47,13 +47,6 @@ public class StoreController {
         return storeService.getStoreByKeyword(keywordRequestDto.getKeyword());
     }
 
-    @DeleteMapping("/delete-cache")
-    public ResponseEntity<String> clearStoreCache(@RequestBody KeywordRequestDto keywordRequestDto) {
-        String keyword = keywordRequestDto.getKeyword();
-        storeService.clearStoreCache(keyword);
-        return ResponseEntity.ok("Cache cleared for keyword: " + keyword);
-    }
-
     @DeleteMapping("/delete-caches")
     public ResponseEntity<String> clearAllStoreCaches() {
         storeService.clearAllStoreCaches();
