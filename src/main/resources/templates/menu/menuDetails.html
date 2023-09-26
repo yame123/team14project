@@ -34,7 +34,8 @@
         }
 
         // $("#menuDetailsTable").empty();
-        const id = 1;
+        const url = window.location.href;
+        const id = url.substring(url.lastIndexOf("/") + 1);
 
         // 선택한 메뉴 정보 가져오기
         $.ajax({
@@ -84,7 +85,6 @@
     });
 
     window.onload = function() {
-        const id = 3;
         const addMenuButton = document.getElementById("addMenuButton");
         addMenuButton.addEventListener("click", () => {
             $.ajax({

@@ -74,13 +74,13 @@
           const menuItem = document.createElement("table"); // Create a new table for each menu item
           menuItem.innerHTML =
                   `<tr>
-      <td colSpan="2" align="left" style="font-size: 30px;">메뉴 이름: ${storeMenu.name}</td>
+      <td align="left"><a href="/user/menu/${storeMenu.id}">메뉴 이름: ${storeMenu.name}</a></td>
     </tr>
     <tr>
       <td colSpan="2" align="left">메뉴 가격: ${storeMenu.price}</td>
     </tr>
     <tr>
-      <td colSpan="2" align="left">메뉴 설명: ${storeMenu.detail}</td>
+      <td colSpan="2" align="left">메뉴 설명: ${storeMenu.details}</td>
     </tr>`;
           storeMenuTable.appendChild(menuItem); // Append the new table to the menu table
         });
