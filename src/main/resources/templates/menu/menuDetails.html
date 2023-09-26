@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/css/style2.css">
+    <link rel="stylesheet" href="/css/style.css">
     <script src="/js/index.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
@@ -22,6 +22,10 @@
 
 <script>
     host = window.location.host
+
+    const url = window.location.href;
+    const menuId = url.substring(url.lastIndexOf("/") + 1);
+
     $(document).ready(function () {
         const auth = getToken();
         if (auth !== undefined && auth !== '') {
@@ -33,13 +37,13 @@
             return;
         }
 
-        // $("#menuDetailsTable").empty();
-        const id = 1;
+        const url = window.location.href;
+        const id = url.substring(url.lastIndexOf("/") + 1);
 
         // 선택한 메뉴 정보 가져오기
         $.ajax({
             type: 'GET',
-            url: `/api/menu/${id}`,
+            url: `/api/menu/${menuId}`,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             async: false,
@@ -84,18 +88,17 @@
     });
 
     window.onload = function() {
-        const id = 3;
         const addMenuButton = document.getElementById("addMenuButton");
         addMenuButton.addEventListener("click", () => {
             $.ajax({
                 type: 'POST', // Use POST method to send data
-                url: `/api/cart/${id}`, // Replace with your actual endpoint
+                url: `/api/cart/${menuId}`, // Replace with your actual endpoint
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 async: false,
                 success: function (response) {
                     console.log(response);
-                    console.log(id);
+                    console.log(menuId);
                 }
             });
         });

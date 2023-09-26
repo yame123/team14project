@@ -1235,3 +1235,50 @@ input[type=submit] {
     border: 1px solid transparent;
     border-radius: .25rem;
 }
+
+/* 상점 상세페이지 탭 관련 */
+.tab-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.tab-buttons {
+    display: flex;
+}
+
+.tab-button {
+    flex: 1;
+    background-color: #f2f2f2;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+/* 평점 별 관련 */
+.rating-stars {
+    display: flex;
+    justify-content: center;
+}
+
+.star {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.star.selected {
+    color: #ffcc00;
+}
+
+/* 주문 현황 버튼 관련 */
+.button {
+    width: 100%;
+}

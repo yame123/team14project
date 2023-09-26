@@ -61,8 +61,9 @@ public class HomeController {
         return "menu/menuCUD";
     }
 
-    @GetMapping("/user/menu") // 메뉴 상세 정보 조회
-    public String showMenuDetails() {
+    @GetMapping("/user/menu/{menuId}") // 메뉴 상세 정보 조회
+    public String showMenuDetails(@PathVariable Long menuId, Model model) {
+        model.addAttribute("menuId", menuId);
         return "menu/menuDetails";
     }
 

@@ -6,8 +6,8 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="../../static/css/style2.css">
-  <script src="../../static/js/index.js"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/index.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"
           integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -74,13 +74,13 @@
           const menuItem = document.createElement("table"); // Create a new table for each menu item
           menuItem.innerHTML =
                   `<tr>
-      <td colSpan="2" align="left" style="font-size: 30px;">메뉴 이름: ${storeMenu.name}</td>
+      <td align="left"><a href="/user/menu/${storeMenu.id}">메뉴 이름: ${storeMenu.name}</a></td>
     </tr>
     <tr>
       <td colSpan="2" align="left">메뉴 가격: ${storeMenu.price}</td>
     </tr>
     <tr>
-      <td colSpan="2" align="left">메뉴 설명: ${storeMenu.detail}</td>
+      <td colSpan="2" align="left">메뉴 설명: ${storeMenu.details}</td>
     </tr>`;
           storeMenuTable.appendChild(menuItem); // Append the new table to the menu table
         });
