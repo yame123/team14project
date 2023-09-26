@@ -37,6 +37,11 @@ public class HomeController {
         return "store/allStoreInfo";
     }
 
+    @GetMapping("/user/store-search") // 모든 상점 + 상점별 리뷰
+    public String SearchStore() {
+        return "store/storeSearch";
+    }
+
     @GetMapping("/user/store-rank") // 상점 매출액 순위
     public String getStoresRank() {
         return "store/storeRanking";

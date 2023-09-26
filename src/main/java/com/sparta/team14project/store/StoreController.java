@@ -43,8 +43,8 @@ public class StoreController {
     }
 
     @GetMapping("/store-search")
-    public List<StoreResponseDto> getStoresByKeyword(@RequestBody KeywordRequestDto keywordRequestDto){
-        return storeService.getStoreByKeyword(keywordRequestDto.getKeyword());
+    public List<StoreResponseDto> getStoresByKeyword(@RequestParam String keyword){
+        return storeService.getStoreByKeyword(keyword);
     }
 
 //    @DeleteMapping("/delete-caches")
