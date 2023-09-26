@@ -126,7 +126,7 @@ public class OrderService {
     }
 
     private AddedMenu findAddedMenuByCartAndMenu(Cart cart, Menu menu) {
-        return addedMenuRepository.findAddedMenuByCartAndMenu(cart,menu);
+        return addedMenuRepository.findAddedMenuByCartAndMenu(cart,menu).orElse(null);
     }
 
     private User findUserById(Long id) {

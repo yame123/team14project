@@ -25,7 +25,7 @@ public class Menu {
 
     @ManyToOne
     @JoinColumn(name = "store_id")
-    private Store store;
+    private Store store = new Store();
 
     public Menu(MenuRequestDto requestDto, Store store){
         this.name = requestDto.getName();

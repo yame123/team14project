@@ -27,7 +27,8 @@
     const orderButton = document.getElementById("orderButton");
     host = window.location.host
     let webSocket;
-
+    let username;
+    let userid;
     $(document).ready(function () {
         const auth = getToken();
         if (auth !== undefined && auth !== '') {
@@ -45,6 +46,8 @@
             contentType: 'application/json',
         })
             .done(function (res, status, xhr) {
+                userid = res.userid;
+                username=res.username;
                 $.ajax({
                     type: 'POST',
                     url: "/chat",
@@ -73,6 +76,21 @@
             }
         })
         connectWebSocket();
+        setTimeout(()=>{
+            const message = `{
+                "type":"ENTER",
+                "roomId":"${userid}",
+                "sender":"${username}",
+                "message":"접속"
+                }`
+            console.log(7)
+            //const message = messageInput.value;
+            webSocket.send(message);
+            // send(message);
+            console.log(8)
+            messageOutput.innerHTML += `<p>송신: ${message}</p>`;
+        },2000)
+
     })
     // 쿠키에서 유저 정보를 읽어옵니다.
     function getToken() {
@@ -121,35 +139,15 @@
                 // 상점을 생성하고 상점 생성 요청을 보내기
 
                 // 상점 생성 시
-                $.ajax({
-                        type: 'POST',
-                        url: "/chat",
-                        data:JSON.stringify({id:response.userid}),
-                        contentType: 'application/json',
-                        success: function (res){
-                            console.log(res)
-                        }
-                })
-                $.ajax({
-                    type: 'POST',
-                    url: "/chat",
-                    data:JSON.stringify({id:response.storeownerid}),
-                    contentType: 'application/json',
-                    success: function (res){
-                        console.log(res)
-                    }
-                })
+
+
                 console.log(1)
                 // websocket 시작
 
 
                 const messageOutput = document.getElementById("messageOutput");
                 const connectionStatus = document.getElementById("connectionStatus"); // 연결 상태 표시
-                console.log(connectionStatus)
-                // 웹 소켓 연결 함수
-                console.log(2)
 
-                console.log(3)
                 // 메시지 전송 함수
                 const message = `{
                 "type":"ORDER",

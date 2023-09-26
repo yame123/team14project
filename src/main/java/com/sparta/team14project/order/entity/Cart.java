@@ -24,7 +24,7 @@ public class Cart {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
-    private Store store;
+    private Store store = new Store();
 
     @OneToMany(mappedBy = "cart")
     private List<AddedMenu> addedMenuList = new ArrayList<>();
@@ -34,7 +34,7 @@ public class Cart {
     }
 
     public void resetStore(){
-        this.store = null;
+        this.store = new Store();
     }
 
     public void updateStore(Store store) {
