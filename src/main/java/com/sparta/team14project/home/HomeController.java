@@ -4,7 +4,9 @@ import com.sparta.team14project.user.entity.UserRoleEnum;
 import com.sparta.team14project.user.login.security.UserDetailsImpl;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -30,20 +32,31 @@ public class HomeController {
         return "store/storeCUD";
     }
 
-    @GetMapping("/user/store") // 상점 수정 및 삭제
+    @GetMapping("/user/store") // 모든 상점 + 상점별 리뷰
     public String getStores() {
         return "store/allStoreInfo";
     }
 
-    @GetMapping("/user/store/store-detail")
-    public String getStore() { return "store/storeDetail"; }
+    @GetMapping("/user/store-rank") // 상점 매출액 순위
+    public String getStoresRank() {
+        return "store/storeRanking";
+    }
+
+    @GetMapping("/user/store/store-detail/{storeId}")
+    public String getStore(@PathVariable Long storeId, Model model) {
+        // storeId를 이용하여 상점 정보를 조회하거나 다른 작업을 수행
+        // 조회한 정보를 모델에 추가
+        model.addAttribute("storeId", storeId);
+
+        return "store/storeDetail";
+    }
 
     @GetMapping("/user/menu/cud") // 상점 수정 및 삭제
     public String CUDMenu() {
         return "menu/menuCUD";
     }
 
-    @GetMapping("/menu") // 메뉴 상세 정보 조회
+    @GetMapping("/user/menu") // 메뉴 상세 정보 조회
     public String showMenuDetails() {
         return "menu/menuDetails";
     }
