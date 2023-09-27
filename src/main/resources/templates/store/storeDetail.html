@@ -64,20 +64,20 @@
         const storeItem = document.createElement("table");
         storeItem.innerHTML = `
                 <tr>
-                    <td>상점 평점 : </td>
-                    <td class="textbox">${store.avgStar.toFixed(1)}</td>
+                    <td align = "center">상점 평점 : </td>
+                    <td align = "center" class="textbox">${store.avgStar.toFixed(1)}</td>
                 </tr>
                 <tr>
-                    <td>상점 이름 : </td>
-                    <td class="textbox">${store.storeName}</td>
+                    <td align = "center">상점 이름 : </td>
+                    <td align = "center" class="textbox">${store.storeName}</td>
                 </tr>
                 <tr>
-                    <td>상점 주소 : </td>
-                    <td class="textbox">${store.storeAddress}</td>
+                    <td align = "center">상점 주소 : </td>
+                    <td align = "center" class="textbox">${store.storeAddress}</td>
                 </tr>
                 <tr>
-                    <td>상점 설명 : </td>
-                    <td class="textbox">${store.storeDetails}</td>
+                    <td align = "center">상점 설명 : </td>
+                    <td align = "center" class="textbox">${store.storeDetails}</td>
                 </tr>
         `;
         storeDetailTable.appendChild(storeItem);
@@ -87,21 +87,21 @@
           menuItem.innerHTML = `
                     <tr>
                         <td>메뉴 이름 : </td>
-                        <td class="textbox">${storeMenu.name}</td>
+                        <td align = "center" class="textbox">${storeMenu.name}</td>
                     </tr>
                     <tr>
                         <td>메뉴 가격 : </td>
-                        <td class="textbox">${storeMenu.price}</td>
+                        <td align = "center" class="textbox">${storeMenu.price}</td>
                     </tr>
                     <tr>
                         <td>메뉴 설명 : </td>
-                        <td class="textbox">${storeMenu.details}</td>
+                        <td align = "center" class="textbox">${storeMenu.details}</td>
                     </tr>
                     <tr>
-                        <td colspan="2"><button onclick="location.href='/user/menu/${storeMenu.id}'">메뉴 상세 보기</button></td>
+                        <td align = "center" colspan="2"><button onclick="location.href='/user/menu/${storeMenu.id}'">메뉴 상세 보기</button></td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="spacing-bottom"></td>
+                        <td align = "center" colspan="2" class="spacing-bottom"></td>
                     </tr>
         `;
           storeMenuTable.appendChild(menuItem); // Append the new table to the menu table
