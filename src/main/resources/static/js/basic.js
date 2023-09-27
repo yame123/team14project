@@ -1,4 +1,4 @@
-const host = 'http://' + window.location.host;
+
 let targetId;
 let folderTargetId;
 
@@ -16,11 +16,7 @@ $(document).ready(function () {
     console.log(getToken());
 });
 
-function logout() {
-    // 토큰 삭제
-    Cookies.remove('Authorization', {path: '/'});
-    window.location.href = host + '/user/login-page';
-}
+
 
 function getToken() {
 
