@@ -815,7 +815,7 @@ input#query::placeholder {
     font-style: normal;
     line-height: 1;
     letter-spacing: -0.96px;
-    text-align: left;
+    text-align: center;
     color: #212529;
 }
 
