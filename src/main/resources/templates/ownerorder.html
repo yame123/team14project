@@ -109,9 +109,9 @@
       type: 'GET',
       url: `/api/store/order`,
       success: function (orders) {
-        tmp = `<p>Username: ${orders[0].storename}</p><hr>`
+        tmp = `<p>Storename: ${orders[0].storename}</p><hr>`
         orders.forEach(order=>{
-          tmp += `<p>Storename: ${order.username}</p>
+          tmp += `<p>Username: ${order.username}</p>
                         <p>Address: ${order.address}</p>
                         <p>Delivered: ${order.delivered ? "Yes" : "No"}</p>
                         <p>MenuList</p>
