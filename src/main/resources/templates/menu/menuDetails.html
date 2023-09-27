@@ -23,9 +23,6 @@
 <script>
     host = window.location.host
 
-    const url = window.location.href;
-    const menuId = url.substring(url.lastIndexOf("/") + 1);
-
     $(document).ready(function () {
         const auth = getToken();
         if (auth !== undefined && auth !== '') {
@@ -38,7 +35,7 @@
         }
 
         const url = window.location.href;
-        const id = url.substring(url.lastIndexOf("/") + 1);
+        const menuId = url.substring(url.lastIndexOf("/") + 1);
 
         // 선택한 메뉴 정보 가져오기
         $.ajax({
