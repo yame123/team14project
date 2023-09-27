@@ -3,29 +3,60 @@
 <head>
     <title>Cart Information</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/index.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 </head>
 <body>
-<h1>Cart Information</h1>
-<div id="messageOutput"></div>
-<div id="cartInfo">
-    <!-- 카트 정보가 여기에 표시됩니다. -->
-</div>
-<!-- 주문 주소 입력 폼 -->
-<div>
-    <label for="address">주문 주소:</label>
-    <input type="text" id="address" placeholder="주문 주소를 입력하세요">
-    <span id="connectionStatus"></span> <!-- 연결 상태 표시 -->
-</div>
+<table id="orderUser" align="center">
+    <tr>
+        <td colspan="2" align="right"><button onclick="goHome()">뒤로가기</button></td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center"><h1>🛒 내 장바구니 🛒</h1></td>
+    </tr>
+</table>
 
-<!-- 주문하기 버튼 -->
-<button id="orderButton">주문하기</button>
+<table align="center">
+    <tr>
+        <td colspan="2" align="left">----- 장바구니 목록 -----</td>
+    </tr>
+</table>
+
+<table id="cartInfo" align="center">
+    <!-- 카트 정보가 여기에 표시됩니다. -->
+</table>
+
+<!-- 주문 주소 입력 폼 -->
+<table align="center">
+    <tr>
+        <td><label for="address">주문 주소 : </label></td>
+        <td><input type="text" id="address" placeholder="주문 주소를 입력하세요"></td>
+    </tr>
+    <tr>
+        <td colspan="2" align="right"><button id="orderButton">주문하기</button></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="spacing-bottom"></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="spacing-bottom"></td>
+    </tr>
+    <tr>
+        <td class="textbox" colspan="2" align="right"><span id="connectionStatus"></span></td>    <!-- 연결 상태 표시 -->
+    </tr>
+</table>
+
+<table align="center">
+    <tr>
+        <td id="messageOutput" class="textbox"></td>
+    </tr>
+</table>
 
 <script>
     const orderButton = document.getElementById("orderButton");
-    host = window.location.host
     let webSocket;
 
     $(document).ready(function () {
@@ -55,44 +86,48 @@
                     }
                 })
             })
+
         $.ajax({
             type: 'GET',
             url: `/api/cart`,
             success: function (cart) {
-                tmp = `<p>Username: ${cart.username}</p><hr>`
-                tmp += `<p>MenuList</p>`;
-                cart.addedMenuList.forEach(menu=>{
-                    tmp+=`<p>  Menu: ${menu.menuResponseDto.name}</p>
-                          <p>  Count: ${menu.count}</p>`
+                const orderUserTable = document.getElementById("orderUser");
+                const userItem = document.createElement("table");
+                userItem.innerHTML= `
+                                    <tr>
+                                        <td>사용자명 : </td>
+                                        <td class="textbox">${cart.username}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="spacing-bottom"></td>
+                                    </tr>
+                                    `
+                orderUserTable.appendChild(userItem);
+
+                const cartInfoTable = document.getElementById("cartInfo");
+                cart.addedMenuList.forEach(menu => {
+                    const cartItem = document.createElement("table");
+                    cartItem.innerHTML = `
+                        <tr>
+                            <td>메뉴 : </td>
+                            <td class="textbox">${menu.menuResponseDto.name}</td>
+                        </tr>
+                        <tr>
+                            <td>수량 : </td>
+                            <td class="textbox">${menu.count}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><hr></td>
+                        </tr>
+                        `;
+                    cartInfoTable.appendChild(cartItem);
                 })
-                tmp+=`<hr>`
-                const cartInfoDiv = document.getElementById("cartInfo");
-                const cartItem = document.createElement("div");
-                cartItem.innerHTML =tmp;
-                cartInfoDiv.appendChild(cartItem);
             }
         })
         connectWebSocket();
     })
-    // 쿠키에서 유저 정보를 읽어옵니다.
-    function getToken() {
-
-        let auth = Cookies.get('Authorization');
-
-        if(auth === undefined) {
-            return '';
-        }
-
-        // kakao 로그인 사용한 경우 Bearer 추가
-        if(auth.indexOf('Bearer') === -1 && auth !== ''){
-            auth = 'Bearer ' + auth;
-        }
-
-        return auth;
-    }
 
     // /api/order 엔드포인트로 주문을 생성하는 함수
-
     orderButton.addEventListener("click", () => {
         console.log("test1")
         const addressInput = document.getElementById("address");
@@ -132,7 +167,6 @@
                 })
                 console.log(1)
                 // websocket 시작
-
 
                 const messageOutput = document.getElementById("messageOutput");
                 const connectionStatus = document.getElementById("connectionStatus"); // 연결 상태 표시
