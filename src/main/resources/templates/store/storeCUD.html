@@ -3,38 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/index.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <title>Update Store</title>
 </head>
 <body>
-<h1>Update Store</h1>
-<form>
-    <label for="storeId">Store Id:</label>
-    <input type="text" id="storeId" name="storeId" required>
-    <br>
-
-    <label for="updateStoreName">Store Name:</label>
-    <input type="text" id="updateStoreName" name="updateStoreName" required>
-    <br>
-
-    <label for="updateStoreDetails">Store Details:</label>
-    <textarea id="updateStoreDetails" name="updateStoreDetails" rows="4" required></textarea>
-    <br>
-
-    <label for="updateStoreAddress">Store Address:</label>
-    <input type="text" id="updateStoreAddress" name="updateStoreAddress" required>
-    <br>
-
-    <button type="button" id="createStore">Create Store</button>
-    <button type="button" id="updateStore">Update Store</button>
-    <button type="button" id="deleteStore">Delete Store</button>
-</form>
-<td align="right"><a href="/owner/order">Order Manegement</a></td>
-
-<!-- 업데이트 결과를 표시할 엘리먼트 -->
-<div id="updateResult"></div>
+<table id="storeInfo" align="center">
+    <tr>
+        <td colspan="3" align="right"><button onclick="goHome()">뒤로가기</button></td>
+    </tr>
+    <tr>
+        <td colspan="3" align="center"><h1>🏠 상점 생성 / 수정 / 삭제 🏠</h1></td>
+    </tr>
+    <tr>
+        <td><label for="storeId">상점 ID :</label></td>
+        <td colspan="2"><input type="text" id="storeId" name="storeId" required></td>
+    </tr>
+    <tr>
+        <td><label for="updateStoreName">상점 이름 :</label></td>
+        <td colspan="2"><input type="text" id="updateStoreName" name="updateStoreName" required></td>
+    </tr>
+    <tr>
+        <td><label for="updateStoreDetails">상점 설명 :</label></td>
+        <td colspan="2"><input type="text" id="updateStoreDetails" name="updateStoreDetails" height="50" required></td>
+    </tr>
+    <tr>
+        <td><label for="updateStoreAddress">상점 주소 :</label></td>
+        <td colspan="2"><input type="text" id="updateStoreAddress" name="updateStoreAddress" required></td>
+    </tr>
+    <tr>
+        <td><button type="button" id="createStore">Create Store</button></td>
+        <td><button type="button" id="updateStore">Update Store</button></td>
+        <td><button type="button" id="deleteStore">Delete Store</button></td>
+    </tr>
+    <tr>
+        <!-- 업데이트 결과를 표시할 엘리먼트 -->
+        <td colspan="3"><div id="updateResult"></div></td>
+    </tr>
+</table>
 
 <script>
     $(document).ready(function () {
@@ -119,20 +128,6 @@
             });
         });
     });
-    // 쿠키에서 유저 정보를 읽어옵니다.
-    function getToken() {
-        let auth = Cookies.get('Authorization');
-        if (auth === undefined) {
-            return '';
-        }
-
-        // kakao 로그인 사용한 경우 Bearer 추가
-        if (auth.indexOf('Bearer') === -1 && auth !== '') {
-            auth = 'Bearer ' + auth;
-        }
-
-        return auth;
-    }
 </script>
 </body>
 </html>

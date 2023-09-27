@@ -77,17 +77,21 @@
             .done(function (res, status, xhr) {
               console.log(res)
               const username = res.username;
-              name = res.username;
-              ownerid = res.userid;
-              console.log(-1)
+              name = res.username
+              ownerid = res.userid
+              console.log(res.userid)
               if (!username) {
                 window.location.href = '/api/user/login-page';
                 return;
               }
+
+              const formData = {
+                id: res.userid
+              };
               $.ajax({
                 type: 'POST',
                 url: "/chat",
-                data:JSON.stringify({id:res.userid}),
+                data:JSON.stringify(formData),
 
                 contentType: 'application/json',
                 success: function (res){

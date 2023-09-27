@@ -20,12 +20,15 @@ public class ChatRoom {
     }
 
     public void handlerActions(WebSocketSession session, ChatMessage chatMessage, ChatService chatService) {
-        sessions.add(session);
-        sendMessage(chatMessage, chatService);
         if (chatMessage.getType().equals(ChatMessage.MessageType.ORDER)
                 ||chatMessage.getType().equals(ChatMessage.MessageType.DONE)) {
             // chatMessage.setMessage(chatMessage.getSender() +"님이 주문했숑");
-            // sendMessage(chatMessage, chatService);
+
+            sendMessage(chatMessage, chatService);
+        }else {
+            sessions.add(session);
+            sendMessage(chatMessage, chatService);
+
         }
     }
 

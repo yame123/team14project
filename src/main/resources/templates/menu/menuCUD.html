@@ -3,37 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/index.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <title>Update Menu</title>
 </head>
 <body>
-<h1>Update Menu</h1>
-<form>
-    <label for="menuId">Menu Id:</label>
-    <input type="text" id="menuId" name="menuId" required>
-    <br>
-
-    <label for="menuName">Menu Name:</label>
-    <input type="text" id="menuName" name="menuName" required>
-    <br>
-
-    <label for="menuPrice">Menu Price:</label>
-    <input id="menuPrice" name="menuPrice" required>
-    <br>
-
-    <label for="menuDetails">Menu details:</label>
-    <input type="text" id="menuDetails" name="menuDetails" required>
-    <br>
-
-    <button type="button" id="createMenu">Create Menu</button>
-    <button type="button" id="updateMenu">Update Menu</button>
-    <button type="button" id="deleteMenu">Delete Menu</button>
-</form>
-
-<!-- 업데이트 결과를 표시할 엘리먼트 -->
-<div id="menuResult"></div>
+<table id="storeInfo" align="center">
+    <tr>
+        <td colspan="3" align="right"><button onclick="goHome()">뒤로가기</button></td>
+    </tr>
+    <tr>
+        <td colspan="3" align="center"><h1>📋 메뉴 생성 / 수정 / 삭제 📋</h1></td>
+    </tr>
+    <tr>
+        <td><label for="menuId">메뉴 ID :</label></td>
+        <td colspan="2"><input type="text" id="menuId" name="menuId" required></td>
+    </tr>
+    <tr>
+        <td><label for="menuName">메뉴 이름 :</label></td>
+        <td colspan="2"><input type="text" id="menuName" name="menuName" required></td>
+    </tr>
+    <tr>
+        <td><label for="menuPrice">메뉴 가격 :</label></td>
+        <td colspan="2"><input id="menuPrice" name="menuPrice" required></td>
+    </tr>
+    <tr>
+        <td><label for="menuDetails">메뉴 설명 :</label></td>
+        <td colspan="2"><input type="text" id="menuDetails" name="menuDetails" required></td>
+    </tr>
+    <tr>
+        <td><button type="button" id="createMenu">Create Menu</button></td>
+        <td><button type="button" id="updateMenu">Update Menu</button></td>
+        <td><button type="button" id="deleteMenu">Delete Menu</button></td>
+    </tr>
+    <tr>
+        <!-- 업데이트 결과를 표시할 엘리먼트 -->
+        <td colspan="3"><div id="menuResult"></div></td>
+    </tr>
+</table>
 
 <script>
     $(document).ready(function () {
@@ -117,20 +127,6 @@
             });
         });
     });
-    // 쿠키에서 유저 정보를 읽어옵니다.
-    function getToken() {
-        let auth = Cookies.get('Authorization');
-        if (auth === undefined) {
-            return '';
-        }
-
-        // kakao 로그인 사용한 경우 Bearer 추가
-        if (auth.indexOf('Bearer') === -1 && auth !== '') {
-            auth = 'Bearer ' + auth;
-        }
-
-        return auth;
-    }
 </script>
 </body>
 </html>
