@@ -23,10 +23,12 @@ public class ChatRoom {
         if (chatMessage.getType().equals(ChatMessage.MessageType.ORDER)
                 ||chatMessage.getType().equals(ChatMessage.MessageType.DONE)) {
             // chatMessage.setMessage(chatMessage.getSender() +"님이 주문했숑");
+
             sendMessage(chatMessage, chatService);
         }else {
             sessions.add(session);
             sendMessage(chatMessage, chatService);
+
         }
     }
 

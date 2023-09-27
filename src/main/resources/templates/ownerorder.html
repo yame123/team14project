@@ -84,6 +84,7 @@
                 window.location.href = '/api/user/login-page';
                 return;
               }
+
               const formData = {
                 id: res.userid
               };
@@ -91,6 +92,7 @@
                 type: 'POST',
                 url: "/chat",
                 data:JSON.stringify(formData),
+
                 contentType: 'application/json',
                 success: function (res){
                   console.log(res)
@@ -197,7 +199,6 @@
 
   // 메시지 전송 함수
   function sendMessage(userid,orderid) {
-
 
     if (webSocket) {
       const message = `{
