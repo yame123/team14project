@@ -11,17 +11,16 @@ import java.util.List;
 @Getter
 public class OrderResponseDto {
 
-    private long id;
     private String username;
-    private long userid;
+    private Long userid;
     private String storename;
-    private long storeownerid;
+    private Long storeownerid;
     private String address;
     private List<OrderedMenuResponseDto> orderList = new ArrayList<>();
     private boolean delivered;
 
     public OrderResponseDto(Delivery delivery) {
-        this.id = delivery.getId();
+
         this.username = delivery.getUser().getUsername();
         this.userid = delivery.getUser().getId();
         this.storename = delivery.getStore().getStoreName();

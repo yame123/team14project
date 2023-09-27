@@ -77,14 +77,12 @@
             .done(function (res, status, xhr) {
               console.log(res)
               const username = res.username;
-              name = res.username
-              ownerid = res.userid
-              console.log(res.userid)
+              name = res.username;
+              ownerid = res.userid;
               if (!username) {
                 window.location.href = '/api/user/login-page';
                 return;
               }
-
               const formData = {
                 id: res.userid
               };
@@ -92,7 +90,6 @@
                 type: 'POST',
                 url: "/chat",
                 data:JSON.stringify(formData),
-
                 contentType: 'application/json',
                 success: function (res){
                   console.log(res)
@@ -173,7 +170,7 @@
 
   // 웹 소켓 연결 함수
   function connectWebSocket() {
-    const socketUrl = 'ws://43.201.67.57:8080/ws/chat';
+    const socketUrl = 'ws://localhost:8080/ws/chat';
     if (!webSocket && socketUrl.trim() !== "") {
       webSocket = new WebSocket(socketUrl);
 

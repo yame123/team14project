@@ -108,8 +108,8 @@ public class OrderService {
         addedMenuRepository.deleteAll(cart.getAddedMenuList()); // 카트에 담긴 메뉴 전부 삭제
         orderedMenuRepository.saveAll(delivery.getOrderedMenuList());// 주문메뉴 저장
         Delivery savedDelivery = orderRepository.save(delivery);
-        // 주문 정보 저장 및 출력용 변수 생성(안하고 delivery 그대로 출력하는 거랑 상관이 있나
-        return new OrderResponseDto(savedDelivery);
+        // 주문 정보 저장 및 출력용 변수 생성
+        return new OrderResponseDto(delivery);
     }
 
     public List<OrderResponseDto> getOrder(User user) {

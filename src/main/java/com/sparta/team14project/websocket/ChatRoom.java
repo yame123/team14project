@@ -28,7 +28,6 @@ public class ChatRoom {
         }else {
             sessions.add(session);
             sendMessage(chatMessage, chatService);
-
         }
     }
 
