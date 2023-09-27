@@ -84,10 +84,10 @@
                 window.location.href = '/api/user/login-page';
                 return;
               }
-                $.ajax({
+              $.ajax({
                 type: 'POST',
                 url: "/chat",
-                data:JSON.stringify({id:ownerid}),
+                data:JSON.stringify({id:res.userid}),
                 contentType: 'application/json',
                 success: function (res){
                   console.log(res)
@@ -115,7 +115,7 @@
             tmp+=`<p>  Menu: ${menu.menuResponseDto.name}</p>
                               <p>  Count: ${menu.count}</p>`
           })
-          tmp+=`<button onclick="sendMessage(${order.userid,order.id})">배달 완료</button><hr>`
+          tmp+=`<button onclick="sendMessage(${order.userid},${order.id})">배달 완료</button><hr>`
           // $('#orderInfo').append(tmp);
 
         })
@@ -146,6 +146,7 @@
     return auth;
   }
   function storeOpen(){
+
     const message = `{
               "type":"ENTER",
               "roomId":"${ownerid}",
@@ -167,7 +168,7 @@
 
   // 웹 소켓 연결 함수
   function connectWebSocket() {
-    const socketUrl = 'ws://43.201.67.57:8080/ws/chat';
+    const socketUrl = 'ws://localhost:8080/ws/chat';
     if (!webSocket && socketUrl.trim() !== "") {
       webSocket = new WebSocket(socketUrl);
 
@@ -193,16 +194,9 @@
 
   // 메시지 전송 함수
   function sendMessage(userid,orderid) {
-    $.ajax({
-      type: 'POST',
-      url: "/chat",
-      data:JSON.stringify({id:userid}),
-      contentType: 'application/json',
-      success: function (res){
-        console.log(res)
-      }
-    })
-    if (webSocket && messageInput.value.trim() !== "") {
+
+
+    if (webSocket) {
       const message = `{
         "type":"DONE",
         "roomId":"${userid}",
@@ -215,6 +209,15 @@
       messageInput.value = "";
       messageOutput.innerHTML += `<p>송신: ${message}</p>`;
     }
+    $.ajax({
+      type: 'PUT',
+      url: "/api/store/order/"+orderid,
+      success: function (res){
+        console.log(res)
+      }
+    })
+
+
   };
 </script>
 </body>
