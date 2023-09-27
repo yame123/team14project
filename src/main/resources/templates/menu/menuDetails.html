@@ -14,17 +14,22 @@
     <title>메뉴 상세 페이지</title>
 </head>
 <body>
+<table align="center">
+<tr>
+    <td colspan="2" align="right"><button onclick="goHome()">뒤로가기</button></td>
+</tr>
+<tr>
+    <td colspan="2" align="center"><h1>📋 메뉴 상세 페이지 📋</h1></td>
+</tr>
+</table>
+
 <table id="menuDetailsTable" align="center">
-    <tr>
-        <td colspan="2" align="center" style="font-size: 30px;">메뉴 상세 페이지</td>
-    </tr>
+
 </table>
 
 <script>
-    host = window.location.host
-
-    const url = window.location.href;
-    const menuId = url.substring(url.lastIndexOf("/") + 1);
+    let url = window.location.href;
+    let menuId = url.substring(url.lastIndexOf("/") + 1);
 
     $(document).ready(function () {
         const auth = getToken();
@@ -49,34 +54,23 @@
                 const menuItem = document.createElement("table");
                     menuItem.innerHTML = `
                         <tr>
-                            <td colspan="2"><img src="/images/chickenfeet.jpg" name="menuPhoto"></td>
+                            <td>메뉴 이름 : </td>
+                            <td class="textbox">${menu.name}</td>
                         </tr>
                         <tr>
-                            <td align="center">메뉴 이름</td>
-                            <td align="center">${menu.name}</td>
+                            <td>메뉴 가격 : </td>
+                            <td class="textbox">${menu.price}</td>
                         </tr>
                         <tr>
-                            <td align="center">메뉴 가격</td>
-                            <td align="center">${menu.price}</td>
+                            <td>메뉴 설명 : </td>
+                            <td class="textbox">${menu.details}</td>
                         </tr>
                         <tr>
-                            <td align="center">메뉴 설명</td>
-                            <td align="center">${menu.details}</td>
+                            <td colspan="2" class="spacing-bottom"></td>
                         </tr>
                         <tr>
-                            <td align="center">음식 수량</td>
-                            <td align="right">
-                                <input type='button' onclick='count("minus")' value='-'/>
-                                <input type='button' onclick='count("plus")' value='+'/>
-                                <div id='cnt'>0</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td align="right">
-                                <button type="reset" onclick="goHome()">취소</button>
-                                <button type="submit" id="addMenuButton">장바구니 담기</button>
-                            </td>
+                            <td><button type="reset" onclick="goHome()">취소</button></td>
+                            <td><button type="submit" id="addMenuButton">장바구니 담기</button></td>
                         </tr>
                     `;
                     menuDetailsTable.appendChild(menuItem);
@@ -95,24 +89,9 @@
                 async: false,
                 success: function (response) {
                     console.log(response);
-                    console.log(menuId);
                 }
             });
         });
-    }
-
-    // 쿠키에서 유저 정보를 읽어옵니다.
-    function getToken() {
-        let auth = Cookies.get('Authorization');
-        if (auth === undefined) {
-            return '';
-        }
-
-        // kakao 로그인 사용한 경우 Bearer 추가
-        if (auth.indexOf('Bearer') === -1 && auth !== '') {
-            auth = 'Bearer ' + auth;
-        }
-        return auth;
     }
 </script>
 </body>

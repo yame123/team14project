@@ -14,16 +14,23 @@
   <title>상점 상세 페이지</title>
 </head>
 <body>
-<table align="center" id = "store-detail-table">
+
+<table align="center">
   <tr>
-    <button onclick="goHome()">뒤로 가기</button>
+    <td colspan="2" align="right"><button onclick="goHome()">뒤로가기</button></td>
   </tr>
   <tr>
-    <td colspan="2" align="center" style="font-size: 30px;">상점 상세 페이지</td>
+    <td colspan="2" align="center"><h1>🏠 상점 상세 페이지 🏠</h1></td>
   </tr>
 </table>
-<table align="center" id = "store-menu-table">
+
+<table id="store-detail-table" align="center">
+
 </table>
+<table id ="store-menu-table" align="center">
+
+</table>
+
 <!-- 상점 생성 결과를 표시할 엘리먼트 -->
 <div id="storeReadResult" align="center"></div>
 
@@ -51,37 +58,52 @@
       dataType: 'json',
       contentType: 'application/json; charset=utf-8',
       success: function(store){
-        console.log(store)
         const storeDetailTable = document.getElementById("store-detail-table");
         const storeMenuTable = document.getElementById("store-menu-table");
+
         const storeItem = document.createElement("table");
-        storeItem.innerHTML =
-                `<tr>
-                  <td colSpan="2" align="center">상점 평점: ${store.avgStar.toFixed(1)}</td>
+        storeItem.innerHTML = `
+                <tr>
+                    <td>상점 평점 : </td>
+                    <td class="textbox">${store.avgStar.toFixed(1)}</td>
                 </tr>
                 <tr>
-                  <td colSpan="2" align="left" style="font-size: 30px;">상점 이름: ${store.storeName}</td>
+                    <td>상점 이름 : </td>
+                    <td class="textbox">${store.storeName}</td>
                 </tr>
                 <tr>
-                  <td colSpan="2" align="left">상점 주소: ${store.storeAddress}</td>
+                    <td>상점 주소 : </td>
+                    <td class="textbox">${store.storeAddress}</td>
                 </tr>
                 <tr>
-                  <td colSpan="2" align="left">상점 설명: ${store.storeDetails}</td>
-                </tr>`;
+                    <td>상점 설명 : </td>
+                    <td class="textbox">${store.storeDetails}</td>
+                </tr>
+        `;
         storeDetailTable.appendChild(storeItem);
         const storeMenus = store.menuList;
         storeMenus.forEach(storeMenu => {
           const menuItem = document.createElement("table"); // Create a new table for each menu item
-          menuItem.innerHTML =
-                  `<tr>
-      <td align="left"><a href="/user/menu/${storeMenu.id}">메뉴 이름: ${storeMenu.name}</a></td>
-    </tr>
-    <tr>
-      <td colSpan="2" align="left">메뉴 가격: ${storeMenu.price}</td>
-    </tr>
-    <tr>
-      <td colSpan="2" align="left">메뉴 설명: ${storeMenu.details}</td>
-    </tr>`;
+          menuItem.innerHTML = `
+                    <tr>
+                        <td>메뉴 이름 : </td>
+                        <td class="textbox">${storeMenu.name}</td>
+                    </tr>
+                    <tr>
+                        <td>메뉴 가격 : </td>
+                        <td class="textbox">${storeMenu.price}</td>
+                    </tr>
+                    <tr>
+                        <td>메뉴 설명 : </td>
+                        <td class="textbox">${storeMenu.details}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><button onclick="location.href='/user/menu/${storeMenu.id}'">메뉴 상세 보기</button></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="spacing-bottom"></td>
+                    </tr>
+        `;
           storeMenuTable.appendChild(menuItem); // Append the new table to the menu table
         });
 
@@ -91,23 +113,6 @@
       }
     })
     });
-
-
-    // 쿠키에서 유저 정보를 읽어옵니다.
-    function getToken() {
-      let auth = Cookies.get('Authorization');
-      if (auth === undefined) {
-        return '';
-      }
-
-      // kakao 로그인 사용한 경우 Bearer 추가
-      if (auth.indexOf('Bearer') === -1 && auth !== '') {
-        auth = 'Bearer ' + auth;
-      }
-
-      return auth;
-    }
-
 </script>
 </body>
 </html>

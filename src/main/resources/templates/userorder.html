@@ -3,12 +3,33 @@
 <head>
     <title>User Order Information</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/index.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 </head>
 <body>
-<h1>User Order Information</h1>
+<table id="orderUser" align="center">
+    <tr>
+        <td colspan="2" align="right"><button onclick="goHome()">뒤로가기</button></td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center"><h1>📋 내 주문 목록 📋</h1></td>
+    </tr>
+</table>
+
+<table align="center">
+    <tr>
+        <td colspan="2" align="left">----- 주문 목록 -----</td>
+    </tr>
+</table>
+
+<table id="orderedList" align="center">
+    <!-- 카트 정보가 여기에 표시됩니다. -->
+</table>
+
+
 <div id="orderInfo">
     <!-- 주문 정보가 여기에 표시됩니다. -->
 </div>
@@ -29,45 +50,64 @@
             type: 'GET',
             url: `/api/order`,
             success: function (orders) {
-                tmp = `<p>Username: ${orders[0].username}</p><hr>`
-                orders.forEach(order=>{
-                    tmp += `<p>Address: ${order.address}</p>
-                        <p>Delivered: ${order.delivered ? "Yes" : "No"}</p>
-                        <p>MenuList</p>
-                    `;
-                    order.orderList.forEach(menu=>{
-                        tmp+=`<p>  Menu: ${menu.menuResponseDto.name}</p>
-                              <p>  Count: ${menu.count}</p>`
-                    })
-                    tmp+=`<button onclick="showReviewForm(${order.id})">리뷰 작성</button>
-                    <div id="reviewForm_${order.id}"></div>
-                    <hr>`
-                    // $('#orderInfo').append(tmp);
+                const orderUserTable = document.getElementById("orderUser");
+                const userItem = document.createElement("table");
+                userItem.innerHTML= `
+                                    <tr>
+                                        <td>사용자명 : </td>
+                                        <td class="textbox">${orders[0].username}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="spacing-bottom"></td>
+                                    </tr>
+                                    `
+                orderUserTable.appendChild(userItem);
 
+                tmp = ``
+                orders.forEach(order => {
+                    tmp += `
+                        <tr>
+                            <td>주소 : </td>
+                            <td class="textbox">${order.address}</td>
+                        </tr>
+                        <tr>
+                            <td>배달 현황 : </td>
+                            <td class="textbox">${order.delivered ? "Yes" : "No"}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><hr></td>
+                        </tr>
+                        `;
+                    order.orderList.forEach(menu => {
+                        tmp += `
+                        <tr>
+                            <td>메뉴 : </td>
+                            <td class="textbox">${menu.menuResponseDto.name}</td>
+                        </tr>
+                        <tr>
+                            <td>수량 : </td>
+                            <td class="textbox">${menu.count}</td>
+                        </tr>
+                        `
+                    })
+                        tmp += `
+                                <tr>
+                                    <td align="right"><button id="reviewFormButton" onclick="showReviewForm(${order.id})">리뷰 작성</button></td>
+                                    <td id="reviewForm_${order.id}"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="spacing-bottom"></td>
+                                </tr>
+                                `
                 })
-                const orderInfoDiv = document.getElementById("orderInfo");
-                const orderItem = document.createElement("div");
-                orderItem.innerHTML =tmp;
-                orderInfoDiv.appendChild(orderItem);
+                const orderListTable = document.getElementById("orderedList");
+                const orderedList = document.createElement("table");
+                orderedList.innerHTML =tmp;
+                orderListTable.appendChild(orderedList);
             }
         })
     })
-    // 쿠키에서 유저 정보를 읽어옵니다.
-    function getToken() {
 
-        let auth = Cookies.get('Authorization');
-
-        if(auth === undefined) {
-            return '';
-        }
-
-        // kakao 로그인 사용한 경우 Bearer 추가
-        if(auth.indexOf('Bearer') === -1 && auth !== ''){
-            auth = 'Bearer ' + auth;
-        }
-
-        return auth;
-    }
     function createReviewForm(orderId) {
         const reviewForm = document.createElement("div");
         reviewForm.innerHTML = `
@@ -86,6 +126,7 @@
             `;
         return reviewForm;
     }
+
     function submitReview(orderId) {
         const reviewTitle = document.getElementById("reviewTitle").value;
         const reviewStar = document.getElementById("reviewStar").value;
@@ -119,18 +160,27 @@
         const reviewForm = document.getElementById(`reviewForm_${orderId}`);
         reviewForm.innerHTML = `<p>리뷰가 등록되었습니다.</p>`;
     }
+
     function cancelReview(orderId) {
         const reviewForm = document.getElementById(`reviewForm_${orderId}`);
+        const reviewFormButton = document.getElementById('reviewFormButton');
+        if(reviewFormButton.style.display === 'none'){
+            reviewFormButton.style.display = 'inline-block';
+        }
         reviewForm.innerHTML = "";
     }
+
     function showReviewForm(orderId, orderMenu) {
         const reviewFormDiv = document.getElementById(`reviewForm_${orderId}`);
+        const reviewFormButton = document.getElementById('reviewFormButton');
+        if(reviewFormButton.style.display !== 'none'){
+            reviewFormButton.style.display = 'none';
+        }
         if (!reviewFormDiv.hasChildNodes()) {
             const reviewForm = createReviewForm(orderId, orderMenu);
             reviewFormDiv.appendChild(reviewForm);
         }
     }
-
 </script>
 </body>
 </html>

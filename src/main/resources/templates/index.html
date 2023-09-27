@@ -10,57 +10,48 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
-    <script src="/js/basic.js"></script>
 
-    <title>Home</title>
 </head>
 <body>
-<a id="login-text" href="javascript:logout()">
-    로그아웃
-</a>
-
 <table align="center">
     <tr>
-        <td colspan="2" align="center" style="font-size: 30px;">Home</td>
+        <td colspan="5" align="right"><button onclick="logout()">로그아웃</button></td>
     </tr>
     <tr>
-        <td align="left">상점 랭킹</td>
-        <td align="right"><a href="/user/store-rank">storeRanking</a></td>
-    </tr>
-    <tr>
-        <td align="left">상점 생성 / 수정 / 삭제</td>
-        <td align="right"><a href="/user/store/cud">storeCUD</a></td>
+        <td colspan="5" align="center"><H1>🏠 Home 🏠</H1></td>
     </tr>
     <tr>
         <td align="left">모든 상점 보기</td>
         <td align="right"><a href="/user/store">storeDetails</a></td>
-    </tr>
-    <tr>
+        <td class="spacing-left"></td>
         <td align="left">상점 검색</td>
         <td align="right"><a href="/user/store-search">storeSearch</a></td>
     </tr>
     <tr>
+        <td align="left">상점 생성 / 수정 / 삭제</td>
+        <td align="right"><a href="/user/store/cud">storeCUD</a></td>
+        <td class="spacing-left"></td>
+        <td align="left">상점 랭킹</td>
+        <td align="right"><a href="/user/store-rank">storeRanking</a></td>
+    </tr>
+    <tr>
+        <td colspan="5" class="spacing-bottom"></td>
+    </tr>
+    <tr>
+        <td align="left">들어온 주문</td>
+        <td align="right"><a href="/owner/order">Order Management</a></td>
+        <td class="spacing-left"></td>
         <td align="left">메뉴 생성 / 수정 / 삭제</td>
         <td align="right"><a href="/user/menu/cud">menuCUD</a></td>
     </tr>
-<!--     <tr>
-        <td align="left">메뉴 상세</td>
-        <td align="right"><a href="/menu">menuDetail</a></td>
-    </tr> -->
     <tr>
-        <td align="left">내 장바구니 작성 완료</td>
+        <td colspan="5" class="spacing-bottom"></td>
+    </tr>
+    <tr>
+        <td align="left">내 장바구니</td>
         <td align="right"><a href="/user/cart">userCart</a></td>
-    </tr>
-    <tr>
-        <td align="left">리뷰 생성</td>
-        <td align="right"><a href="review/reviewCreate.html">reviewCreate</a></td>
-    </tr>
-    <tr>
-        <td align="left">리뷰 수정</td>
-        <td align="right"><a href="review/reviewUpdate.html">reviewUpdate</a></td>
-    </tr>
-    <tr>
-        <td align="left">내 주문 작성 완료</td>
+        <td class="spacing-left"></td>
+        <td align="left">내 주문</td>
         <td align="right"><a href="/user/order">orderStatus</a></td>
     </tr>
 </table>
