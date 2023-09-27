@@ -3,23 +3,31 @@
 <head>
     <title>User Order Information</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/index.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 </head>
 <body>
-<h1>Store Search</h1>
-<form>
-    <label for="keyword">검색어</label>
-    <input type="text" id="keyword" name="keyword" required>
-    <br>
+<table align="center">
+    <tr>
+        <td colspan="2" align="right"><button onclick="goHome()">뒤로가기</button></td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center"><h1>🔎 상점 검색 🔎</h1></td>
+    </tr>
+    <tr>
+        <td><input type="text" id="keyword" name="keyword" required></td>
+        <td><button type="button" id="searchStore">검색</button></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="spacing-bottom"></td>
+    </tr>
+</table>
+<table id="storeInfo" align="center">
 
-    <button type="button" id="searchStore">검색</button>
-</form>
-
-<div id="storeInfo">
-    <!-- 상점 정보가 여기에 표시됩니다. -->
-</div>
+</table>
 
 <script>
     $(document).ready(function () {
@@ -32,6 +40,7 @@
             window.location.href = host + '/user/login-page';
             return;
         }
+
         $('#searchStore').click(function () {
             const keyword = $('#keyword').val();
 
@@ -40,21 +49,52 @@
                 type: 'GET',
                 url: `/api/store-search?keyword=${keyword}`,
                 success: function (stores) {
-                    const storeInfoDiv = document.getElementById("storeInfo");
-                    storeInfoDiv.innerHTML = '';
+                    const storeInfoTable = document.getElementById("storeInfo");
+                    storeInfoTable.innerHTML = '';
                     stores.forEach(store => {
-                        const storeItem = document.createElement("div");
+                        const storeItem = document.createElement("table");
                         storeItem.innerHTML = `
-                        <br>
-                        <p>Store Name: ${store.storeName}</p>
-                        <p>Store Details: ${store.storeDetails}</p>
-                        <p>Store Address: ${store.storeAddress}</p>
-                        <p>Average Star: ${store.avgStar}</p>
-                        <td align="right"><a href="/user/store/store-detail/${store.id}">상점 바로가기</a></td>
-                        <button onclick="toggleReviews(${store.id})">리뷰 보기</button> <!-- 리뷰 보기 버튼 추가 -->
-                        <div id="storeReviews_${store.id}" style="display: none;"></div> <!-- 리뷰를 표시할 div 추가 -->
+                        <tr>
+                            <td>상점 이름 : </td>
+                            <td><a class="textbox">${store.storeName}</a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="spacing-bottom"></td>
+                        </tr>
+                        <tr>
+                            <td>상점 설명 : </td>
+                            <td><a class="textbox">${store.storeDetails}</a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="spacing-bottom"></td>
+                        </tr>
+                        <tr>
+                            <td>상점 주소 : </td>
+                            <td><a class="textbox">${store.storeAddress}</a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="spacing-bottom"></td>
+                        </tr>
+                        <tr>
+                            <td>상점 평점 : </td>
+                            <td><a class="textbox">${store.avgStar}</a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="spacing-bottom"></td>
+                        </tr>
+                        <tr>
+                            <td><button onclick="toggleReviews(${store.id})">리뷰 보기</button></td>
+                            <td><button onclick="location.href='/user/store/store-detail/${store.id}'">상점으로 이동</button></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="spacing-bottom"></td>
+                        </tr>
+                        <tr>
+                             <div id="storeReviews_${store.id}" style="display: none;"></div>
+                                <!-- 리뷰를 표시할 div 추가 -->
+                        </tr>
                     `;
-                        storeInfoDiv.appendChild(storeItem);
+                        storeInfoTable.appendChild(storeItem);
                     });
                 }
             });
@@ -99,21 +139,6 @@
                 });
             }
         });
-    }
-
-    // 쿠키에서 유저 정보를 읽어옵니다.
-    function getToken() {
-        let auth = Cookies.get('Authorization');
-        if (auth === undefined) {
-            return '';
-        }
-
-        // kakao 로그인 사용한 경우 Bearer 추가
-        if (auth.indexOf('Bearer') === -1 && auth !== '') {
-            auth = 'Bearer ' + auth;
-        }
-
-        return auth;
     }
 </script>
 </body>

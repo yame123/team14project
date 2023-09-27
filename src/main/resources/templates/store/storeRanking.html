@@ -3,18 +3,24 @@
 <head>
   <title>User Order Information</title>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/index.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"
           integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 </head>
 <body>
-<div align="center">
-  <h1>Store Rank</h1>
-  <div id="storeRank">
-    <!-- 상점 정보가 여기에 표시됩니다. -->
-  </div>
-</div>
+<table align="center">
+  <tr>
+    <td colspan="3" align="right"><button onclick="goHome()">뒤로가기</button></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center"><h1>🏆 상점 랭킹 🏆</h1></td>
+  </tr>
+  <tr id="storeRank">
 
+  </tr>
+</table>
 
 <script>
   $(document).ready(function () {
@@ -36,10 +42,11 @@
         const storeInfoDiv = document.getElementById("storeRank");
         let rank = 1;
         stores.forEach(store => {
-          const storeItem = document.createElement("div");
+          const storeItem = document.createElement("tr");
           storeItem.innerHTML = `
-                        <p>랭킹 ${rank}위: ${store.storeName}</p>
-                        <td align="right"><a href="/user/store/store-detail/${store.id}">상점 바로가기</a></td>
+                        <td>${rank}위 : </td>
+                        <td><a class="textbox">${store.storeName}</a></td>
+                        <td><button onclick="location.href='/user/store/store-detail/${store.id}'">상점으로 이동</button></td>
                     `;
           storeInfoDiv.appendChild(storeItem);
           rank++
@@ -47,21 +54,6 @@
       }
     });
   });
-
-  // 쿠키에서 유저 정보를 읽어옵니다.
-  function getToken() {
-    let auth = Cookies.get('Authorization');
-    if (auth === undefined) {
-      return '';
-    }
-
-    // kakao 로그인 사용한 경우 Bearer 추가
-    if (auth.indexOf('Bearer') === -1 && auth !== '') {
-      auth = 'Bearer ' + auth;
-    }
-
-    return auth;
-  }
 </script>
 </body>
 </html>
