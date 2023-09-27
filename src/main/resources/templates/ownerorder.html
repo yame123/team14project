@@ -77,7 +77,8 @@
             .done(function (res, status, xhr) {
               console.log(res)
               const username = res.username;
-              
+              name = res.username
+              ownerid = res.userid
               console.log(res.userid)
               if (!username) {
                 window.location.href = '/api/user/login-page';
