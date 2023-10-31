@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "develop" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "develop" ]
 
 permissions:
   contents: read
@@ -42,7 +42,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: testServer
-        path: build/libs/team14project-0.0.1-SNAPSHOT.jar
+        path: build/libs/team2project-0.0.1-SNAPSHOT.jar
 
   deploy:
     needs: build
@@ -57,7 +57,7 @@ jobs:
 
     - name: Deploy to EC2
       run: |
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > mykey.pem
-        chmod 600 mykey.pem
-        scp -i mykey.pem -o StrictHostKeyChecking=no build/libs/team14project-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/testServer.jar
-        ssh -i mykey.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "pgrep java | xargs kill -9; nohup java -jar /home/${{ secrets.SSH_USER }}/testServer.jar > app.log 2>&1 &"
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > team2project.pem
+        chmod 600 team2project.pem
+        scp -i team2project.pem -o StrictHostKeyChecking=no build/libs/team2project-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/testServer.jar
+        ssh -i team2project.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "pgrep java | xargs kill -9; nohup java -jar /home/${{ secrets.SSH_USER }}/testServer.jar > app.log 2>&1 &"
